@@ -86,8 +86,15 @@ document.querySelectorAll('.acc-head').forEach(head => {
 // ---------------------------------------------------------------------------
 const stackCards = [...document.querySelectorAll('.stack-card')];
 
+const stackFits = () => stackCards.every(c => c.offsetHeight < window.innerHeight * 0.92);
+
 if (stackCards.length && !prefersReduced) {
   const updateStack = () => {
+    // If any card is taller than the screen the stack cannot work; leave them alone.
+    if (!stackFits()) {
+      stackCards.forEach(c => { c.style.transform = ''; c.style.opacity = ''; });
+      return;
+    }
     stackCards.forEach((card, i) => {
       const next = stackCards[i + 1];
       if (!next) {

@@ -1260,11 +1260,12 @@ body { background: var(--ink); }
 }
 .portrait::before, .portrait::after { border-radius: 18px; }
 
-/* Marquee as a glass rail */
+/* Marquee as a glass rail — must keep the light band fill it sits between,
+   otherwise a thin white over the dark body reads as a grey bar. */
 .marquee {
-  background: rgba(255, 255, 255, 0.3);
-  border-top: 1px solid var(--rim-light);
-  border-bottom: 1px solid var(--rim-light);
+  background: rgba(238, 238, 233, 0.72);
+  border-top: 1px solid rgba(8, 8, 7, 0.10);
+  border-bottom: 1px solid rgba(8, 8, 7, 0.10);
 }
 
 /* Screenshots get glass framing too */
@@ -1381,3 +1382,32 @@ body { background: var(--ink); }
 }
 
 @media (max-width: 680px) { .post { padding: 22px; } }
+
+/* ==========================================================================
+   Card stack corrections
+   A sticky card taller than the viewport cannot stack — it unsticks mid-scroll
+   while later cards are still pinned, and the stack visibly comes apart.
+   Keep every card comfortably shorter than the screen.
+   ========================================================================== */
+.work-visual img:not(.shot-strip img) {
+  max-height: 300px;
+  object-fit: cover;
+  object-position: top center;
+  width: 100%;
+}
+.shot-diagram { max-height: 260px; object-fit: contain; }
+
+.shot-strip { gap: 6px; margin-top: 6px; }
+.shot-strip img { max-height: 90px; }
+
+/* Below the two-column breakpoint the visual sits ON TOP of the copy, so cards
+   get tall enough to break stacking. Fall back to plain scrolling cards. */
+@media (max-width: 1100px) {
+  .stack-card {
+    position: relative;
+    top: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    margin-bottom: 16px;
+  }
+}
