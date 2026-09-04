@@ -76,8 +76,8 @@ section[id] { scroll-margin-top: 76px; }
 /* ==========================================================================
    Bands — the palette inverts between sections
    ========================================================================== */
-.band-dark { background: var(--ink); color: var(--bone); }
-.band-light { background: var(--bone); color: var(--ink); }
+.band-dark  { background: rgba(8, 8, 7, 0.55);       color: var(--bone); }
+.band-light { background: rgba(232, 232, 227, 0.62); color: var(--ink); }
 
 .band { padding: 96px 0; }
 .band + .band-light:not(.marquee) { padding-top: 0; }
@@ -89,10 +89,14 @@ section[id] { scroll-margin-top: 76px; }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(8, 8, 7, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   color: var(--bone);
+  /* The one surface that always sits over content and never transforms, so
+     it is the only place a backdrop blur earns its compositing cost. */
+  background: rgba(8, 8, 7, 0.45);
+  -webkit-backdrop-filter: var(--glass-blur-strong);
+  backdrop-filter: var(--glass-blur-strong);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 8px 32px rgba(0, 0, 0, 0.28);
 }
 
 .nav-inner {
@@ -189,6 +193,7 @@ section[id] { scroll-margin-top: 76px; }
 .hero-glyph { color: var(--bone); opacity: 0.85; display: flex; justify-content: center; margin-bottom: 34px; }
 
 .hero-lead {
+  margin: 0 0 26px;   /* h1 must not take the UA default margin */
   font-size: clamp(19px, 2vw, 23px);
   font-weight: 500;
   line-height: 1.32;
@@ -1007,7 +1012,7 @@ section[id] { scroll-margin-top: 76px; }
    Footer
    ========================================================================== */
 .site-footer {
-  background: var(--ink);
+  background: rgba(8, 8, 7, 0.55);   /* translucent, same as the dark bands */
   color: var(--bone);
   border-top: 1px solid rgba(232,232,227,0.14);
   padding: 26px 40px;
@@ -1112,6 +1117,13 @@ a:focus-visible, button:focus-visible {
   .stack-card:nth-child(4) { top: 120px; }
   .band-heading { margin-bottom: 28px; }
   .marquee-set span { font-size: 17px; }
+  .post { padding: 22px; }
+
+}
+
+/* Glass is costly on phones — soften the single remaining blur */
+@media (max-width: 680px) {
+  :root { --glass-blur: blur(16px) saturate(160%); }
 }
 
 /* ==========================================================================
@@ -1155,43 +1167,16 @@ body::before {
     radial-gradient(34% 32% at 26% 82%, rgba(178, 122, 122, 0.42), transparent 64%);
   will-change: auto;
 }
-@keyframes drift {
-  0%   { transform: translate3d(0, 0, 0) scale(1); }
-  50%  { transform: translate3d(2.5%, -2%, 0) scale(1.06); }
-  100% { transform: translate3d(-2%, 2.5%, 0) scale(1.02); }
-}
-@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
-
-body { background: var(--ink); }
 
 /* --------------------------------------------------------------------------
    Bands become large panes of glass over the ambient field
    -------------------------------------------------------------------------- */
-.band-light { background: rgba(232, 232, 227, 0.62); }
-.band-dark, .site-footer { background: rgba(8, 8, 7, 0.55); }
 .hero, .pinned, .statement { background: transparent; }
 .hero::before { opacity: 0.55; }
 
 /* --------------------------------------------------------------------------
    Shared glass recipe
    -------------------------------------------------------------------------- */
-/* Blur is the expensive part of glass — reserve it for the one surface that
-   is always on screen and never transforms. Everything else keeps the
-   translucent fill and specular rim, which is what the eye actually reads. */
-.site-nav {
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-}
-
-/* Nav — the floating chrome, strongest glass */
-.site-nav {
-  background: rgba(8, 8, 7, 0.45);
-  -webkit-backdrop-filter: var(--glass-blur-strong);
-  backdrop-filter: var(--glass-blur-strong);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 8px 32px rgba(0, 0, 0, 0.28);
-}
-
 /* Cards on the light bands */
 .stack-card,
 .logo-item,
@@ -1211,11 +1196,10 @@ body { background: var(--ink); }
 .logo-item { padding: 22px 20px; }
 
 .accordion { border-top: none; }
-.acc-item { margin-bottom: 10px; border-bottom: 1px solid var(--rim-light); }
+.acc-item { margin-bottom: 12px; border-bottom: 1px solid var(--rim-light); }
 .acc-head { padding: 26px 26px; min-height: 76px; }
 .acc-panel > div { padding-left: 26px; padding-right: 26px; }
 .is-open .acc-panel > div { padding-top: 2px; padding-bottom: 30px; }
-.acc-item { margin-bottom: 12px; }
 
 .certs ul { gap: 8px; }
 .certs li { padding: 12px 16px 12px 34px; }
@@ -1274,9 +1258,10 @@ body { background: var(--ink); }
   align-items: center;
 }
 
-/* Screenshots get glass framing too */
+/* Screenshots and diagrams: framed, capped, never cropped. Aspect ratios vary
+   from 3:1 diagrams to 4:3 dashboards, so contain rather than cover. */
 .work-visual img { border-radius: 14px; }
-.shot-diagram { border: 1px solid var(--rim-light); }
+.shot-diagram { border: 1px solid var(--rim-light); max-height: 260px; object-fit: contain; }
 
 /* Pipeline dots read as beads of glass */
 .pl-dot {
@@ -1322,15 +1307,6 @@ body { background: var(--ink); }
 
 @media (prefers-reduced-motion: reduce) {
   .glass-interactive::after { display: none; }
-}
-
-/* Mobile: fewer simultaneous blur layers, and glass is costly on phones */
-@media (max-width: 680px) {
-  :root { --glass-blur: blur(16px) saturate(160%); }
-  .work-tags span, .exp-tags span, .certs li, .diagram {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
 }
 
 /* ==========================================================================
@@ -1387,8 +1363,6 @@ body { background: var(--ink); }
   max-width: 62ch;
 }
 
-@media (max-width: 680px) { .post { padding: 22px; } }
-
 /* ==========================================================================
    Card stack corrections
    A sticky card taller than the viewport cannot stack — it unsticks mid-scroll
@@ -1401,15 +1375,17 @@ body { background: var(--ink); }
   object-position: center;
   width: 100%;
 }
-.shot-diagram { max-height: 260px; object-fit: contain; }
-
 .shot-strip { gap: 6px; margin-top: 6px; }
 .shot-strip img { max-height: 90px; }
 
 /* Below the two-column breakpoint the visual sits ON TOP of the copy, so cards
    get tall enough to break stacking. Fall back to plain scrolling cards. */
+/* Below the two-column breakpoint the visual sits above the copy, so cards
+   grow taller than the viewport and stacking breaks. The .glass-interactive
+   selector is more specific, so it must be named here or it wins. */
 @media (max-width: 1100px) {
-  .stack-card {
+  .stack-card,
+  .stack-card.glass-interactive {
     position: relative;
     top: auto !important;
     transform: none !important;
@@ -1422,17 +1398,3 @@ body { background: var(--ink); }
    Audit corrections
    ========================================================================== */
 
-/* h1 must not inherit the browser's default heading size/margins */
-h1.hero-lead { margin: 0 0 26px; }
-
-/* The mobile stack-disable was being beaten by .stack-card.glass-interactive
-   (0,2,0 beats 0,1,0), so cards stayed sticky on phones. */
-@media (max-width: 1100px) {
-  .stack-card,
-  .stack-card.glass-interactive {
-    position: relative;
-    top: auto !important;
-    transform: none !important;
-    opacity: 1 !important;
-  }
-}
