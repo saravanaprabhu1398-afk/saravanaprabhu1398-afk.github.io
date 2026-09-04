@@ -103,7 +103,7 @@ if (stackCards.length && !prefersReduced) {
       const progress = 1 - Math.min(Math.max(gap / span, 0), 1);
 
       card.style.transform = `scale(${1 - progress * 0.07})`;
-      card.style.opacity = String(1 - progress * 0.3);
+      card.style.opacity = String(1 - progress * 0.06);
     });
   };
 
