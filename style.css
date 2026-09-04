@@ -1151,8 +1151,7 @@ body::before {
     radial-gradient(34% 30% at 82% 18%, rgba(206, 158, 106, 0.5), transparent 62%),
     radial-gradient(40% 36% at 72% 74%, rgba(108, 168, 158, 0.45), transparent 64%),
     radial-gradient(34% 32% at 26% 82%, rgba(178, 122, 122, 0.42), transparent 64%);
-  filter: blur(30px);
-  animation: drift 34s ease-in-out infinite alternate;
+  will-change: auto;
 }
 @keyframes drift {
   0%   { transform: translate3d(0, 0, 0) scale(1); }
@@ -1174,20 +1173,10 @@ body { background: var(--ink); }
 /* --------------------------------------------------------------------------
    Shared glass recipe
    -------------------------------------------------------------------------- */
-.site-nav,
-.stack-card,
-.logo-item,
-.diagram,
-.acc-item,
-.contact-list a,
-.metric-chip,
-.nav-cta,
-.btn,
-.portrait img,
-.work-tags span,
-.exp-tags span,
-.certs li,
-.marquee {
+/* Blur is the expensive part of glass — reserve it for the one surface that
+   is always on screen and never transforms. Everything else keeps the
+   translucent fill and specular rim, which is what the eye actually reads. */
+.site-nav {
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
 }
@@ -1207,7 +1196,7 @@ body { background: var(--ink); }
 .diagram,
 .acc-item,
 .certs li {
-  background: var(--glass-on-light);
+  background: rgba(255, 255, 255, 0.62);
   border: 1px solid var(--rim-light);
   border-radius: var(--r-glass);
   box-shadow:
@@ -1230,7 +1219,7 @@ body { background: var(--ink); }
 
 /* Contact rows sit on a dark band */
 .contact-list a {
-  background: var(--glass-on-dark);
+  background: rgba(255, 255, 255, 0.10);
   border: 1px solid var(--rim-dark);
   border-radius: 14px;
   margin-bottom: 8px;
@@ -1285,8 +1274,6 @@ body { background: var(--ink); }
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.45);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
 }
 .pl-stage.is-on .pl-dot {
   background: rgba(255, 255, 255, 0.92);

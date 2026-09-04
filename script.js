@@ -44,14 +44,18 @@ function onScroll() {
     if (section.getBoundingClientRect().top <= 120) activeId = section.id;
   }
   navMap.forEach((link, id) => link.classList.toggle('is-active', id === activeId));
-
-  ticking = false;
 }
 
+// Single scroll dispatcher — three separate listeners each scheduled their own
+// rAF, so the browser ran three callbacks per frame instead of one.
+const scrollJobs = [onScroll];
 window.addEventListener('scroll', () => {
   if (!ticking) {
     ticking = true;
-    window.requestAnimationFrame(onScroll);
+    window.requestAnimationFrame(() => {
+      for (const job of scrollJobs) job();
+      ticking = false;
+    });
   }
 }, { passive: true });
 
@@ -103,13 +107,7 @@ if (stackCards.length && !prefersReduced) {
     });
   };
 
-  let stackTicking = false;
-  window.addEventListener('scroll', () => {
-    if (!stackTicking) {
-      stackTicking = true;
-      requestAnimationFrame(() => { updateStack(); stackTicking = false; });
-    }
-  }, { passive: true });
+  scrollJobs.push(updateStack);
   updateStack();
 }
 
@@ -141,13 +139,7 @@ if (pinned && !prefersReduced) {
     if (counter) counter.textContent = String(active + 1).padStart(2, '0');
   };
 
-  let pinTicking = false;
-  window.addEventListener('scroll', () => {
-    if (!pinTicking) {
-      pinTicking = true;
-      requestAnimationFrame(() => { updatePipeline(); pinTicking = false; });
-    }
-  }, { passive: true });
+  scrollJobs.push(updatePipeline);
   window.addEventListener('resize', updatePipeline);
   updatePipeline();
 }
