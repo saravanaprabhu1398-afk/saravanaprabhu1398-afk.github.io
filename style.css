@@ -80,7 +80,7 @@ section[id] { scroll-margin-top: 76px; }
 .band-light { background: var(--bone); color: var(--ink); }
 
 .band { padding: 96px 0; }
-.band + .band-light { padding-top: 0; }
+.band + .band-light:not(.marquee) { padding-top: 0; }
 
 /* ==========================================================================
    Nav
@@ -1266,6 +1266,10 @@ body { background: var(--ink); }
   background: rgba(238, 238, 233, 0.72);
   border-top: 1px solid rgba(8, 8, 7, 0.10);
   border-bottom: 1px solid rgba(8, 8, 7, 0.10);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
 }
 
 /* Screenshots get glass framing too */
