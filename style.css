@@ -400,7 +400,9 @@ section[id] { scroll-margin-top: 76px; }
   display: grid;
   grid-template-columns: 1.05fr 1fr;
   gap: 48px;
-  align-items: start;
+  /* Visuals vary a lot in aspect (a 3:1 diagram vs a 4:3 screenshot). Centring
+     splits the leftover height evenly instead of stranding it under the image. */
+  align-items: center;
   padding: 48px 0;
   border-bottom: 1px solid rgba(8,8,7,0.14);
 }
