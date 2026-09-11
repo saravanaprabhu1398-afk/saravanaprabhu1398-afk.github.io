@@ -50,6 +50,9 @@ function onScroll() {
 // rAF, so the browser ran three callbacks per frame instead of one.
 const scrollJobs = [onScroll];
 window.addEventListener('scroll', () => {
+  // Skip all scroll-driven work while the tab is hidden — the browser throttles
+  // rendering anyway, so the callbacks are pure waste.
+  if (document.hidden) return;
   if (!ticking) {
     ticking = true;
     window.requestAnimationFrame(() => {
@@ -58,6 +61,11 @@ window.addEventListener('scroll', () => {
     });
   }
 }, { passive: true });
+
+// Re-sync once the tab comes back, since scrolls while hidden were ignored
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) for (const job of scrollJobs) job();
+});
 
 onScroll();
 
@@ -238,7 +246,7 @@ if (!prefersReduced) {
 // ---------------------------------------------------------------------------
 if (!prefersReduced && 'IntersectionObserver' in window) {
   const targets = document.querySelectorAll(
-    '.logo-item, .intro-body, .exp-row, .acc-item, .certs, ' +
+    '.logo-item, .intro-statement, .intro-body, .exp-row, .acc-item, .certs, ' +
     '.contact-lead, .contact-list a, .rail-label'
   );
 

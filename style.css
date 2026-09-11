@@ -612,7 +612,7 @@ section[id] { scroll-margin-top: 76px; }
 .split-word > span {
   display: inline-block;
   transform: translateY(110%);
-  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);   /* expo-out, 400-700ms */
 }
 .split-ready.is-visible .split-word > span { transform: translateY(0); }
 
@@ -1068,8 +1068,10 @@ section[id] { scroll-margin-top: 76px; }
 .reveal {
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  /* 400ms / ease-out: the guidance range is 300-400ms so it reads as a fade,
+     not a slide. 750ms felt sluggish on a long page. */
+  transition: opacity 0.4s cubic-bezier(0.33, 1, 0.68, 1),
+              transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
