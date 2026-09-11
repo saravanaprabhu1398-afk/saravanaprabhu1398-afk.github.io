@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The publishing pipeline behind this blog — Prabhu Saravanan</title>
+<meta name="description" content="A static site, a 400-line Python script and zero dependencies — why the boring option wins for a personal engineering blog.">
+<link rel="canonical" href="https://saravanaprabhu1398-afk.github.io/blog/publishing-pipeline/">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="The publishing pipeline behind this blog — Prabhu Saravanan">
+<meta property="og:description" content="A static site, a 400-line Python script and zero dependencies — why the boring option wins for a personal engineering blog.">
+<meta property="og:url" content="https://saravanaprabhu1398-afk.github.io/blog/publishing-pipeline/">
+<meta property="og:image" content="https://raw.githubusercontent.com/saravanaprabhu1398-afk/FlightPulse/main/docs/screenshots/02_delay_by_airport.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The publishing pipeline behind this blog — Prabhu Saravanan">
+<meta name="twitter:description" content="A static site, a 400-line Python script and zero dependencies — why the boring option wins for a personal engineering blog.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/saravanaprabhu1398-afk/FlightPulse/main/docs/screenshots/02_delay_by_airport.png">
+<meta name="theme-color" content="#080807">
+
+<link rel="alternate" type="application/rss+xml" title="Prabhu Saravanan &#8212; Writing" href="/feed.xml">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23080807'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-size='15' font-weight='600' fill='%23E8E8E3' text-anchor='middle'%3EPS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css?v=18">
+<link rel="stylesheet" href="/blog.css?v=3">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "The publishing pipeline behind this blog", "description": "A static site, a 400-line Python script and zero dependencies — why the boring option wins for a personal engineering blog.", "datePublished": "2026-09-04", "author": {"@type": "Person", "name": "Prabhu Saravanan", "jobTitle": "Lead Data Engineer"}, "mainEntityOfPage": "https://saravanaprabhu1398-afk.github.io/blog/publishing-pipeline/", "image": "https://raw.githubusercontent.com/saravanaprabhu1398-afk/FlightPulse/main/docs/screenshots/02_delay_by_airport.png"}</script>
+</head>
+<body>
+
+<a href="#top" class="skip-link">Skip to content</a>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site-nav" id="siteNav">
+  <div class="nav-inner">
+    <a href="/" class="nav-mark">PRABHU<span>&#174;</span></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="/#work">Work</a>
+      <a href="/#experience">Experience</a>
+      <a href="/#skills">Skills</a>
+      <a href="/blog/">Writing</a>
+      <a href="/#contact">Contact</a>
+      <a href="/assets/Prabhu_Saravanan_Resume.pdf" class="nav-resume-mobile" download>R&#233;sum&#233;</a>
+    </nav>
+    <a class="nav-cta" href="/#contact">Get in touch <span aria-hidden="true">&#8599;</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <article class="band band-light article">
+    <div class="rail">
+      <div class="rail-label"><span class="dot"></span>Writing</div>
+      <div class="rail-body">
+
+        <div class="post-meta article-meta">
+          <span class="post-status">Draft</span><em>Tooling</em>
+          <span class="sep" aria-hidden="true">&#183;</span>
+          <time datetime="2026-09-04">04 SEP 2026</time>
+          <span class="sep" aria-hidden="true">&#183;</span>
+          <span>2 MIN READ</span>
+        </div>
+
+        <h1 class="article-title" data-split>The publishing pipeline behind this blog</h1>
+        <p class="article-lede">A static site, a 400-line Python script and zero dependencies — why the boring option wins for a personal engineering blog.</p>
+
+        <div class="article-body">
+<p>Every personal blog eventually faces the same fork: adopt a framework, or hand-write HTML forever. The first buys you a build step, a lockfile, and a dependency tree that rots the moment you stop looking at it. The second buys you a chore that scales linearly with the number of posts you write.</p>
+<p>This site takes a third option, which is neither clever nor novel — just small.</p>
+<h2 id="the-shape-of-it">The shape of it</h2>
+<p>Posts are Markdown files. A script turns them into pages. That is the whole design.</p>
+<pre><code>content/posts/*.md   -&gt;   blog/&lt;slug&gt;/index.html
+                          blog/index.html
+                          feed.xml
+                          index.html  (the three newest cards)
+                          outbox/&lt;slug&gt;.txt</code></pre>
+<p>The script is Python standard library only. No <code>pip install</code>, no <code>node_modules</code>, no lockfile to audit. It runs in about 40 milliseconds and its only real job is string concatenation.</p>
+<h2 id="why-not-a-static-site-generator">Why not a static site generator</h2>
+<p>A generator is the obvious answer, and for most people it is the right one. The argument against it here is narrow and specific.</p>
+<div class="table-scroll"><table><thead><tr><th></th><th>Framework</th><th>This script</th></tr></thead><tbody><tr><td>Dependencies</td><td>40–400 packages</td><td>0</td></tr><tr><td>Design control</td><td>Fight the theme layer</td><td>It emits your own markup</td></tr><tr><td>Breaks when</td><td>An upstream major bumps</td><td>You edit it</td></tr><tr><td>Understandable in</td><td>An afternoon of docs</td><td>One sitting</td></tr></tbody></table></div>
+<p>That third row is the one that matters. A personal site gets touched maybe six times a year. The failure mode is not "this is hard to extend" — it is "I opened it after eight months and the build no longer runs."</p>
+<blockquote><p>The cost of a dependency is not what it takes to add it. It is what it takes to still have it working the next time you look.</p></blockquote>
+<p>The generated pages reuse <code>style.css</code> verbatim, so posts inherit the site's design system rather than approximating it. There is no theme abstraction to fight because there is no theme.</p>
+<h2 id="the-markdown-subset">The Markdown subset</h2>
+<p>The parser handles what technical writing actually uses:</p>
+<ul><li>Headings, with generated <code>id</code> anchors</li><li>Fenced code blocks with a language class</li><li>Tables, wrapped in their own scroll container so a wide table never widens the page</li><li>Nested lists, blockquotes, images, links, <code>inline code</code>, <strong>bold</strong>, <em>italic</em></li></ul>
+<p>It does <strong>not</strong> handle footnotes, definition lists, or raw HTML passthrough. Adding any of those is a ten-line change to one function, made the day it is first needed rather than the day it might be.</p>
+<p>Code spans are extracted before HTML escaping runs, so an example containing <code>&lt;script&gt;</code> renders as text rather than executing — the single most common bug in hand-rolled Markdown parsers.</p>
+<h2 id="the-part-that-touches-the-outside-world">The part that touches the outside world</h2>
+<p>A post can carry a LinkedIn version after a <code>--- LINKEDIN ---</code> marker. The build writes it to <code>outbox/</code>, and that is where it stops.</p>
+<p>Publishing is a separate, explicitly invoked command that prints the exact payload, states that the post will be public, and requires the slug typed back before it sends anything. Automation drafts. A person publishes.</p>
+<p>That asymmetry is deliberate. Generating text is cheap and reversible; putting it in front of several thousand people is neither.</p>
+        </div>
+
+        <div class="article-tags"><span>Tooling</span><span>Static Sites</span><span>Automation</span></div>
+
+        <div class="article-foot">
+          <a class="btn" href="/blog/">&#8592; All writing</a>
+          <a class="btn" href="/#contact">Get in touch</a>
+        </div>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <span>Prabhu Saravanan &#8212; Abu Dhabi, UAE</span>
+  <span>Built by hand</span>
+</footer>
+
+<script src="/script.js?v=18"></script>
+</body>
+</html>

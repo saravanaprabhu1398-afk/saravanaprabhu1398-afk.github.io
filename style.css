@@ -565,6 +565,24 @@ section[id] { scroll-margin-top: 76px; }
 .dg-result { background: var(--chip); border-color: transparent; }
 
 /* ==========================================================================
+   Button — shares the glass treatment with .nav-cta below
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn span { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.btn:hover span { transform: translateX(3px); }
+
+/* ==========================================================================
    Band heading — oversized uppercase display
    ========================================================================== */
 .band-heading {
@@ -1398,3 +1416,42 @@ body::before {
    Audit corrections
    ========================================================================== */
 
+
+/* ==========================================================================
+   Accessibility: focus visibility + touch targets
+   Findings from a UI/UX Pro Max audit against WCAG 2.2.
+   ========================================================================== */
+
+/* 2.4.11 Focus Not Obscured (AA). The sticky nav is 63px tall, so tabbing to
+   an element just off the top scrolled it fully behind the bar — the focus
+   ring disappeared entirely. scroll-padding-top reserves that space for any
+   scroll the browser performs, including focus moves (scroll-margin-top on
+   sections only covered anchor jumps). */
+html { scroll-padding-top: 80px; }
+
+/* 2.5.8 Target Size. Pointer devices are fine at 24px+, but touch needs ~44px.
+   Scope to coarse pointers so desktop density is unchanged. */
+@media (pointer: coarse) {
+  .nav-links a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .nav-toggle {
+    width: 44px;
+    height: 44px;
+    margin-right: -7px;   /* keep the optical edge alignment */
+  }
+  .work-link,
+  .nav-mark,
+  .contact-list a,
+  .skip-link,
+  .post {
+    min-height: 44px;
+  }
+  .skip-link { display: flex; align-items: center; }
+  .work-link {
+    display: inline-flex;
+    align-items: center;
+  }
+}

@@ -13,8 +13,13 @@ framework and no build step. Deployed with GitHub Pages from `main` at the repo 
 | `style.css` | Design system and all styling |
 | `script.js` | Scroll behaviour, card stack, pipeline scrub, accordion, text reveals |
 | `assets/` | Résumé PDF, portrait, project screenshots, architecture diagrams |
+| `blog.css` | Article typography — loaded only under `/blog/` |
+| `content/` | Post sources (Markdown) and the topic backlog |
+| `tools/` | `build.py` (Markdown → pages) and `linkedin.py` (gated publishing) |
+| `blog/`, `feed.xml` | **Generated.** Do not hand-edit — `build.py` overwrites them |
 
-No dependencies beyond Google Fonts (Archivo + JetBrains Mono).
+No dependencies beyond Google Fonts (Archivo + JetBrains Mono). The build is
+Python standard library only — nothing to install.
 
 ## Design
 
@@ -44,6 +49,70 @@ git add . && git commit -m "Update copy" && git push
 **Bump the asset version when you change CSS or JS.** `index.html` links
 `style.css?v=5` and `script.js?v=5` — increment both, or returning visitors keep
 getting cached stale files.
+
+## Writing
+
+Posts are Markdown in `content/posts/`, named `YYYY-MM-DD-slug.md`. One build
+step turns them into pages:
+
+```bash
+python3 tools/build.py            # published posts only
+python3 tools/build.py --drafts   # include drafts, for local preview
+```
+
+That writes `blog/<slug>/index.html`, `blog/index.html`, `feed.xml`, and refreshes
+the three newest cards on the homepage between the `POSTS:START` / `POSTS:END`
+markers in `index.html`. Generated pages link `/style.css` and `/blog.css`, so
+posts inherit the design system rather than approximating it.
+
+Frontmatter:
+
+| Key | Notes |
+|---|---|
+| `title` | Required |
+| `summary` | One sentence — card text, meta description and OG blurb |
+| `tags` | `[Primary, Secondary]`; the first becomes the card's topic label |
+| `date` | Defaults to the date in the filename |
+| `draft` | `true` keeps it out of `feed.xml` and out of a normal build |
+| `image` | OG image; falls back to the FlightPulse screenshot |
+
+Markdown support is a deliberate subset: headings with anchor ids, fenced code,
+tables (wrapped in their own scroll box), nested lists, blockquotes, images,
+links, inline code, bold, italic. Adding more is a small change to one function
+in `tools/build.py`.
+
+### Drafting
+
+`/draft-post` takes the first unchecked item from `content/topics.md`, drafts it
+with `draft: true`, writes a LinkedIn version, and rebuilds. It publishes nothing.
+
+### Publishing to LinkedIn
+
+Everything after `--- LINKEDIN ---` in a post is staged to `outbox/<slug>.txt`.
+Staging is not posting.
+
+```bash
+python3 tools/linkedin.py auth            # one-time; tokens last 60 days
+python3 tools/linkedin.py whoami          # is the token still alive?
+python3 tools/linkedin.py preview <slug>  # prints the exact payload, posts nothing
+python3 tools/linkedin.py post <slug>     # asks you to type the slug back first
+```
+
+Credentials go in `tools/.env` (copy `tools/.env.example`). That file and the
+stored token are gitignored — check before committing.
+
+One-time app setup at [linkedin.com/developers/apps](https://www.linkedin.com/developers/apps):
+create an app against a LinkedIn Page you admin, request the **Share on LinkedIn**
+and **Sign In with LinkedIn using OpenID Connect** products (both self-serve), and
+register `http://localhost:8000/callback` as a redirect URL.
+
+### Publishing the site
+
+Drop `draft: true`, rebuild, and push:
+
+```bash
+python3 tools/build.py && git add -A && git commit -m "New post" && git push
+```
 
 ### Content notes
 

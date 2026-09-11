@@ -1,0 +1,8 @@
+# Secrets — never commit
+tools/.env
+tools/.linkedin_token.json
+
+# Local noise
+.DS_Store
+__pycache__/
+*.pyc

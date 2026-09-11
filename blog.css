@@ -1,0 +1,250 @@
+/* ==========================================================================
+   blog.css — article pages and the writing index.
+   Loaded only under /blog/. Inherits every token from style.css.
+   ========================================================================== */
+
+.article .rail-body { max-width: 760px; }
+
+.article-meta { flex-wrap: wrap; margin-bottom: 20px; }
+.article-meta time,
+.article-meta span:not(.post-status):not(.sep) {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.62;
+}
+.post-meta .sep { opacity: 0.3; font-size: 11px; }
+
+.article-title {
+  margin: 0 0 18px;
+  font-size: clamp(32px, 5.2vw, 54px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+
+.article-lede {
+  margin: 0 0 44px;
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  opacity: 0.72;
+  max-width: 60ch;
+}
+
+/* --------------------------------------------------------------------------
+   Article body — one vertical rhythm, set from the paragraph
+   -------------------------------------------------------------------------- */
+.article-body { font-size: 17.5px; line-height: 1.68; }
+.article-body > * { max-width: 68ch; }
+.article-body > *:first-child { margin-top: 0; }
+
+.article-body p { margin: 0 0 26px; opacity: 0.86; }
+
+.article-body h2 {
+  margin: 56px 0 16px;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.article-body h3 {
+  margin: 40px 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.article-body h4 {
+  margin: 32px 0 10px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+}
+
+.article-body a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(8, 8, 7, 0.35);
+  transition: text-decoration-color 0.2s ease;
+}
+.article-body a:hover { text-decoration-color: currentColor; }
+
+.article-body strong { font-weight: 600; }
+
+.article-body ul,
+.article-body ol { margin: 0 0 26px; padding-left: 22px; opacity: 0.86; }
+.article-body li { margin-bottom: 9px; }
+.article-body li > ul,
+.article-body li > ol { margin: 9px 0 0; }
+.article-body ul { list-style: none; padding-left: 20px; }
+.article-body ul > li { position: relative; }
+.article-body ul > li::before {
+  content: "";
+  position: absolute;
+  left: -18px; top: 0.7em;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+.article-body blockquote {
+  margin: 32px 0;
+  padding: 4px 0 4px 24px;
+  border-left: 2px solid rgba(8, 8, 7, 0.22);
+  font-size: 19px;
+  line-height: 1.55;
+  letter-spacing: -0.015em;
+  opacity: 0.78;
+}
+.article-body blockquote p:last-child { margin-bottom: 0; }
+
+.article-body code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: rgba(8, 8, 7, 0.07);
+  border: 1px solid rgba(8, 8, 7, 0.09);
+  border-radius: 4px;
+  padding: 0.12em 0.4em;
+}
+
+.article-body pre {
+  margin: 0 0 30px;
+  padding: 22px 24px;
+  background: var(--ink);
+  color: var(--bone);
+  border-radius: 12px;
+  overflow-x: auto;
+  box-shadow: var(--glass-lift);
+  -webkit-overflow-scrolling: touch;
+}
+.article-body pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 13.5px;
+  line-height: 1.62;
+  white-space: pre;
+}
+
+.article-body img {
+  margin: 0 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(8, 8, 7, 0.12);
+}
+
+.article-body hr {
+  margin: 48px 0;
+  border: 0;
+  border-top: 1px solid rgba(8, 8, 7, 0.14);
+}
+
+/* Tables scroll inside their own box rather than widening the page */
+.table-scroll {
+  margin: 0 0 30px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.article-body table { border-collapse: collapse; width: 100%; font-size: 15.5px; }
+.article-body th,
+.article-body td {
+  padding: 11px 16px 11px 0;
+  text-align: left;
+  border-bottom: 1px solid rgba(8, 8, 7, 0.12);
+  white-space: nowrap;
+}
+.article-body th {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+}
+.article-body td { opacity: 0.86; }
+
+/* --------------------------------------------------------------------------
+   Article footer
+   -------------------------------------------------------------------------- */
+.article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 48px 0 0;
+  padding-top: 28px;
+  border-top: 1px solid rgba(8, 8, 7, 0.14);
+}
+.article-tags span {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  border: 1px solid rgba(8, 8, 7, 0.22);
+  border-radius: 100px;
+  opacity: 0.7;
+}
+
+.article-foot { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+
+/* --------------------------------------------------------------------------
+   Index cards — the whole card is the hit area
+   -------------------------------------------------------------------------- */
+.post-link { display: block; }
+.post-link h2 {
+  margin: 0 0 8px;
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: -0.028em;
+  line-height: 1.22;
+}
+.post-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+  transition: opacity 0.25s ease;
+}
+.post-more i { font-style: normal; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.post:hover .post-more { opacity: 1; }
+.post:hover .post-more i { transform: translateX(4px); }
+
+#writing .post-list { gap: 14px; margin-top: 8px; }
+#writing .article-lede { margin-bottom: 40px; }
+
+.feed-note {
+  margin: 28px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.5;
+}
+.feed-note a { text-decoration: underline; text-underline-offset: 3px; }
+.feed-note a:hover { opacity: 1; }
+
+@media (max-width: 860px) {
+  .article-body { font-size: 16.5px; }
+  .article-body h2 { font-size: 24px; margin-top: 44px; }
+  .article-lede { font-size: 18px; margin-bottom: 34px; }
+  .article-body pre { padding: 18px; border-radius: 10px; }
+}
+
+/* --------------------------------------------------------------------------
+   Short pages: stretch the band to the footer rather than exposing the
+   ambient field between them. Scoped here, so the homepage is untouched.
+   -------------------------------------------------------------------------- */
+body { min-height: 100vh; display: flex; flex-direction: column; }
+main { flex: 1 0 auto; display: flex; flex-direction: column; }
+main > .band { flex: 1 0 auto; }
