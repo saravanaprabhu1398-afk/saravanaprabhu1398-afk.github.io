@@ -9,13 +9,12 @@ framework and no build step. Deployed with GitHub Pages from `main` at the repo 
 
 | Path | Purpose |
 |---|---|
-| `index.html` | The whole site — single page, semantic sections |
-| `style.css` | Design system and all styling |
-| `script.js` | Scroll behaviour, card stack, pipeline scrub, accordion, text reveals |
+| `index.html`, `projects/`, `about/` | Hand-written pages; nav, footer and project cards are synced by `build.py` |
+| `site.css` | The whole design: tokens, components, responsive rules |
+| `site.js` | Nav, typing line, reveal, project filters, live GitHub feed, ⌘K search |
 | `assets/` | Résumé PDF, portrait, project screenshots, architecture diagrams |
-| `blog.css` | Article typography — loaded only under `/blog/` |
 | `content/` | Post sources (Markdown) and the topic backlog |
-| `tools/` | `build.py` (Markdown → pages) and `linkedin.py` (gated publishing) |
+| `tools/` | `build.py` (Markdown → pages, project cards, sitemap, search index), `site_data.py` (projects, nav, search entries) and `linkedin.py` |
 | `blog/`, `feed.xml` | **Generated.** Do not hand-edit — `build.py` overwrites them |
 
 No dependencies beyond Google Fonts (Archivo + JetBrains Mono). The build is

@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>document.documentElement.classList.add('js')</script>
 <title>Prabhu Saravanan — Lead Data Engineer</title>
 <meta name="description" content="Lead Data Engineer building data and AI platforms — Databricks, Snowflake, Kafka, dbt, and Unity Catalog governance.">
 <link rel="canonical" href="https://saravanaprabhu1398-afk.github.io/">
 <meta name="author" content="Prabhu Saravanan">
 
-<!-- Link preview (LinkedIn, Slack, X) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Prabhu Saravanan — Lead Data Engineer">
 <meta property="og:description" content="I build the data platforms other systems learn to trust. 8 years across aviation, insurance, telecom, consumer goods, e-commerce and healthcare. Databricks Certified.">
@@ -21,475 +21,227 @@
 <meta name="twitter:title" content="Prabhu Saravanan — Lead Data Engineer">
 <meta name="twitter:description" content="I build the data platforms other systems learn to trust.">
 <meta name="twitter:image" content="https://saravanaprabhu1398-afk.github.io/assets/og-image.png">
-<meta name="theme-color" content="#080807">
+<meta name="theme-color" content="#0a0a0c">
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"Prabhu Saravanan","jobTitle":"Lead Data Engineer","url":"https://saravanaprabhu1398-afk.github.io/","image":"https://saravanaprabhu1398-afk.github.io/assets/prabhu.jpg","sameAs":["https://www.linkedin.com/in/prabhu-saravanan-a53317226","https://github.com/saravanaprabhu1398-afk"],"knowsAbout":["Data engineering","Databricks","Snowflake","Apache Kafka","dbt","Apache Spark","Unity Catalog","Apache Iceberg"]}
 </script>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23080807'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-size='15' font-weight='600' fill='%23E8E8E3' text-anchor='middle'%3EPS%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0a0c'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23b8f35b'/%3E%3C/svg%3E">
+<link rel="alternate" type="application/rss+xml" title="Prabhu Saravanan — Writing" href="/feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="alternate" type="application/rss+xml" title="Prabhu Saravanan — Writing" href="/feed.xml">
-<link rel="stylesheet" href="style.css?v=28">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css?v=1">
 </head>
 <body>
-
+<!--SHARED:NAV-->
 <a href="#top" class="skip-link">Skip to content</a>
-<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
-
-<header class="site-nav" id="siteNav">
-  <div class="nav-inner">
-    <a href="#top" class="nav-mark">PRABHU</a>
-    <nav class="nav-links" id="navLinks">
-      <a href="#work">Work</a>
-      <a href="#case-studies">Case studies</a>
-      <a href="#experience">Experience</a>
-      <a href="#skills">Skills</a>
-      <a href="#blog">Writing</a>
-      <a href="#contact">Contact</a>
-      <a href="#resume" class="nav-resume-mobile">Résumé</a>
-    </nav>
-    <a class="nav-cta" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+<header class="nav">
+  <div class="nav-bar">
+    <a href="/" class="brand"><i aria-hidden="true"></i>Prabhu Saravanan</a>
+    <nav class="nav-links" id="navLinks" aria-label="Main"><a href="/" aria-current="page">Home</a><a href="/projects/">Projects</a><a href="/blog/">Writing</a><a href="/about/">About</a><a href="/#contact">Contact</a></nav>
+    <div class="nav-tools">
+      <button class="search-btn" data-open-search aria-label="Search the site"><span>Search</span><kbd>⌘K</kbd><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="search-ico"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <a class="nav-cta" href="/#contact">Hire me</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+    </div>
   </div>
 </header>
+<div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="palette-box">
+    <input type="text" placeholder="Search projects, case studies, résumés…" aria-label="Search" autocomplete="off">
+    <ul></ul>
+    <div class="palette-hint">↑↓ to move · ↵ to open · esc to close</div>
+  </div>
+</div>
+<!--/SHARED:NAV-->
 
 <main id="top">
 
   <!-- ============ HERO ============ -->
-  <section class="hero band-dark">
-    <div class="hero-center">
-      <div class="hero-glyph" aria-hidden="true">
-        <svg viewBox="0 0 64 40" width="64" height="40">
-          <ellipse cx="32" cy="20" rx="30" ry="12" fill="none" stroke="currentColor" stroke-width="1"/>
-          <ellipse cx="32" cy="20" rx="12" ry="12" fill="none" stroke="currentColor" stroke-width="1"/>
-          <line x1="2" y1="20" x2="62" y2="20" stroke="currentColor" stroke-width="1"/>
-          <line x1="32" y1="8" x2="32" y2="32" stroke="currentColor" stroke-width="1"/>
-        </svg>
-      </div>
-      <h1 class="hero-lead">I build the data platforms<br>other systems learn to trust.</h1>
-      <p class="hero-sub">Lead Data Engineer with 8 years across aviation, insurance, telecom, consumer goods, e-commerce and healthcare. Databricks Certified.</p>
-      <div class="hero-cta">
-        <a class="cta-button" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
-        <a class="hero-link" href="#resume">Download résumé ↓</a>
-        <a class="hero-link" href="https://www.linkedin.com/in/prabhu-saravanan-a53317226" target="_blank" rel="noopener">LinkedIn ↗</a>
-        <a class="hero-link" href="https://github.com/saravanaprabhu1398-afk" target="_blank" rel="noopener">GitHub ↗</a>
-      </div>
-      <p class="hero-meta">Abu Dhabi, UAE · Open to roles in the UAE, Europe and India</p>
-    </div>
-
-    <div class="hero-wordmark" aria-hidden="true">SARAVANAN</div>
-  </section>
-
-  <!-- ============ PROOF STRIP ============ -->
-  <section class="proof band-light" aria-label="Headline numbers">
-    <div class="proof-inner">
-      <div class="stat-row"><div class="stat"><span class="stat-num">8 yrs</span><span class="stat-cap">Building production data platforms</span></div><div class="stat"><span class="stat-num">$2M+</span><span class="stat-cap">Est. annual savings from one risk engine</span></div><div class="stat"><span class="stat-num">&lt;60s</span><span class="stat-cap">CDC latency for 500K+ subscribers</span></div><div class="stat"><span class="stat-num">65%</span><span class="stat-cap">Spark report runtime cut</span></div></div>
-      <p class="proof-note">From my résumé — Wipro and earlier roles. Project numbers further down are labelled measured or simulated.</p>
-    </div>
-  </section>
-
-  <!-- ============ FRESH OFF THE PRESS (live from GitHub) ============ -->
-  <section class="fresh band-light" id="fresh" aria-label="Latest activity on GitHub" hidden>
-    <div class="proof-inner">
-      <h2 class="fresh-heading">Fresh off the press</h2>
-      <p class="proof-note" id="freshNote"></p>
-      <ul class="fresh-list" id="freshList"></ul>
-    </div>
-  </section>
-
-  <!-- ============ COMPANIES ============ -->
-  <section class="band band-light" id="companies">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Where I've built</div>
-      <div class="rail-body">
-        <div class="logo-grid">
-          <div class="logo-item"><span class="logo-name">Etihad Airways</span><span class="logo-meta">AI Revenue Intelligence</span></div>
-          <div class="logo-item"><span class="logo-name">Citi</span><span class="logo-meta">Self-service ingestion platform</span></div>
-          <div class="logo-item"><span class="logo-name">Wipro</span><span class="logo-meta">Insurance risk engine</span></div>
-          <div class="logo-item"><span class="logo-name">PwC India</span><span class="logo-meta">PepsiCo supply chain</span></div>
-          <div class="logo-item"><span class="logo-name">Cartesian</span><span class="logo-meta">SOLUS.AI personalisation</span></div>
-          <div class="logo-item"><span class="logo-name">Swiggy (SuprDaily)</span><span class="logo-meta">Warehouse &amp; rider analytics</span></div>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>Open to roles · UAE · Europe · India</span>
+        <h1>I build the data platforms other systems learn to <em>trust.</em></h1>
+        <p class="typed-line">Lead Data Engineer. Today: <b id="typed" data-words="lakehouses|streaming pipelines|governed AI platforms|data you can prove">lakehouses</b><span class="cursor" aria-hidden="true"></span></p>
+        <p class="hero-sub">8 years across aviation, insurance, telecom, consumer goods, e-commerce and healthcare. Databricks Certified.</p>
+        <div class="hero-cta">
+          <a class="btn primary" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
+          <a class="btn" href="/about/#resumes">Download résumé ↓</a>
+          <a class="btn" href="https://www.linkedin.com/in/prabhu-saravanan-a53317226" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="btn" href="https://github.com/saravanaprabhu1398-afk" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
+        <p class="hero-meta">Abu Dhabi, UAE</p>
       </div>
+      <figure class="portrait">
+        <img src="/assets/prabhu.jpg" width="774" height="1016" alt="Prabhu Saravanan"
+             onerror="this.closest('.portrait').remove()">
+        <span class="chip-float" aria-hidden="true">Databricks</span>
+        <span class="chip-float" aria-hidden="true">Kafka</span>
+        <span class="chip-float" aria-hidden="true">dbt</span>
+      </figure>
+    </div>
+
+    <div class="wrap">
+      <div class="tiles" data-reveal>
+        <a class="tile coral" href="/about/#experience"><span class="num">8 yrs</span><span class="lab">Building production data platforms</span><span class="arr" aria-hidden="true">→</span></a>
+        <a class="tile amber" href="#case-studies"><span class="num">$2M+</span><span class="lab">Est. annual savings from one risk engine</span><span class="arr" aria-hidden="true">→</span></a>
+        <a class="tile lime" href="#case-studies"><span class="num">&lt;60s</span><span class="lab">CDC latency for 500K+ subscribers</span><span class="arr" aria-hidden="true">→</span></a>
+        <a class="tile sky" href="/about/#certs"><span class="num">5</span><span class="lab">Certifications, Databricks Professional included</span><span class="arr" aria-hidden="true">→</span></a>
+        <a class="tile violet" href="/projects/"><span class="num"><span id="liveCount">10</span></span><span class="lab">Public projects on GitHub (live count)</span><span class="arr" aria-hidden="true">→</span></a>
+      </div>
+      <p class="tiles-note">Career numbers are from my résumé. Project numbers below say whether they're measured or simulated.</p>
     </div>
   </section>
 
-  <!-- ============ MARQUEE ============ -->
-  <section class="marquee band-light" aria-label="Technology stack">
-    <div class="marquee-track">
-      <div class="marquee-set">
-        <span>Databricks</span><i>◆</i><span>Snowflake</span><i>◆</i><span>Apache Kafka</span><i>◆</i><span>Apache Iceberg</span><i>◆</i><span>dbt</span><i>◆</i><span>PySpark</span><i>◆</i><span>Unity Catalog</span><i>◆</i><span>Delta Lake</span><i>◆</i><span>Azure OpenAI</span><i>◆</i><span>Airflow</span><i>◆</i><span>Debezium CDC</span><i>◆</i><span>Redpanda</span><i>◆</i>
+  <!-- ============ FRESH OFF THE PRESS ============ -->
+  <section>
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <div><span class="eyebrow"><span class="dot"></span>Latest</span><h2>Fresh off the press</h2></div>
+        <a class="more-link" href="/projects/">All projects <span aria-hidden="true">→</span></a>
       </div>
-      <div class="marquee-set" aria-hidden="true">
-        <span>Databricks</span><i>◆</i><span>Snowflake</span><i>◆</i><span>Apache Kafka</span><i>◆</i><span>Apache Iceberg</span><i>◆</i><span>dbt</span><i>◆</i><span>PySpark</span><i>◆</i><span>Unity Catalog</span><i>◆</i><span>Delta Lake</span><i>◆</i><span>Azure OpenAI</span><i>◆</i><span>Airflow</span><i>◆</i><span>Debezium CDC</span><i>◆</i><span>Redpanda</span><i>◆</i>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ INTRO ============ -->
-  <section class="band band-light intro-band">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Approach</div>
-      <div class="rail-body intro-grid">
-        <figure class="portrait">
-          <img src="assets/prabhu.jpg" width="774" height="1016" alt="Prabhu Saravanan" loading="lazy"
-               onerror="this.closest('.portrait').remove();document.querySelector('.intro-grid').classList.remove('intro-grid')">
-          <figcaption><span>Prabhu Saravanan</span><em>Lead Data Engineer · Abu Dhabi</em></figcaption>
-        </figure>
-        <div class="intro-copy">
-        <p class="intro-statement">Most data work stops at moving data. I build the part that makes it accountable — governed, tested, and able to prove what it claims.</p>
-        <p class="intro-body">Currently architecting an AI-powered Revenue Intelligence platform for Etihad Airways on Azure OpenAI. Before that: self-service ingestion frameworks, consolidated insurance risk pipelines, and a GenAI clinical knowledge base. Outside client work I build production systems from scratch to stay hands-on with open table formats, experimentation platforms and AI governance.</p>
+      <div class="feed" data-reveal>
+        <div>
+          <div class="feed-list" id="feedList" hidden></div>
+          <p class="live-note" id="liveNote" hidden></p>
+          <noscript><p class="feed-note">Latest repositories: <a href="https://github.com/saravanaprabhu1398-afk?tab=repositories">github.com/saravanaprabhu1398-afk</a></p></noscript>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ WORK ============ -->
-  <section class="band band-light work-band" id="work">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Selected work</div>
-      <div class="rail-body">
-        <h2 class="band-heading" data-split>Selected Work</h2>
-        <p class="work-note">Every number below says where it comes from: <b>measured</b> in the repo, a <b>simulated</b> demo, or taken from my résumé.</p>
-        <div class="stack">
-
-        <article class="work-row stack-card">
-          <div class="work-visual">
-            <img class="shot-diagram" src="assets/guardrail-decision-loop.svg" width="1829" height="615" alt="Guardrail decision loop architecture: assignment and exposure feed integrity checks, which gate the statistical result" loading="lazy">
+        <div class="card feed-side">
+          <div>
+            <span class="badge">Writing</span>
+            <h3>Field notes on building data platforms in production</h3>
+            <p>Lakehouse design, experimentation integrity, governing AI like data.</p>
           </div>
-          <div class="work-copy">
-            <div class="work-index"><span>SW</span><i></i><em>01/04</em></div>
-            <h3 class="work-title">Guardrail</h3>
-            <p class="work-desc">A Snowflake experimentation platform that decides whether a feature is safe to ship — assigning variants, ingesting telemetry through Redpanda and Snowpipe Streaming, running statistical tests, and blocking the rollout when the telemetry itself can't be trusted.</p>
-            <div class="metric"><span class="metric-chip">4.8%</span><p class="metric-caption">Apparent conversion lift in the demo scenario, caught and blocked — mobile clients were switching variants mid-session. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/Guardrail-Safe-Feature-Rollout-Platform#interview-narrative" target="_blank" rel="noopener"><b>Simulated</b> Demo narrative ↗</a></p></div>
-            <div class="work-tags"><span>Snowflake</span><span>dbt</span><span>Redpanda</span><span>FastAPI</span><span>Terraform</span><span>Kubernetes</span></div>
-            <a href="https://github.com/saravanaprabhu1398-afk/Guardrail-Safe-Feature-Rollout-Platform" class="work-link" target="_blank" rel="noopener">View source <span aria-hidden="true">↗</span></a>
-          </div>
-        </article>
-
-        <article class="work-row stack-card">
-          <div class="work-visual">
-            <img src="assets/02_delay_by_airport.png" width="1400" height="1000" alt="FlightPulse dashboard: delay rate by origin airport, shown as a bubble map" loading="lazy">
-            <div class="shot-strip">
-              <img src="assets/flightpulse-overview.png" width="1400" height="1000" alt="FlightPulse overview dashboard with headline delay metrics" loading="lazy">
-              <img src="assets/flightpulse-worst-routes.png" width="1400" height="1000" alt="FlightPulse worst-performing routes ranking" loading="lazy">
-              <img src="assets/05_live_map.png" width="1400" height="1000" alt="FlightPulse live aircraft position map" loading="lazy">
-            </div>
-          </div>
-          <div class="work-copy">
-            <div class="work-index"><span>SW</span><i></i><em>02/04</em></div>
-            <h3 class="work-title">FlightPulse</h3>
-            <p class="work-desc">A local-first flight-delay lakehouse: live positions streamed through Redpanda into Apache Iceberg, batch sources modelled with dbt into a bronze→silver→gold star schema, and a delay-probability model tracked in MLflow — all gated by blocking Great Expectations checks.</p>
-            <div class="metric"><span class="metric-chip">611K+</span><p class="metric-caption">Real flights processed, with Spark writing the Iceberg table and DuckDB reading it live. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/FlightPulse#readme" target="_blank" rel="noopener"><b>Measured</b> README ↗</a></p></div>
-            <div class="work-tags"><span>Apache Iceberg</span><span>dbt</span><span>Dagster</span><span>Great Expectations</span><span>MLflow</span></div>
-            <a href="https://github.com/saravanaprabhu1398-afk/FlightPulse" class="work-link" target="_blank" rel="noopener">View source <span aria-hidden="true">↗</span></a>
-          </div>
-        </article>
-
-        <article class="work-row stack-card">
-          <div class="work-visual">
-            <div class="diagram">
-              <div class="dg-line"><span>YAML spec</span><i>→</i><span>DAG</span><i>→</i><span>Executors</span></div>
-              <div class="dg-checks"><span>RBAC</span><span>Rollback</span><span>Lineage</span></div>
-              <div class="dg-arrow" aria-hidden="true">↓</div>
-              <div class="dg-result">Governed deploy</div>
-            </div>
-          </div>
-          <div class="work-copy">
-            <div class="work-index"><span>SW</span><i></i><em>03/04</em></div>
-            <h3 class="work-title">Dataplatform</h3>
-            <p class="work-desc">A self-hosted alternative to Airflow — YAML-defined pipelines, a plain-English pipeline generator, a governed deployment hub with rollback, and full observability across metrics, alerting, cost and lineage.</p>
-            <div class="metric"><span class="metric-chip">12</span><p class="metric-caption">Plugin executors, with RBAC and a NetworkX-backed DAG engine. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/dataplatform-modern-dbt#readme" target="_blank" rel="noopener"><b>In the code</b> README ↗</a></p></div>
-            <div class="work-tags"><span>FastAPI</span><span>dbt</span><span>RBAC</span><span>NetworkX</span></div>
-            <a href="https://github.com/saravanaprabhu1398-afk/dataplatform-modern-dbt" class="work-link" target="_blank" rel="noopener">View source <span aria-hidden="true">↗</span></a>
-          </div>
-        </article>
-
-        <article class="work-row stack-card">
-          <div class="work-visual">
-            <div class="diagram">
-              <div class="dg-line"><span>FDA labels</span><i>→</i><span>Vector index</span></div>
-              <div class="dg-checks"><span>SQL route</span><span>Vector route</span></div>
-              <div class="dg-arrow" aria-hidden="true">↓</div>
-              <div class="dg-result">Cited answer</div>
-            </div>
-          </div>
-          <div class="work-copy">
-            <div class="work-index"><span>SW</span><i></i><em>04/04</em></div>
-            <h3 class="work-title">Clinical Document Intelligence</h3>
-            <p class="work-desc">A Databricks Lakehouse converting thousands of unstructured FDA drug labels into a queryable knowledge base. A cited RAG agent routes questions to SQL or Vector Search, governed under the same Unity Catalog contracts as the underlying data.</p>
-            <div class="metric"><span class="metric-chip">&lt;1s</span><p class="metric-caption">Source-attributed answers, governed by Unity Catalog contracts. <a class="evidence" href="/assets/Prabhu_Saravanan_Resume_UAE.pdf" target="_blank" rel="noopener"><b>From résumé</b> Résumé ↗</a></p></div>
-            <div class="work-tags"><span>Databricks</span><span>Unity Catalog</span><span>Mosaic AI</span><span>Vector Search</span></div>
-            <a href="https://github.com/saravanaprabhu1398-afk/data-document-intelligence-platform" class="work-link" target="_blank" rel="noopener">View source <span aria-hidden="true">↗</span></a>
-          </div>
-        </article>
-
+          <a class="more-link" href="/blog/" style="align-self:flex-start">Read the notes <span aria-hidden="true">→</span></a>
         </div>
-
-        <h3 class="repo-heading">More on GitHub</h3>
-        <div class="repo-grid">
-          <a class="repo-card" href="https://github.com/saravanaprabhu1398-afk/snowflake-dbt-subscription-warehouse" target="_blank" rel="noopener">
-            <span class="repo-status">Personal project · synthetic data</span>
-            <h4>Subscription Analytics Warehouse</h4>
-            <p>A Kimball star schema with an SCD2 customer dimension, cohort, churn and LTV marts, and GDPR masking. Runs locally on DuckDB and deploys to Snowflake with Terraform.</p>
-            <div class="work-tags"><span>Snowflake</span><span>dbt</span><span>Terraform</span><span>DuckDB</span></div>
-            <span class="repo-more">View on GitHub <span aria-hidden="true">↗</span></span>
-          </a>
-          <a class="repo-card" href="https://github.com/saravanaprabhu1398-afk/freshness-control-plane" target="_blank" rel="noopener">
-            <span class="repo-status">Open source</span>
-            <h4>Freshness Control Plane</h4>
-            <p>Detects stale aviation data with CDC, re-embeds only what changed, enforces freshness SLAs as data contracts, and makes a RAG agent flag outdated answers.</p>
-            <div class="work-tags"><span>Debezium</span><span>Kafka</span><span>Postgres</span><span>RAG</span></div>
-            <span class="repo-more">View on GitHub <span aria-hidden="true">↗</span></span>
-          </a>
-          <a class="repo-card" href="https://github.com/saravanaprabhu1398-afk/Project_Nexus" target="_blank" rel="noopener">
-            <span class="repo-status">Design + early build</span>
-            <h4>NEXUS</h4>
-            <p>A governed, read-only AI agent that investigates data-platform incidents and recommends the next engineering action. Solution design, Phase 0 package and Phase 1 agent service.</p>
-            <div class="work-tags"><span>AI agents</span><span>Governance</span><span>Python</span></div>
-            <span class="repo-more">View on GitHub <span aria-hidden="true">↗</span></span>
-          </a>
-          <a class="repo-card" href="https://github.com/saravanaprabhu1398-afk/stellenradar" target="_blank" rel="noopener">
-            <span class="repo-status">In development</span>
-            <h4>Stellenradar</h4>
-            <p>A serverless AWS pipeline that analyses Germany's data-engineering job market: Iceberg on S3, Bedrock enrichment, DMS CDC and pgvector matching, all in Terraform.</p>
-            <div class="work-tags"><span>AWS</span><span>Iceberg</span><span>Bedrock</span><span>Terraform</span></div>
-            <span class="repo-more">View on GitHub <span aria-hidden="true">↗</span></span>
-          </a>
-          <a class="repo-card" href="https://github.com/saravanaprabhu1398-afk/clinical-docs-agent" target="_blank" rel="noopener">
-            <span class="repo-status">Early stage</span>
-            <h4>Clinical Docs Agent</h4>
-            <p>Answers pharmacist and clinician questions from public FDA drug labels, cites the exact section behind each answer, and says so when the labels don't cover the question.</p>
-            <div class="work-tags"><span>openFDA</span><span>Pydantic</span><span>Ollama / Claude</span></div>
-            <span class="repo-more">View on GitHub <span aria-hidden="true">↗</span></span>
-          </a>
-          <a class="repo-card" href="https://github.com/saravanaprabhu1398-afk/ai-agent-company" target="_blank" rel="noopener">
-            <span class="repo-status">Starter kit</span>
-            <h4>AI Agent Company Kit</h4>
-            <p>A virtual software company of Claude Code agents with approval gates, safety guardrails and GitHub workflows, for building products as a product owner.</p>
-            <div class="work-tags"><span>Claude Code</span><span>GitHub Actions</span></div>
-            <span class="repo-more">View on GitHub <span aria-hidden="true">↗</span></span>
-          </a>
-        </div>
-        <a class="work-link repo-all" href="https://github.com/saravanaprabhu1398-afk?tab=repositories" target="_blank" rel="noopener">All repositories <span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </section>
 
   <!-- ============ CASE STUDIES ============ -->
-  <section class="band band-light" id="case-studies">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Case studies</div>
-      <div class="rail-body">
-        <h2 class="band-heading" data-split>Problem, Build, Result</h2>
-        <div class="case-grid">
-          <article class="case">
-            <span class="repo-status">Wipro · Insurance risk</span>
-            <h3>One risk engine instead of six pipelines</h3>
-            <dl>
-              <dt>Problem</dt><dd>Six fragmented insurance risk pipelines each evaluated claims their own way.</dd>
-              <dt>What I built</dt><dd>A single Databricks-native risk evaluation engine, structured as rules, validation and scoring classes using Strategy and Factory patterns.</dd>
-            </dl>
-            <div class="exp-metrics"><div><span class="metric-chip">+40%</span><em>Claim validation accuracy</em></div><div><span class="metric-chip">$2M+</span><em>Est. annual savings in wrongful payouts</em></div></div>
-            <div class="work-tags"><span>Databricks</span><span>PySpark</span><span>Delta Lake</span><span>Airflow</span></div>
-          </article>
-          <article class="case">
-            <span class="repo-status">Wipro · Satellite connectivity</span>
-            <h3>Sub-60-second CDC for 500K+ subscribers</h3>
-            <dl>
-              <dt>Problem</dt><dd>Connectivity events for a satellite internet service needed to reach real-time alerting.</dd>
-              <dt>What I built</dt><dd>A Debezium and Kafka change-data-capture pipeline into Delta Lake, with min-heap LSN ordering and hash-map deduplication in the merge logic. Separately, cut a recurring 4-hour Spark report SLA breach by 65% for three analytics teams.</dd>
-            </dl>
-            <div class="exp-metrics"><div><span class="metric-chip">&lt;60s</span><em>End-to-end latency</em></div><div><span class="metric-chip">500K+</span><em>Subscribers alerted in real time</em></div></div>
-            <div class="work-tags"><span>Debezium</span><span>Kafka</span><span>Delta Lake</span><span>Structured Streaming</span></div>
-          </article>
-          <article class="case">
-            <span class="repo-status">Scadea · Global bank (Citi)</span>
-            <h3>Self-service ingestion where new sources need no code</h3>
-            <dl>
-              <dt>Problem</dt><dd>Ingestion at a global bank depended on manual scheduling and engineering work for each new source.</dd>
-              <dt>What I built</dt><dd>A PySpark and Apache Camel platform that detects files in landing zones and loads them in parallel into Iceberg tables via control files, with retries and Kafka completion events. Business users define aggregations in SQL and the platform generates the Spark jobs.</dd>
-            </dl>
-            <div class="exp-metrics"><div><span class="metric-chip">0</span><em>Code changes to onboard a source</em></div></div>
-            <div class="work-tags"><span>PySpark</span><span>Apache Camel</span><span>Iceberg</span><span>Kafka</span></div>
-          </article>
-        </div>
+  <section id="case-studies">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <div><span class="eyebrow"><span class="dot"></span>Case studies</span><h2>Problem, build, result</h2></div>
+      </div>
+      <div class="cases">
+        <article class="card case" data-reveal>
+          <span class="badge">Wipro · Insurance risk</span>
+          <h3>One risk engine instead of six pipelines</h3>
+          <dl>
+            <dt>Problem</dt><dd>Six fragmented insurance risk pipelines each evaluated claims their own way.</dd>
+            <dt>What I built</dt><dd>A single Databricks-native risk evaluation engine, structured as rules, validation and scoring classes using Strategy and Factory patterns.</dd>
+          </dl>
+          <div class="case-metrics"><div><b>+40%</b><em>Claim validation accuracy</em></div><div><b>$2M+</b><em>Est. annual savings in wrongful payouts</em></div></div>
+          <div class="tags"><span>Databricks</span><span>PySpark</span><span>Delta Lake</span><span>Airflow</span></div>
+        </article>
+        <article class="card case" data-reveal>
+          <span class="badge">Wipro · Satellite connectivity</span>
+          <h3>Sub-60-second CDC for 500K+ subscribers</h3>
+          <dl>
+            <dt>Problem</dt><dd>Connectivity events for a satellite internet service needed to reach real-time alerting.</dd>
+            <dt>What I built</dt><dd>A Debezium and Kafka change-data-capture pipeline into Delta Lake, with min-heap LSN ordering and hash-map deduplication in the merge logic. Separately, cut a recurring 4-hour Spark report SLA breach by 65% for three analytics teams.</dd>
+          </dl>
+          <div class="case-metrics"><div><b>&lt;60s</b><em>End-to-end latency</em></div><div><b>500K+</b><em>Subscribers alerted in real time</em></div></div>
+          <div class="tags"><span>Debezium</span><span>Kafka</span><span>Delta Lake</span><span>Structured Streaming</span></div>
+        </article>
+        <article class="card case" data-reveal>
+          <span class="badge">Scadea · Global bank (Citi)</span>
+          <h3>Self-service ingestion where new sources need no code</h3>
+          <dl>
+            <dt>Problem</dt><dd>Ingestion at a global bank depended on manual scheduling and engineering work for each new source.</dd>
+            <dt>What I built</dt><dd>A PySpark and Apache Camel platform that detects files in landing zones and loads them in parallel into Iceberg tables via control files, with retries and Kafka completion events. Business users define aggregations in SQL and the platform generates the Spark jobs.</dd>
+          </dl>
+          <div class="case-metrics"><div><b>0</b><em>Code changes to onboard a source</em></div></div>
+          <div class="tags"><span>PySpark</span><span>Apache Camel</span><span>Iceberg</span><span>Kafka</span></div>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- ============ MID-PAGE CTA ============ -->
-  <section class="cta-strip band-light" aria-label="Get in touch">
-    <div class="cta-inner">
-      <p>Seen something you'd want built on your team?</p>
-      <a class="cta-button" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
-    </div>
-  </section>
-
-  <!-- ============ STATEMENT ============ -->
-  <section class="pinned band-dark" id="pipeline" aria-label="How a record travels the platform">
-    <div class="pin-inner">
-      <p class="pin-question">Can this data be trusted, and can the system prove it?</p>
-
-      <div class="pl">
-        <div class="pl-rail" aria-hidden="true"><div class="pl-fill" id="plFill"></div></div>
-        <ol class="pl-stages">
-          <li class="pl-stage" data-i="0">
-            <span class="pl-dot" aria-hidden="true"></span>
-            <h3>Source</h3>
-            <p>Kafka, CDC and control-file feeds land exactly once.</p>
-          </li>
-          <li class="pl-stage" data-i="1">
-            <span class="pl-dot" aria-hidden="true"></span>
-            <h3>Bronze</h3>
-            <p>Raw history, immutable and replayable.</p>
-          </li>
-          <li class="pl-stage" data-i="2">
-            <span class="pl-dot" aria-hidden="true"></span>
-            <h3>Silver</h3>
-            <p>Conformed, deduplicated, contract-tested.</p>
-          </li>
-          <li class="pl-stage" data-i="3">
-            <span class="pl-dot" aria-hidden="true"></span>
-            <h3>Gold</h3>
-            <p>Modelled facts a business can be held to.</p>
-          </li>
-          <li class="pl-stage" data-i="4">
-            <span class="pl-dot" aria-hidden="true"></span>
-            <h3>Serve</h3>
-            <p>Dashboards, APIs and governed RAG retrieval.</p>
-          </li>
-        </ol>
+  <!-- ============ FEATURED PROJECTS ============ -->
+  <section id="work">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <div><span class="eyebrow"><span class="dot"></span>Selected work</span><h2>Projects I'd show you first</h2>
+          <p>Every number says where it comes from: <b>measured</b> in the repo, a <b>simulated</b> demo, or from my résumé.</p></div>
+        <a class="more-link" href="/projects/">All projects <span aria-hidden="true">→</span></a>
       </div>
-
-      <p class="pin-foot"><em id="plCount">01</em> / 05 — every stage blocks the next when its tests fail</p>
-    </div>
-  </section>
-
-  <!-- ============ EXPERIENCE ============ -->
-  <section class="band band-light" id="experience">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Experience</div>
-      <div class="rail-body">
-        <h2 class="band-heading" data-split>Career Journey</h2>
-
-        <div class="exp-row">
-          <div class="exp-when">Aug 2026 —<br>Present</div>
-          <div class="exp-body">
-            <h3>AI Data Platform Engineer <em>Etihad Airways</em></h3>
-            <p>Architecting an AI-powered Revenue Intelligence platform on Azure OpenAI — booking, route-performance and competitive-market data into an automated daily digest for the Revenue Management &amp; Protection team. Full ownership from architecture through production.</p>
-            <div class="exp-tags"><span>Azure OpenAI</span><span>Python</span><span>SQL</span></div>
-          </div>
+      <!--PROJECTS:FEATURED:START-->
+<div class="projects">
+      <article class="card project" data-tags="warehouse streaming governance" data-reveal>
+        <div class="project-img"><img src="/assets/guardrail-decision-loop.svg" alt="Guardrail decision loop: assignment and exposure feed integrity checks, which gate the statistical result" loading="lazy"></div>
+        <div class="project-body">
+          <span class="badge">Snowflake · experimentation</span>
+          <h3>Guardrail</h3>
+          <p>A Snowflake experimentation platform that decides whether a feature is safe to ship: assigning variants, ingesting telemetry through Redpanda and Snowpipe Streaming, running statistical tests, and blocking the rollout when the telemetry itself can&#x27;t be trusted.</p>
+          <div class="metric"><b>4.8%</b><span>Apparent conversion lift in the demo scenario, caught and blocked: mobile clients were switching variants mid-session. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/Guardrail-Safe-Feature-Rollout-Platform#interview-narrative" target="_blank" rel="noopener"><b>Simulated</b> Demo narrative &#8599;</a></span></div>
+          <div class="tags"><span>Snowflake</span><span>dbt</span><span>Redpanda</span><span>FastAPI</span><span>Terraform</span><span>Kubernetes</span></div>
+          <div class="links"><a href="https://github.com/saravanaprabhu1398-afk/Guardrail-Safe-Feature-Rollout-Platform" target="_blank" rel="noopener">View source &#8599;</a></div>
         </div>
-
-        <div class="exp-row">
-          <div class="exp-when">Nov 2025 —<br>Jul 2026</div>
-          <div class="exp-body">
-            <h3>Data Platform Engineer <em>Scadea · Citi</em></h3>
-            <p>Built a self-service ingestion platform on PySpark and Apache Camel with control-file-triggered parallel ingestion into Hive Iceberg tables, plus a business-facing SQL aggregation framework that onboards new sources with zero engineering changes.</p>
-            <div class="exp-tags"><span>PySpark</span><span>Apache Camel</span><span>Iceberg</span><span>Kafka</span></div>
-          </div>
+      </article>
+      <article class="card project" data-tags="lakehouse streaming ai" data-reveal>
+        <div class="project-img"><img src="/assets/02_delay_by_airport.png" alt="FlightPulse dashboard: delay rate by origin airport, shown as a bubble map" loading="lazy"></div>
+        <div class="project-body">
+          <span class="badge">Streaming lakehouse</span>
+          <h3>FlightPulse</h3>
+          <p>A local-first flight-delay lakehouse: live positions streamed through Redpanda into Apache Iceberg, batch sources modelled with dbt into a bronze, silver, gold star schema, and a delay-probability model tracked in MLflow, all gated by blocking Great Expectations checks.</p>
+          <div class="metric"><b>611K+</b><span>Real flights processed, with Spark writing the Iceberg table and DuckDB reading it live. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/FlightPulse#readme" target="_blank" rel="noopener"><b>Measured</b> README &#8599;</a></span></div>
+          <div class="tags"><span>Apache Iceberg</span><span>dbt</span><span>Dagster</span><span>Great Expectations</span><span>MLflow</span></div>
+          <div class="links"><a href="https://github.com/saravanaprabhu1398-afk/FlightPulse" target="_blank" rel="noopener">View source &#8599;</a></div>
         </div>
-
-        <div class="exp-row">
-          <div class="exp-when">May 2024 —<br>Oct 2025</div>
-          <div class="exp-body">
-            <h3>Lead Data Engineer <em>Wipro</em></h3>
-            <p>Consolidated six fragmented insurance risk pipelines into one Databricks-native engine, and engineered a CDC pipeline streaming satellite connectivity events at sub-60-second latency. Mentored four engineers.</p>
-            <div class="exp-metrics">
-              <div><span class="metric-chip">$2M+</span><em>Saved annually</em></div>
-              <div><span class="metric-chip">+40%</span><em>Claim validation accuracy</em></div>
-              <div><span class="metric-chip">500K+</span><em>Subscribers streamed</em></div>
-            </div>
-            <div class="exp-tags"><span>Databricks</span><span>Kafka</span><span>Debezium CDC</span><span>Airflow</span></div>
-          </div>
+      </article>
+      <article class="card project" data-tags="governance" data-reveal>
+        
+        <div class="project-body">
+          <span class="badge">Orchestration platform</span>
+          <h3>Dataplatform</h3>
+          <p>A self-hosted alternative to Airflow: YAML-defined pipelines, a plain-English pipeline generator, a governed deployment hub with rollback, and full observability across metrics, alerting, cost and lineage.</p>
+          <div class="metric"><b>12</b><span>Plugin executors, with RBAC and a NetworkX-backed DAG engine. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/dataplatform-modern-dbt#readme" target="_blank" rel="noopener"><b>In the code</b> README &#8599;</a></span></div>
+          <div class="tags"><span>FastAPI</span><span>dbt</span><span>RBAC</span><span>NetworkX</span></div>
+          <div class="links"><a href="https://github.com/saravanaprabhu1398-afk/dataplatform-modern-dbt" target="_blank" rel="noopener">View source &#8599;</a></div>
         </div>
-
-        <div class="exp-row">
-          <div class="exp-when">Mar 2023 —<br>Feb 2024</div>
-          <div class="exp-body">
-            <h3>Data Engineer <em>PwC India · PepsiCo</em></h3>
-            <p>Led end-to-end data engineering for a supply chain and sales reporting platform on Azure — automated, monitored pipelines replacing manual reporting, with zero production defects at go-live.</p>
-            <div class="exp-tags"><span>Azure Synapse</span><span>Databricks</span><span>ADF</span></div>
-          </div>
+      </article>
+      <article class="card project" data-tags="lakehouse ai governance" data-reveal>
+        
+        <div class="project-body">
+          <span class="badge">Databricks · GenAI</span>
+          <h3>Clinical Document Intelligence</h3>
+          <p>A Databricks Lakehouse converting thousands of unstructured FDA drug labels into a queryable knowledge base. A cited RAG agent routes questions to SQL or Vector Search, governed under the same Unity Catalog contracts as the underlying data.</p>
+          <div class="metric"><b>&lt;1s</b><span>Source-attributed answers, governed by Unity Catalog contracts. <a class="evidence" href="/assets/Prabhu_Saravanan_Resume_UAE.pdf"><b>From résumé</b> Résumé &#8599;</a></span></div>
+          <div class="tags"><span>Databricks</span><span>Unity Catalog</span><span>Mosaic AI</span><span>Vector Search</span></div>
+          <div class="links"><a href="https://github.com/saravanaprabhu1398-afk/data-document-intelligence-platform" target="_blank" rel="noopener">View source &#8599;</a></div>
         </div>
-
-        <div class="exp-row">
-          <div class="exp-when">Jan 2022 —<br>Feb 2023</div>
-          <div class="exp-body">
-            <h3>Data Engineer <em>Cartesian</em></h3>
-            <p>Built large-scale customer behaviour pipelines on AWS powering SOLUS.AI, a 1:1 personalisation engine, plus self-serve ELT workflows for the data science team.</p>
-            <div class="exp-tags"><span>AWS</span><span>PySpark</span><span>Redshift</span></div>
-          </div>
-        </div>
-
-        <div class="exp-row">
-          <div class="exp-when">Oct 2018 —<br>Nov 2021</div>
-          <div class="exp-body">
-            <h3>SDE I (Data) <em>Swiggy (SuprDaily)</em></h3>
-            <p>Built and owned the warehouse and rider-efficiency analytics platform for SuprDaily, Swiggy's early-morning milk and grocery subscription delivery business — daily incremental PySpark pipelines on AWS Glue, orchestrated by Airflow into Redshift, behind order-to-rider and hub demand-to-rider supply matching.</p>
-            <div class="exp-tags"><span>AWS Glue</span><span>PySpark</span><span>Redshift</span><span>Airflow</span></div>
-          </div>
-        </div>
-
+      </article>
       </div>
+      <!--PROJECTS:FEATURED:END-->
     </div>
   </section>
 
   <!-- ============ SKILLS ============ -->
-  <section class="band band-light" id="skills">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Capabilities</div>
-      <div class="rail-body">
-        <h2 class="band-heading" data-split>How Data Moves</h2>
-
-        <div class="accordion">
-          <div class="acc-item is-open">
-            <button class="acc-head" aria-expanded="true"><em>01</em><span>Ingest &amp; Stream</span><i aria-hidden="true"></i></button>
-            <div class="acc-panel"><div>Apache Kafka / Redpanda · Debezium CDC · Spark Structured Streaming · dlt · Auto Loader</div></div>
-          </div>
-          <div class="acc-item">
-            <button class="acc-head" aria-expanded="false"><em>02</em><span>Transform &amp; Model</span><i aria-hidden="true"></i></button>
-            <div class="acc-panel"><div>PySpark / Spark SQL · dbt · Dimensional &amp; star-schema modelling · Apache Iceberg · Delta Lake</div></div>
-          </div>
-          <div class="acc-item">
-            <button class="acc-head" aria-expanded="false"><em>03</em><span>Govern &amp; Verify</span><i aria-hidden="true"></i></button>
-            <div class="acc-panel"><div>Unity Catalog ABAC · Column-level PII masking · Great Expectations · Data contracts &amp; lineage</div></div>
-          </div>
-          <div class="acc-item">
-            <button class="acc-head" aria-expanded="false"><em>04</em><span>Serve &amp; Activate</span><i aria-hidden="true"></i></button>
-            <div class="acc-panel"><div>Databricks Mosaic AI · Vector Search · RAG pipelines · Azure OpenAI · Streamlit</div></div>
-          </div>
-        </div>
-
-        <div class="certs">
-          <div class="certs-label">Certifications</div>
-          <ul>
-            <li>Databricks Certified Data Engineer Professional</li>
-            <li>Databricks Certified Associate Data Engineer</li>
-            <li>Microsoft Azure Data Engineer Associate (DP-203)</li>
-            <li>IBM Certified Data Engineer</li>
-            <li>Google Cloud Professional Data Engineer <em>— in progress</em></li>
-          </ul>
-        </div>
-
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <div><span class="eyebrow"><span class="dot"></span>Capabilities</span><h2>How data moves</h2></div>
+      </div>
+      <div class="skills">
+        <div class="card skill" data-reveal><i>01</i><h3>Ingest &amp; stream</h3><p>Apache Kafka / Redpanda · Debezium CDC · Spark Structured Streaming · dlt · Auto Loader</p></div>
+        <div class="card skill" data-reveal><i>02</i><h3>Transform &amp; model</h3><p>PySpark / Spark SQL · dbt · Dimensional &amp; star-schema modelling · Apache Iceberg · Delta Lake</p></div>
+        <div class="card skill" data-reveal><i>03</i><h3>Govern &amp; verify</h3><p>Unity Catalog ABAC · Column-level PII masking · Great Expectations · Data contracts &amp; lineage</p></div>
+        <div class="card skill" data-reveal><i>04</i><h3>Serve &amp; activate</h3><p>Databricks Mosaic AI · Vector Search · RAG pipelines · Azure OpenAI · Streamlit</p></div>
       </div>
     </div>
   </section>
 
-  <!-- ============ BLOG ============ -->
-  <section class="band band-light" id="blog">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Writing</div>
-      <div class="rail-body">
-        <h2 class="band-heading" data-split>Field Notes</h2>
-
-        <!-- POSTS:START -->
+  <!-- ============ WRITING ============ -->
+  <section id="blog">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <div><span class="eyebrow"><span class="dot"></span>Writing</span><h2>Field notes</h2></div>
+      </div>
+      <!-- POSTS:START -->
         <div class="post-list">
           <article class="post">
             <a class="post-link" href="/blog/publishing-pipeline/">
@@ -502,23 +254,21 @@
 
         <a class="btn" href="/blog/">All writing <span aria-hidden="true">&#8594;</span></a>
         <!-- POSTS:END -->
-      </div>
     </div>
   </section>
 
   <!-- ============ CONTACT ============ -->
-  <section class="band band-dark contact-band" id="contact">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Contact</div>
-      <div class="rail-body">
-        <p class="contact-lead">Open to Lead / Senior Data Engineer and AI Data Platform roles across the UAE, Europe and India.</p>
-        <div class="contact-list">
-          <a href="mailto:prabhu.saravanan.de@gmail.com"><span>Email</span><em>prabhu.saravanan.de@gmail.com</em><i aria-hidden="true">↗</i></a>
-          <a href="https://www.linkedin.com/in/prabhu-saravanan-a53317226" target="_blank" rel="noopener"><span>LinkedIn</span><em>/in/prabhu-saravanan</em><i aria-hidden="true">↗</i></a>
-          <a href="https://github.com/saravanaprabhu1398-afk" target="_blank" rel="noopener"><span>GitHub</span><em>@saravanaprabhu1398-afk</em><i aria-hidden="true">↗</i></a>
-          <a href="assets/Prabhu_Saravanan_Resume_UAE.pdf" id="resume" download><span>Résumé · UAE</span><em>UAE &amp; Gulf edition (PDF)</em><i aria-hidden="true">↓</i></a>
-          <a href="assets/Prabhu_Saravanan_Resume_Europe.pdf" download><span>Résumé · Europe</span><em>Europe edition (PDF)</em><i aria-hidden="true">↓</i></a>
-          <a href="assets/Prabhu_Saravanan_Resume_India.pdf" download><span>Résumé · India</span><em>India edition (PDF)</em><i aria-hidden="true">↓</i></a>
+  <section id="contact">
+    <div class="wrap">
+      <div class="card contact" data-reveal>
+        <span class="eyebrow"><span class="dot"></span>Contact</span>
+        <h2 style="margin-top:14px">Let's build something you can trust.</h2>
+        <p>Open to Lead / Senior Data Engineer and AI Data Platform roles across the UAE, Europe and India.</p>
+        <div class="contact-links">
+          <a class="btn primary" href="mailto:prabhu.saravanan.de@gmail.com">prabhu.saravanan.de@gmail.com</a>
+          <a class="btn" href="https://www.linkedin.com/in/prabhu-saravanan-a53317226" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="btn" href="https://github.com/saravanaprabhu1398-afk" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="btn" href="/about/#resumes">Résumés ↓</a>
         </div>
       </div>
     </div>
@@ -526,11 +276,14 @@
 
 </main>
 
-<footer class="site-footer">
-  <span>Prabhu Saravanan — Abu Dhabi, UAE</span>
-  <span>Built by hand</span>
+<!--SHARED:FOOT-->
+<footer class="footer">
+  <div class="wrap">
+    <span>Prabhu Saravanan — Abu Dhabi, UAE</span>
+    <nav aria-label="Footer"><a href="/projects/">Projects</a><a href="/blog/">Writing</a><a href="/about/">About</a><a href="/feed.xml">RSS</a><a href="https://github.com/saravanaprabhu1398-afk" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/prabhu-saravanan-a53317226" rel="noopener">LinkedIn</a></nav>
+  </div>
 </footer>
-
-<script src="script.js?v=22"></script>
+<script src="/site.js?v=1"></script>
+<!--/SHARED:FOOT-->
 </body>
 </html>

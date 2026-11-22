@@ -16,6 +16,9 @@ No third-party packages. Python 3.9+.
 """
 
 import html
+import sys
+sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent))
+import site_data as SD
 import json
 import re
 import sys
@@ -34,7 +37,7 @@ FEED = ROOT / "feed.xml"
 SITE = "https://saravanaprabhu1398-afk.github.io"
 AUTHOR = "Prabhu Saravanan"
 ROLE = "Lead Data Engineer"
-ASSET_V = "28"
+ASSET_V = "1"
 BLOG_CSS_V = "3"
 DEFAULT_OG = "https://saravanaprabhu1398-afk.github.io/assets/og-image.png"
 
@@ -324,32 +327,41 @@ def e(s):
     return html.escape(str(s), quote=True)
 
 
-NAV = f'''<header class="site-nav" id="siteNav">
-  <div class="nav-inner">
-    <a href="/" class="nav-mark">PRABHU</a>
-    <nav class="nav-links" id="navLinks">
-      <a href="/#work">Work</a>
-      <a href="/#case-studies">Case studies</a>
-      <a href="/#experience">Experience</a>
-      <a href="/#skills">Skills</a>
-      <a href="/blog/">Writing</a>
-      <a href="/#contact">Contact</a>
-      <a href="/#resume" class="nav-resume-mobile">R&#233;sum&#233;</a>
-    </nav>
-    <a class="nav-cta" href="/#contact">Get in touch <span aria-hidden="true">&#8599;</span></a>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+def nav_html(current):
+    links = ''.join(
+        f'<a href="{u}"' + (' aria-current="page"' if k == current else '') + f'>{label}</a>'
+        for k, u, label in SD.NAV)
+    return f'''<a href="#top" class="skip-link">Skip to content</a>
+<header class="nav">
+  <div class="nav-bar">
+    <a href="/" class="brand"><i aria-hidden="true"></i>Prabhu Saravanan</a>
+    <nav class="nav-links" id="navLinks" aria-label="Main">{links}</nav>
+    <div class="nav-tools">
+      <button class="search-btn" data-open-search aria-label="Search the site"><span>Search</span><kbd>⌘K</kbd><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="search-ico"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <a class="nav-cta" href="/#contact">Hire me</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+    </div>
   </div>
-</header>'''
+</header>
+<div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="palette-box">
+    <input type="text" placeholder="Search projects, case studies, résumés…" aria-label="Search" autocomplete="off">
+    <ul></ul>
+    <div class="palette-hint">↑↓ to move · ↵ to open · esc to close</div>
+  </div>
+</div>'''
 
-FOOTER = '''<footer class="site-footer">
-  <span>Prabhu Saravanan &#8212; Abu Dhabi, UAE</span>
-  <span>Built by hand</span>
-</footer>'''
+
+FOOTER = '''<footer class="footer">
+  <div class="wrap">
+    <span>Prabhu Saravanan — Abu Dhabi, UAE</span>
+    <nav aria-label="Footer"><a href="/projects/">Projects</a><a href="/blog/">Writing</a><a href="/about/">About</a><a href="/feed.xml">RSS</a><a href="https://github.com/saravanaprabhu1398-afk" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/prabhu-saravanan-a53317226" rel="noopener">LinkedIn</a></nav>
+  </div>
+</footer>
+<script src="/site.js?v=''' + ASSET_V + '''"></script>'''
 
 
-def shell(title, description, canonical, image, body, extra_head=''):
+def shell(title, description, canonical, image, body, extra_head='', current='writing'):
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -368,31 +380,24 @@ def shell(title, description, canonical, image, body, extra_head=''):
 <meta name="twitter:title" content="{e(title)}">
 <meta name="twitter:description" content="{e(description)}">
 <meta name="twitter:image" content="{e(image)}">
-<meta name="theme-color" content="#080807">
+<meta name="theme-color" content="#0a0a0c">
+<script>document.documentElement.classList.add('js')</script>
 
 <link rel="alternate" type="application/rss+xml" title="{e(AUTHOR)} &#8212; Writing" href="/feed.xml">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23080807'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-size='15' font-weight='600' fill='%23E8E8E3' text-anchor='middle'%3EPS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v={ASSET_V}">
-<link rel="stylesheet" href="/blog.css?v={BLOG_CSS_V}">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css?v={ASSET_V}">
 {extra_head}</head>
 <body>
-
-<a href="#top" class="skip-link">Skip to content</a>
-<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
-
-{NAV}
+{nav_html(current)}
 
 <main id="top">
 {body}
 </main>
 
 {FOOTER}
-
-<script src="/script.js?v={ASSET_V}"></script>
 </body>
 </html>
 '''
@@ -416,10 +421,8 @@ def render_post(post):
     ld_tag = ('<script type="application/ld+json">'
               + json.dumps(ld, ensure_ascii=False) + '</script>\n')
 
-    body = f'''  <article class="band band-light article">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Writing</div>
-      <div class="rail-body">
+    body = f'''  <article class="wrap article" style="padding-top:48px">
+    <div>
 
         <div class="post-meta article-meta">
           {draft_flag}<em>{e(post['topic'])}</em>
@@ -429,7 +432,7 @@ def render_post(post):
           <span>{post['minutes']} MIN READ</span>
         </div>
 
-        <h1 class="article-title" data-split>{e(post['title'])}</h1>
+        <h1 class="article-title">{e(post['title'])}</h1>
         <p class="article-lede">{e(post['summary'])}</p>
 
         <div class="article-body">
@@ -443,7 +446,6 @@ def render_post(post):
           <a class="btn" href="/#contact">Get in touch</a>
         </div>
 
-      </div>
     </div>
   </article>'''
 
@@ -470,11 +472,11 @@ def render_blog_index(posts):
         listing = ('          <article class="post"><h2>Nothing published yet</h2>'
                    '<p>First piece is in the works.</p></article>')
 
-    body = f'''  <section class="band band-light" id="writing">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Writing</div>
-      <div class="rail-body">
-        <h1 class="band-heading" data-split>Field Notes</h1>
+    body = f'''  <section id="writing" style="padding-top:48px">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>Writing</span>
+        <h1 class="article-title" style="margin-top:14px">Field notes</h1>
         <p class="article-lede">Notes from building data and AI platforms in production &#8212; lakehouse
         architecture, experimentation integrity, and governing AI assets like data assets.</p>
 
@@ -576,6 +578,80 @@ def write_outbox(posts):
     return written
 
 
+
+# ---------------------------------------------------------------------------
+# Hand-written pages: shared nav/footer and the generated project cards
+# ---------------------------------------------------------------------------
+
+PAGES = [('index.html', 'home'), ('projects/index.html', 'projects'), ('about/index.html', 'about')]
+
+
+def project_card(p):
+    img = ''
+    if p['img']:
+        src, alt = p['img']
+        img = f'<div class="project-img"><img src="{e(src)}" alt="{e(alt)}" loading="lazy"></div>'
+    metric = ''
+    if p['metric']:
+        num, cap, (kind, url, label) = p['metric']
+        ext = ' target="_blank" rel="noopener"' if url.startswith('http') else ''
+        metric = (f'<div class="metric"><b>{e(num)}</b><span>{e(cap)} '
+                  f'<a class="evidence" href="{e(url)}"{ext}><b>{e(kind)}</b> {e(label)} &#8599;</a></span></div>')
+    links = ''.join(f'<a href="{e(u)}" target="_blank" rel="noopener">{e(t)} &#8599;</a>' for t, u in p['links'])
+    tags = ''.join(f'<span>{e(t)}</span>' for t in p['tags'])
+    return f"""      <article class="card project" data-tags="{' '.join(p['cats'])}" data-reveal>
+        {img}
+        <div class="project-body">
+          <span class="badge">{e(p['status'])}</span>
+          <h3>{e(p['title'])}</h3>
+          <p>{e(p['desc'])}</p>
+          {metric}
+          <div class="tags">{tags}</div>
+          <div class="links">{links}</div>
+        </div>
+      </article>"""
+
+
+def sub_block(src, name, content):
+    start, end = f'<!--{name}:START-->', f'<!--{name}:END-->'
+    if start not in src:
+        return src
+    return re.sub(re.escape(start) + r'.*?' + re.escape(end), start + '\n' + content + '\n      ' + end, src, flags=re.S)
+
+
+def sync_pages():
+    featured = '<div class="projects">\n' + '\n'.join(project_card(p) for p in SD.PROJECTS if p['featured']) + '\n      </div>'
+    everything = '<div class="projects">\n' + '\n'.join(project_card(p) for p in SD.PROJECTS) + '\n      </div>'
+    filters = ''.join(f'<button type="button" data-filter="{k}" aria-pressed="{"true" if k == "all" else "false"}">{l}</button>'
+                      for k, l in SD.FILTERS)
+    for rel, current in PAGES:
+        path = ROOT / rel
+        if not path.exists():
+            continue
+        src = path.read_text(encoding='utf-8')
+        src = re.sub(r'<!--SHARED:NAV-->.*?<!--/SHARED:NAV-->',
+                     lambda m: '<!--SHARED:NAV-->\n' + nav_html(current) + '\n<!--/SHARED:NAV-->', src, flags=re.S)
+        src = re.sub(r'<!--SHARED:FOOT-->.*?<!--/SHARED:FOOT-->',
+                     lambda m: '<!--SHARED:FOOT-->\n' + FOOTER + '\n<!--/SHARED:FOOT-->', src, flags=re.S)
+        src = sub_block(src, 'PROJECTS:FEATURED', featured)
+        src = sub_block(src, 'PROJECTS:ALL', everything)
+        src = src.replace('<!--FILTERS-->', filters) if '<!--FILTERS-->' in src else re.sub(
+            r'(<div class="filters"[^>]*>).*?(</div>)', lambda m: m.group(1) + filters + m.group(2), src, count=1, flags=re.S)
+        path.write_text(src, encoding='utf-8')
+        print(f'  + {rel}  (shared nav/footer, project cards)')
+
+
+def write_search_index(posts):
+    items = list(SD.SEARCH_STATIC)
+    for p in SD.PROJECTS:
+        items.append(dict(t=p['title'], d=p['desc'][:110] + '…', u=p['links'][0][1], k='Project', x=' '.join(p['tags'])))
+    for p in posts:
+        if not p['draft']:
+            items.append(dict(t=p['title'], d=p['summary'], u=f"/blog/{p['slug']}/", k='Post'))
+    (ROOT / 'search-index.json').write_text(json.dumps(items, ensure_ascii=False, indent=1), encoding='utf-8')
+    print('  + search-index.json')
+
+
 def main():
     include_drafts = '--drafts' in sys.argv
     POSTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -607,7 +683,7 @@ def main():
     FEED.write_text(render_feed(posts), encoding='utf-8')
     print('  + feed.xml')
 
-    urls = [(f'{SITE}/', None), (f'{SITE}/blog/', None)] + [
+    urls = [(f'{SITE}/', None), (f'{SITE}/projects/', None), (f'{SITE}/about/', None), (f'{SITE}/blog/', None)] + [
         (f"{SITE}/blog/{p['slug']}/", p['date'].strftime('%Y-%m-%d')) for p in posts if not p['draft']]
     (ROOT / 'sitemap.xml').write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -615,6 +691,8 @@ def main():
         + ''.join(f'  <url><loc>{u}</loc>' + (f'<lastmod>{d}</lastmod>' if d else '') + '</url>\n' for u, d in urls)
         + '</urlset>\n', encoding='utf-8')
     print('  + sitemap.xml')
+    sync_pages()
+    write_search_index(posts)
 
     if update_home(posts):
         print('  + index.html  (#blog cards refreshed)')

@@ -16,47 +16,43 @@
 <meta name="twitter:title" content="Writing — Prabhu Saravanan">
 <meta name="twitter:description" content="Field notes on data engineering, lakehouse architecture and AI platform work.">
 <meta name="twitter:image" content="https://saravanaprabhu1398-afk.github.io/assets/og-image.png">
-<meta name="theme-color" content="#080807">
+<meta name="theme-color" content="#0a0a0c">
+<script>document.documentElement.classList.add('js')</script>
 
 <link rel="alternate" type="application/rss+xml" title="Prabhu Saravanan &#8212; Writing" href="/feed.xml">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23080807'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-size='15' font-weight='600' fill='%23E8E8E3' text-anchor='middle'%3EPS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=28">
-<link rel="stylesheet" href="/blog.css?v=3">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css?v=1">
 </head>
 <body>
-
 <a href="#top" class="skip-link">Skip to content</a>
-<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
-
-<header class="site-nav" id="siteNav">
-  <div class="nav-inner">
-    <a href="/" class="nav-mark">PRABHU</a>
-    <nav class="nav-links" id="navLinks">
-      <a href="/#work">Work</a>
-      <a href="/#case-studies">Case studies</a>
-      <a href="/#experience">Experience</a>
-      <a href="/#skills">Skills</a>
-      <a href="/blog/">Writing</a>
-      <a href="/#contact">Contact</a>
-      <a href="/#resume" class="nav-resume-mobile">R&#233;sum&#233;</a>
-    </nav>
-    <a class="nav-cta" href="/#contact">Get in touch <span aria-hidden="true">&#8599;</span></a>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+<header class="nav">
+  <div class="nav-bar">
+    <a href="/" class="brand"><i aria-hidden="true"></i>Prabhu Saravanan</a>
+    <nav class="nav-links" id="navLinks" aria-label="Main"><a href="/">Home</a><a href="/projects/">Projects</a><a href="/blog/" aria-current="page">Writing</a><a href="/about/">About</a><a href="/#contact">Contact</a></nav>
+    <div class="nav-tools">
+      <button class="search-btn" data-open-search aria-label="Search the site"><span>Search</span><kbd>⌘K</kbd><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="search-ico"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <a class="nav-cta" href="/#contact">Hire me</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+    </div>
   </div>
 </header>
+<div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="palette-box">
+    <input type="text" placeholder="Search projects, case studies, résumés…" aria-label="Search" autocomplete="off">
+    <ul></ul>
+    <div class="palette-hint">↑↓ to move · ↵ to open · esc to close</div>
+  </div>
+</div>
 
 <main id="top">
-  <section class="band band-light" id="writing">
-    <div class="rail">
-      <div class="rail-label"><span class="dot"></span>Writing</div>
-      <div class="rail-body">
-        <h1 class="band-heading" data-split>Field Notes</h1>
+  <section id="writing" style="padding-top:48px">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>Writing</span>
+        <h1 class="article-title" style="margin-top:14px">Field notes</h1>
         <p class="article-lede">Notes from building data and AI platforms in production &#8212; lakehouse
         architecture, experimentation integrity, and governing AI assets like data assets.</p>
 
@@ -77,11 +73,12 @@
   </section>
 </main>
 
-<footer class="site-footer">
-  <span>Prabhu Saravanan &#8212; Abu Dhabi, UAE</span>
-  <span>Built by hand</span>
+<footer class="footer">
+  <div class="wrap">
+    <span>Prabhu Saravanan — Abu Dhabi, UAE</span>
+    <nav aria-label="Footer"><a href="/projects/">Projects</a><a href="/blog/">Writing</a><a href="/about/">About</a><a href="/feed.xml">RSS</a><a href="https://github.com/saravanaprabhu1398-afk" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/prabhu-saravanan-a53317226" rel="noopener">LinkedIn</a></nav>
+  </div>
 </footer>
-
-<script src="/script.js?v=28"></script>
+<script src="/site.js?v=1"></script>
 </body>
 </html>

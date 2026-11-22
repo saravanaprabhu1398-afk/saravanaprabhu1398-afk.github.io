@@ -1,0 +1,156 @@
+[
+ {
+  "t": "Home",
+  "d": "Hero, headline numbers, latest activity",
+  "u": "/",
+  "k": "Page"
+ },
+ {
+  "t": "Projects",
+  "d": "All ten public projects with filters",
+  "u": "/projects/",
+  "k": "Page"
+ },
+ {
+  "t": "About & experience",
+  "d": "Career journey, skills, certifications, résumés",
+  "u": "/about/",
+  "k": "Page"
+ },
+ {
+  "t": "Writing",
+  "d": "Field notes on data engineering",
+  "u": "/blog/",
+  "k": "Page"
+ },
+ {
+  "t": "Contact",
+  "d": "Email, LinkedIn, GitHub, résumé downloads",
+  "u": "/#contact",
+  "k": "Page"
+ },
+ {
+  "t": "Case study: one risk engine instead of six pipelines",
+  "d": "Wipro insurance risk, +40% accuracy, $2M+ saved",
+  "u": "/#case-studies",
+  "k": "Case"
+ },
+ {
+  "t": "Case study: sub-60-second CDC",
+  "d": "Wipro satellite connectivity, 500K+ subscribers",
+  "u": "/#case-studies",
+  "k": "Case"
+ },
+ {
+  "t": "Case study: self-service ingestion",
+  "d": "Scadea for Citi: new sources with no code",
+  "u": "/#case-studies",
+  "k": "Case"
+ },
+ {
+  "t": "Résumé: UAE & Gulf",
+  "d": "PDF",
+  "u": "/assets/Prabhu_Saravanan_Resume_UAE.pdf",
+  "k": "Résumé"
+ },
+ {
+  "t": "Résumé: Europe",
+  "d": "PDF",
+  "u": "/assets/Prabhu_Saravanan_Resume_Europe.pdf",
+  "k": "Résumé"
+ },
+ {
+  "t": "Résumé: India",
+  "d": "PDF",
+  "u": "/assets/Prabhu_Saravanan_Resume_India.pdf",
+  "k": "Résumé"
+ },
+ {
+  "t": "LinkedIn",
+  "d": "linkedin.com/in/prabhu-saravanan-a53317226",
+  "u": "https://www.linkedin.com/in/prabhu-saravanan-a53317226",
+  "k": "Link"
+ },
+ {
+  "t": "GitHub",
+  "d": "github.com/saravanaprabhu1398-afk",
+  "u": "https://github.com/saravanaprabhu1398-afk",
+  "k": "Link"
+ },
+ {
+  "t": "Guardrail",
+  "d": "A Snowflake experimentation platform that decides whether a feature is safe to ship: assigning variants, inges…",
+  "u": "https://github.com/saravanaprabhu1398-afk/Guardrail-Safe-Feature-Rollout-Platform",
+  "k": "Project",
+  "x": "Snowflake dbt Redpanda FastAPI Terraform Kubernetes"
+ },
+ {
+  "t": "FlightPulse",
+  "d": "A local-first flight-delay lakehouse: live positions streamed through Redpanda into Apache Iceberg, batch sour…",
+  "u": "https://github.com/saravanaprabhu1398-afk/FlightPulse",
+  "k": "Project",
+  "x": "Apache Iceberg dbt Dagster Great Expectations MLflow"
+ },
+ {
+  "t": "Dataplatform",
+  "d": "A self-hosted alternative to Airflow: YAML-defined pipelines, a plain-English pipeline generator, a governed d…",
+  "u": "https://github.com/saravanaprabhu1398-afk/dataplatform-modern-dbt",
+  "k": "Project",
+  "x": "FastAPI dbt RBAC NetworkX"
+ },
+ {
+  "t": "Clinical Document Intelligence",
+  "d": "A Databricks Lakehouse converting thousands of unstructured FDA drug labels into a queryable knowledge base. A…",
+  "u": "https://github.com/saravanaprabhu1398-afk/data-document-intelligence-platform",
+  "k": "Project",
+  "x": "Databricks Unity Catalog Mosaic AI Vector Search"
+ },
+ {
+  "t": "Subscription Analytics Warehouse",
+  "d": "A Kimball star schema with an SCD2 customer dimension, cohort, churn and LTV marts, and GDPR masking. Runs loc…",
+  "u": "https://github.com/saravanaprabhu1398-afk/snowflake-dbt-subscription-warehouse",
+  "k": "Project",
+  "x": "Snowflake dbt Terraform DuckDB"
+ },
+ {
+  "t": "Freshness Control Plane",
+  "d": "Detects stale aviation data with CDC, re-embeds only what changed, enforces freshness SLAs as data contracts, …",
+  "u": "https://github.com/saravanaprabhu1398-afk/freshness-control-plane",
+  "k": "Project",
+  "x": "Debezium Kafka Postgres RAG"
+ },
+ {
+  "t": "NEXUS",
+  "d": "A governed, read-only AI agent that investigates data-platform incidents and recommends the next engineering a…",
+  "u": "https://github.com/saravanaprabhu1398-afk/Project_Nexus",
+  "k": "Project",
+  "x": "AI agents Governance Python"
+ },
+ {
+  "t": "Stellenradar",
+  "d": "A serverless AWS pipeline that analyses Germany's data-engineering job market: Iceberg on S3, Bedrock enrichme…",
+  "u": "https://github.com/saravanaprabhu1398-afk/stellenradar",
+  "k": "Project",
+  "x": "AWS Iceberg Bedrock Terraform"
+ },
+ {
+  "t": "Clinical Docs Agent",
+  "d": "Answers pharmacist and clinician questions from public FDA drug labels, cites the exact section behind each an…",
+  "u": "https://github.com/saravanaprabhu1398-afk/clinical-docs-agent",
+  "k": "Project",
+  "x": "openFDA Pydantic Ollama / Claude"
+ },
+ {
+  "t": "AI Agent Company Kit",
+  "d": "A virtual software company of Claude Code agents with approval gates, safety guardrails and GitHub workflows, …",
+  "u": "https://github.com/saravanaprabhu1398-afk/ai-agent-company",
+  "k": "Project",
+  "x": "Claude Code GitHub Actions"
+ },
+ {
+  "t": "The publishing pipeline behind this blog",
+  "d": "A static site, a single Python script and zero dependencies — why the boring option wins for a personal engineering blog.",
+  "u": "/blog/publishing-pipeline/",
+  "k": "Post"
+ }
+]
