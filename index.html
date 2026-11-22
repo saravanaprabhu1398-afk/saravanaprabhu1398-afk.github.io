@@ -31,7 +31,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="alternate" type="application/rss+xml" title="Prabhu Saravanan — Writing" href="/feed.xml">
-<link rel="stylesheet" href="style.css?v=25">
+<link rel="stylesheet" href="style.css?v=26">
 </head>
 <body>
 
@@ -135,6 +135,7 @@
       <div class="rail-label"><span class="dot"></span>Selected work</div>
       <div class="rail-body">
         <h2 class="band-heading" data-split>Selected Work</h2>
+        <p class="work-note">Every number below says where it comes from: <b>measured</b> in the repo, a <b>simulated</b> demo, or taken from my résumé.</p>
         <div class="stack">
 
         <article class="work-row stack-card">
@@ -145,7 +146,7 @@
             <div class="work-index"><span>SW</span><i></i><em>01/04</em></div>
             <h3 class="work-title">Guardrail</h3>
             <p class="work-desc">A Snowflake experimentation platform that decides whether a feature is safe to ship — assigning variants, ingesting telemetry through Redpanda and Snowpipe Streaming, running statistical tests, and blocking the rollout when the telemetry itself can't be trusted.</p>
-            <div class="metric"><span class="metric-chip">4.8%</span><p class="metric-caption">False conversion lift caught and blocked — mobile clients were switching variants mid-session</p></div>
+            <div class="metric"><span class="metric-chip">4.8%</span><p class="metric-caption">Apparent conversion lift in the demo scenario, caught and blocked — mobile clients were switching variants mid-session. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/Guardrail-Safe-Feature-Rollout-Platform#interview-narrative" target="_blank" rel="noopener"><b>Simulated</b> Demo narrative ↗</a></p></div>
             <div class="work-tags"><span>Snowflake</span><span>dbt</span><span>Redpanda</span><span>FastAPI</span><span>Terraform</span><span>Kubernetes</span></div>
             <a href="https://github.com/saravanaprabhu1398-afk/Guardrail-Safe-Feature-Rollout-Platform" class="work-link" target="_blank" rel="noopener">View source <span aria-hidden="true">↗</span></a>
           </div>
@@ -164,7 +165,7 @@
             <div class="work-index"><span>SW</span><i></i><em>02/04</em></div>
             <h3 class="work-title">FlightPulse</h3>
             <p class="work-desc">A local-first flight-delay lakehouse: live positions streamed through Redpanda into Apache Iceberg, batch sources modelled with dbt into a bronze→silver→gold star schema, and a delay-probability model tracked in MLflow — all gated by blocking Great Expectations checks.</p>
-            <div class="metric"><span class="metric-chip">611K+</span><p class="metric-caption">Real flights processed, with Spark writing the Iceberg table and DuckDB reading it live</p></div>
+            <div class="metric"><span class="metric-chip">611K+</span><p class="metric-caption">Real flights processed, with Spark writing the Iceberg table and DuckDB reading it live. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/FlightPulse#readme" target="_blank" rel="noopener"><b>Measured</b> README ↗</a></p></div>
             <div class="work-tags"><span>Apache Iceberg</span><span>dbt</span><span>Dagster</span><span>Great Expectations</span><span>MLflow</span></div>
             <a href="https://github.com/saravanaprabhu1398-afk/FlightPulse" class="work-link" target="_blank" rel="noopener">View source <span aria-hidden="true">↗</span></a>
           </div>
@@ -183,7 +184,7 @@
             <div class="work-index"><span>SW</span><i></i><em>03/04</em></div>
             <h3 class="work-title">Dataplatform</h3>
             <p class="work-desc">A self-hosted alternative to Airflow — YAML-defined pipelines, a plain-English pipeline generator, a governed deployment hub with rollback, and full observability across metrics, alerting, cost and lineage.</p>
-            <div class="metric"><span class="metric-chip">12</span><p class="metric-caption">Plugin executors, with RBAC and a NetworkX-backed DAG engine</p></div>
+            <div class="metric"><span class="metric-chip">12</span><p class="metric-caption">Plugin executors, with RBAC and a NetworkX-backed DAG engine. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/dataplatform-modern-dbt#readme" target="_blank" rel="noopener"><b>In the code</b> README ↗</a></p></div>
             <div class="work-tags"><span>FastAPI</span><span>dbt</span><span>RBAC</span><span>NetworkX</span></div>
             <a href="https://github.com/saravanaprabhu1398-afk/dataplatform-modern-dbt" class="work-link" target="_blank" rel="noopener">View source <span aria-hidden="true">↗</span></a>
           </div>
@@ -202,7 +203,7 @@
             <div class="work-index"><span>SW</span><i></i><em>04/04</em></div>
             <h3 class="work-title">Clinical Document Intelligence</h3>
             <p class="work-desc">A Databricks Lakehouse converting thousands of unstructured FDA drug labels into a queryable knowledge base. A cited RAG agent routes questions to SQL or Vector Search, governed under the same Unity Catalog contracts as the underlying data.</p>
-            <div class="metric"><span class="metric-chip">&lt;1s</span><p class="metric-caption">Source-attributed answers, governed by Unity Catalog contracts</p></div>
+            <div class="metric"><span class="metric-chip">&lt;1s</span><p class="metric-caption">Source-attributed answers, governed by Unity Catalog contracts. <a class="evidence" href="/assets/Prabhu_Saravanan_Resume_UAE.pdf" target="_blank" rel="noopener"><b>From résumé</b> Résumé ↗</a></p></div>
             <div class="work-tags"><span>Databricks</span><span>Unity Catalog</span><span>Mosaic AI</span><span>Vector Search</span></div>
             <a href="https://github.com/saravanaprabhu1398-afk/data-document-intelligence-platform" class="work-link" target="_blank" rel="noopener">View source <span aria-hidden="true">↗</span></a>
           </div>
