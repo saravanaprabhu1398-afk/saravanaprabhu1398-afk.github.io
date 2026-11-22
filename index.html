@@ -31,7 +31,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="alternate" type="application/rss+xml" title="Prabhu Saravanan — Writing" href="/feed.xml">
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 </head>
 <body>
 
@@ -44,6 +44,7 @@
     <a href="#top" class="nav-mark">PRABHU</a>
     <nav class="nav-links" id="navLinks">
       <a href="#work">Work</a>
+      <a href="#case-studies">Case studies</a>
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
       <a href="#blog">Writing</a>
@@ -255,6 +256,48 @@
           </a>
         </div>
         <a class="work-link repo-all" href="https://github.com/saravanaprabhu1398-afk?tab=repositories" target="_blank" rel="noopener">All repositories <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CASE STUDIES ============ -->
+  <section class="band band-light" id="case-studies">
+    <div class="rail">
+      <div class="rail-label"><span class="dot"></span>Case studies</div>
+      <div class="rail-body">
+        <h2 class="band-heading" data-split>Problem, Build, Result</h2>
+        <div class="case-grid">
+          <article class="case">
+            <span class="repo-status">Wipro · Insurance risk</span>
+            <h3>One risk engine instead of six pipelines</h3>
+            <dl>
+              <dt>Problem</dt><dd>Six fragmented insurance risk pipelines each evaluated claims their own way.</dd>
+              <dt>What I built</dt><dd>A single Databricks-native risk evaluation engine, structured as rules, validation and scoring classes using Strategy and Factory patterns.</dd>
+            </dl>
+            <div class="exp-metrics"><div><span class="metric-chip">+40%</span><em>Claim validation accuracy</em></div><div><span class="metric-chip">$2M+</span><em>Est. annual savings in wrongful payouts</em></div></div>
+            <div class="work-tags"><span>Databricks</span><span>PySpark</span><span>Delta Lake</span><span>Airflow</span></div>
+          </article>
+          <article class="case">
+            <span class="repo-status">Wipro · Satellite connectivity</span>
+            <h3>Sub-60-second CDC for 500K+ subscribers</h3>
+            <dl>
+              <dt>Problem</dt><dd>Connectivity events for a satellite internet service needed to reach real-time alerting.</dd>
+              <dt>What I built</dt><dd>A Debezium and Kafka change-data-capture pipeline into Delta Lake, with min-heap LSN ordering and hash-map deduplication in the merge logic. Separately, cut a recurring 4-hour Spark report SLA breach by 65% for three analytics teams.</dd>
+            </dl>
+            <div class="exp-metrics"><div><span class="metric-chip">&lt;60s</span><em>End-to-end latency</em></div><div><span class="metric-chip">500K+</span><em>Subscribers alerted in real time</em></div></div>
+            <div class="work-tags"><span>Debezium</span><span>Kafka</span><span>Delta Lake</span><span>Structured Streaming</span></div>
+          </article>
+          <article class="case">
+            <span class="repo-status">Scadea · Global bank (Citi)</span>
+            <h3>Self-service ingestion where new sources need no code</h3>
+            <dl>
+              <dt>Problem</dt><dd>Ingestion at a global bank depended on manual scheduling and engineering work for each new source.</dd>
+              <dt>What I built</dt><dd>A PySpark and Apache Camel platform that detects files in landing zones and loads them in parallel into Iceberg tables via control files, with retries and Kafka completion events. Business users define aggregations in SQL and the platform generates the Spark jobs.</dd>
+            </dl>
+            <div class="exp-metrics"><div><span class="metric-chip">0</span><em>Code changes to onboard a source</em></div></div>
+            <div class="work-tags"><span>PySpark</span><span>Apache Camel</span><span>Iceberg</span><span>Kafka</span></div>
+          </article>
+        </div>
       </div>
     </div>
   </section>

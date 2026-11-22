@@ -34,7 +34,7 @@ FEED = ROOT / "feed.xml"
 SITE = "https://saravanaprabhu1398-afk.github.io"
 AUTHOR = "Prabhu Saravanan"
 ROLE = "Lead Data Engineer"
-ASSET_V = "24"
+ASSET_V = "25"
 BLOG_CSS_V = "3"
 DEFAULT_OG = "https://saravanaprabhu1398-afk.github.io/assets/og-image.png"
 
@@ -329,6 +329,7 @@ NAV = f'''<header class="site-nav" id="siteNav">
     <a href="/" class="nav-mark">PRABHU</a>
     <nav class="nav-links" id="navLinks">
       <a href="/#work">Work</a>
+      <a href="/#case-studies">Case studies</a>
       <a href="/#experience">Experience</a>
       <a href="/#skills">Skills</a>
       <a href="/blog/">Writing</a>
