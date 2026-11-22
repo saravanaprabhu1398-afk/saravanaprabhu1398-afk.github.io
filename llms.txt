@@ -1,0 +1,20 @@
+# Prabhu Saravanan — Lead Data Engineer
+
+> Portfolio of Prabhu Saravanan, a Lead Data Engineer (8 years) building lakehouse, streaming and governed AI data platforms on Databricks, Snowflake, Kafka and dbt. Based in Abu Dhabi, UAE; open to roles in the UAE, Europe and India.
+
+## Pages
+- [Home](https://saravanaprabhu1398-afk.github.io/): work, case studies, experience, skills, contact
+- [Writing](https://saravanaprabhu1398-afk.github.io/blog/): engineering notes
+- [RSS feed](https://saravanaprabhu1398-afk.github.io/feed.xml)
+
+## Résumés (PDF)
+- [UAE / Gulf edition](https://saravanaprabhu1398-afk.github.io/assets/Prabhu_Saravanan_Resume_UAE.pdf)
+- [Europe edition](https://saravanaprabhu1398-afk.github.io/assets/Prabhu_Saravanan_Resume_Europe.pdf)
+- [India edition](https://saravanaprabhu1398-afk.github.io/assets/Prabhu_Saravanan_Resume_India.pdf)
+
+## Profiles
+- [GitHub](https://github.com/saravanaprabhu1398-afk)
+- [LinkedIn](https://www.linkedin.com/in/prabhu-saravanan-a53317226)
+
+## Notes
+- Project metrics on the site are labelled measured, simulated, or from the résumé.
