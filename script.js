@@ -303,3 +303,50 @@ if (!prefersReduced && 'IntersectionObserver' in window) {
     });
   }, { passive: true });
 })();
+
+
+// "Fresh off the press": latest public repos, live from the GitHub API.
+// Hidden unless it loads, so a rate limit or offline visit just shows nothing.
+(async function freshFeed() {
+  const sec = document.getElementById('fresh');
+  if (!sec) return;
+  const USER = 'saravanaprabhu1398-afk';
+  const KEY = 'fresh-feed-v1';
+  let repos = null;
+  try {
+    const c = JSON.parse(sessionStorage.getItem(KEY) || 'null');
+    if (c && Date.now() - c.t < 600000) repos = c.repos;
+  } catch (e) {}
+  if (!repos) {
+    try {
+      const r = await fetch(`https://api.github.com/users/${USER}/repos?per_page=100&sort=pushed`);
+      if (!r.ok) return;
+      repos = await r.json();
+      try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), repos })); } catch (e) {}
+    } catch (e) { return; }
+  }
+  const own = repos.filter(x => !x.fork && x.language && x.name !== `${USER}.github.io`);
+  if (!own.length) return;
+  const ago = iso => {
+    const d = Math.max(0, Math.floor((Date.now() - new Date(iso)) / 86400000));
+    if (d === 0) return 'today';
+    if (d === 1) return 'yesterday';
+    if (d < 30) return `${d} days ago`;
+    const m = Math.floor(d / 30);
+    return m === 1 ? '1 month ago' : `${m} months ago`;
+  };
+  const list = document.getElementById('freshList');
+  own.slice(0, 4).forEach(x => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = x.html_url; a.target = '_blank'; a.rel = 'noopener';
+    const t = document.createElement('strong'); t.textContent = x.name.replace(/[-_]/g, ' ');
+    const d = document.createElement('span'); d.className = 'fresh-desc';
+    d.textContent = x.description || '';
+    const m = document.createElement('em'); m.textContent = `${x.language} · updated ${ago(x.pushed_at)}`;
+    a.append(t, d, m); li.append(a); list.append(li);
+  });
+  document.getElementById('freshNote').textContent =
+    `Live from GitHub — ${own.length} public projects, last push ${ago(own[0].pushed_at)}`;
+  sec.hidden = false;
+})();

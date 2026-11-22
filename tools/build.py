@@ -34,7 +34,7 @@ FEED = ROOT / "feed.xml"
 SITE = "https://saravanaprabhu1398-afk.github.io"
 AUTHOR = "Prabhu Saravanan"
 ROLE = "Lead Data Engineer"
-ASSET_V = "27"
+ASSET_V = "28"
 BLOG_CSS_V = "3"
 DEFAULT_OG = "https://saravanaprabhu1398-afk.github.io/assets/og-image.png"
 
