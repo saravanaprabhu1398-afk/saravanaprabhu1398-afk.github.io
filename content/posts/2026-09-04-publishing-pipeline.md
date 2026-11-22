@@ -3,7 +3,7 @@ title: The publishing pipeline behind this blog
 summary: A static site, a 400-line Python script and zero dependencies — why the boring option wins for a personal engineering blog.
 tags: [Tooling, Static Sites, Automation]
 date: 2026-09-04
-draft: true
+draft: false
 ---
 
 Every personal blog eventually faces the same fork: adopt a framework, or hand-write
