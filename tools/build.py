@@ -34,10 +34,9 @@ FEED = ROOT / "feed.xml"
 SITE = "https://saravanaprabhu1398-afk.github.io"
 AUTHOR = "Prabhu Saravanan"
 ROLE = "Lead Data Engineer"
-ASSET_V = "18"
+ASSET_V = "23"
 BLOG_CSS_V = "3"
-DEFAULT_OG = ("https://raw.githubusercontent.com/saravanaprabhu1398-afk/"
-              "FlightPulse/main/docs/screenshots/02_delay_by_airport.png")
+DEFAULT_OG = "https://saravanaprabhu1398-afk.github.io/assets/og-image.png"
 
 LINKEDIN_MARKER = re.compile(r'^-{3,}\s*LINKEDIN\s*-{3,}\s*$', re.M)
 WORDS_PER_MIN = 220
@@ -327,14 +326,14 @@ def e(s):
 
 NAV = f'''<header class="site-nav" id="siteNav">
   <div class="nav-inner">
-    <a href="/" class="nav-mark">PRABHU<span>&#174;</span></a>
+    <a href="/" class="nav-mark">PRABHU</a>
     <nav class="nav-links" id="navLinks">
       <a href="/#work">Work</a>
       <a href="/#experience">Experience</a>
       <a href="/#skills">Skills</a>
       <a href="/blog/">Writing</a>
       <a href="/#contact">Contact</a>
-      <a href="/assets/Prabhu_Saravanan_Resume.pdf" class="nav-resume-mobile" download>R&#233;sum&#233;</a>
+      <a href="/#resume" class="nav-resume-mobile">R&#233;sum&#233;</a>
     </nav>
     <a class="nav-cta" href="/#contact">Get in touch <span aria-hidden="true">&#8599;</span></a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
@@ -606,6 +605,15 @@ def main():
 
     FEED.write_text(render_feed(posts), encoding='utf-8')
     print('  + feed.xml')
+
+    urls = [(f'{SITE}/', None), (f'{SITE}/blog/', None)] + [
+        (f"{SITE}/blog/{p['slug']}/", p['date'].strftime('%Y-%m-%d')) for p in posts if not p['draft']]
+    (ROOT / 'sitemap.xml').write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + ''.join(f'  <url><loc>{u}</loc>' + (f'<lastmod>{d}</lastmod>' if d else '') + '</url>\n' for u, d in urls)
+        + '</urlset>\n', encoding='utf-8')
+    print('  + sitemap.xml')
 
     if update_home(posts):
         print('  + index.html  (#blog cards refreshed)')

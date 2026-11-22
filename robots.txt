@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://saravanaprabhu1398-afk.github.io/sitemap.xml

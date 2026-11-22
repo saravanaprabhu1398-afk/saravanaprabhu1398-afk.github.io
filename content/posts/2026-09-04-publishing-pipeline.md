@@ -1,6 +1,6 @@
 ---
 title: The publishing pipeline behind this blog
-summary: A static site, a 400-line Python script and zero dependencies — why the boring option wins for a personal engineering blog.
+summary: A static site, a single Python script and zero dependencies — why the boring option wins for a personal engineering blog.
 tags: [Tooling, Static Sites, Automation]
 date: 2026-09-04
 draft: false
@@ -84,7 +84,7 @@ front of several thousand people is neither.
 --- LINKEDIN ---
 Every personal blog hits the same fork: adopt a framework, or hand-write HTML forever.
 
-I took a third option for mine — Markdown files and a 400-line Python script with zero dependencies.
+I took a third option for mine — Markdown files and a single Python script with zero dependencies.
 
 The argument isn't that frameworks are bad. It's that a personal site gets touched maybe six times a year, and the real failure mode isn't "hard to extend." It's opening it after eight months and finding the build no longer runs.
 
