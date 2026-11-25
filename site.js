@@ -1,4 +1,4 @@
-/* site.js: nav, typing line, reveal, project filters, live GitHub feed, ⌘K search. No dependencies. */
+/* site.js: nav, reveal, project filters, live GitHub feed, ⌘K search. No dependencies. */
 (function () {
   'use strict';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -8,13 +8,21 @@
   var menuBtn = document.getElementById('menuBtn');
   var navLinks = document.getElementById('navLinks');
   if (menuBtn && navLinks) {
+    var closeMenu = function () { navLinks.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); };
     menuBtn.addEventListener('click', function () {
       var open = navLinks.classList.toggle('open');
       menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
     navLinks.addEventListener('click', function (e) {
-      if (e.target.closest('a')) { navLinks.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); }
+      if (e.target.closest('a')) closeMenu();
     });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && navLinks.classList.contains('open')) { closeMenu(); menuBtn.focus(); }
+    });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.nav')) closeMenu();
+    });
+    document.documentElement.classList.add('nav-ready');
   }
 
   // ---- Reveal on scroll
@@ -28,22 +36,6 @@
     items.forEach(function (el) { el.classList.add('in'); });
   }
 
-  // ---- Typed line
-  var typed = document.getElementById('typed');
-  if (typed && !reduced) {
-    var words = (typed.getAttribute('data-words') || '').split('|').filter(Boolean);
-    var wi = 0, ci = 0, del = false;
-    (function tick() {
-      var w = words[wi];
-      ci += del ? -1 : 1;
-      typed.textContent = w.slice(0, ci);
-      var delay = del ? 35 : 70;
-      if (!del && ci === w.length) { del = true; delay = 1600; }
-      else if (del && ci === 0) { del = false; wi = (wi + 1) % words.length; delay = 300; }
-      setTimeout(tick, delay);
-    })();
-  }
-
   // ---- Project filters
   var fbar = document.getElementById('filters');
   if (fbar) {
@@ -55,12 +47,12 @@
         p.hidden = !(tag === 'all' || p.getAttribute('data-tags').split(' ').indexOf(tag) > -1);
       });
     });
+    document.documentElement.classList.add('filters-ready');
   }
 
   // ---- Live GitHub feed (home). Hidden if the API is unreachable.
   var feedList = document.getElementById('feedList');
-  var liveCount = document.getElementById('liveCount');
-  if (feedList || liveCount) {
+  if (feedList) {
     var KEY = 'gh-repos-v2';
     var cached = null;
     try { var c = JSON.parse(sessionStorage.getItem(KEY) || 'null'); if (c && Date.now() - c.t < 600000) cached = c.repos; } catch (e) {}
@@ -76,7 +68,6 @@
         if (d === 0) return 'today'; if (d === 1) return 'yesterday'; if (d < 30) return d + ' days ago';
         var m = Math.floor(d / 30); return m === 1 ? '1 month ago' : m + ' months ago';
       };
-      if (liveCount) liveCount.textContent = own.length;
       if (feedList) {
         own.slice(0, 4).forEach(function (x) {
           var a = document.createElement('a'); a.className = 'card feed-item'; a.href = x.html_url; a.target = '_blank'; a.rel = 'noopener';
@@ -89,23 +80,41 @@
         });
         feedList.hidden = false;
         var note = document.getElementById('liveNote');
-        if (note) { note.textContent = 'Live from GitHub · ' + own.length + ' public projects · last push ' + ago(own[0].pushed_at); note.hidden = false; }
+        if (note) { note.textContent = 'Live from GitHub · last push ' + ago(own[0].pushed_at); note.hidden = false; }
       }
     }).catch(function () {});
   }
 
   // ---- ⌘K search palette
   var pal = document.getElementById('palette');
-  if (pal) {
+  if (pal && typeof pal.showModal === 'function') {
     var input = pal.querySelector('input'), list = pal.querySelector('ul'), index = null, sel = 0, shown = [];
+    var status = document.getElementById('searchStatus'), opener = null, loading = null, loadError = false;
     var load = function () {
       if (index) return Promise.resolve(index);
-      return fetch('/search-index.json').then(function (r) { return r.json(); }).then(function (j) { index = j; return j; }).catch(function () { index = []; return index; });
+      if (loading) return loading;
+      loading = fetch('/search-index.json').then(function (r) {
+        if (!r.ok) throw new Error('Search request failed: ' + r.status);
+        return r.json();
+      }).then(function (j) {
+        if (!Array.isArray(j) || !j.every(function (x) {
+          return x && ['t', 'd', 'k', 'u'].every(function (key) { return typeof x[key] === 'string'; });
+        })) throw new Error('Invalid search index');
+        index = j;
+        return j;
+      }).finally(function () { loading = null; });
+      return loading;
     };
     var render = function () {
+      if (!index) {
+        list.textContent = '';
+        status.textContent = loadError ? 'Search is unavailable. Close and reopen to retry.' : 'Loading search…';
+        return;
+      }
       var q = input.value.trim().toLowerCase();
       shown = (index || []).filter(function (x) { return !q || (x.t + ' ' + x.d + ' ' + x.k + ' ' + (x.x || '')).toLowerCase().indexOf(q) > -1; }).slice(0, 8);
       sel = 0; list.textContent = '';
+      status.textContent = shown.length ? shown.length + ' results. Use arrow keys or Tab to explore.' : 'No results. Try a project, skill, or résumé.';
       if (!shown.length) { var e = document.createElement('li'); e.className = 'empty'; e.textContent = 'Nothing found.'; list.append(e); return; }
       shown.forEach(function (x, i) {
         var li = document.createElement('li'), a = document.createElement('a'); a.href = x.u; if (i === 0) a.className = 'sel';
@@ -115,23 +124,63 @@
         s.textContent = x.t; sm.textContent = x.d; m.append(s, sm); a.append(k, m); li.append(a); list.append(li);
       });
     };
-    var open = function () { load().then(function () { pal.classList.add('open'); input.value = ''; render(); input.focus(); }); };
-    var close = function () { pal.classList.remove('open'); };
+    var open = function () {
+      if (pal.open) { input.focus(); return; }
+      opener = document.activeElement;
+      loadError = false;
+      input.value = '';
+      pal.showModal();
+      document.body.classList.add('search-open');
+      render();
+      input.focus();
+      load().then(render).catch(function (error) {
+        console.error('Site search:', error);
+        loadError = true;
+        render();
+      });
+    };
+    var close = function () { pal.close(); };
     document.querySelectorAll('[data-open-search]').forEach(function (b) { b.addEventListener('click', open); });
-    pal.addEventListener('click', function (e) { if (e.target === pal) close(); });
-    input.addEventListener('input', render);
-    document.addEventListener('keydown', function (e) {
-      var typing = /INPUT|TEXTAREA/.test((document.activeElement || {}).tagName || '');
-      if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !typing)) { e.preventDefault(); open(); return; }
-      if (!pal.classList.contains('open')) return;
-      var links = list.querySelectorAll('a');
-      if (e.key === 'Escape') close();
-      else if (e.key === 'ArrowDown' && links.length) { e.preventDefault(); sel = (sel + 1) % links.length; }
-      else if (e.key === 'ArrowUp' && links.length) { e.preventDefault(); sel = (sel - 1 + links.length) % links.length; }
-      else if (e.key === 'Enter' && links[sel]) { links[sel].click(); return; }
-      else return;
-      links.forEach(function (l, i) { l.classList.toggle('sel', i === sel); });
-      if (links[sel]) links[sel].scrollIntoView({ block: 'nearest' });
+    pal.querySelector('.palette-close').addEventListener('click', close);
+    pal.addEventListener('close', function () {
+      document.body.classList.remove('search-open');
+      if (opener && opener.isConnected) opener.focus();
     });
+    pal.addEventListener('click', function (e) { if (e.target === pal || e.target.closest('a')) close(); });
+    input.addEventListener('input', render);
+    var select = function (links) {
+      links.forEach(function (l, i) { l.classList.toggle('sel', i === sel); });
+      if (links[sel]) {
+        links[sel].scrollIntoView({ block: 'nearest' });
+        status.textContent = (sel + 1) + ' of ' + shown.length + ': ' + shown[sel].t;
+      }
+    };
+    list.addEventListener('focusin', function (e) {
+      var links = Array.from(list.querySelectorAll('a'));
+      sel = links.indexOf(e.target);
+      select(links);
+    });
+    input.addEventListener('keydown', function (e) {
+      var links = list.querySelectorAll('a');
+      if (!links.length || e.isComposing) return;
+      if (e.key === 'ArrowDown') { e.preventDefault(); sel = (sel + 1) % links.length; }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); sel = (sel - 1 + links.length) % links.length; }
+      else if (e.key === 'Enter') { e.preventDefault(); links[sel].click(); return; }
+      else return;
+      select(links);
+    });
+    pal.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      var focusable = pal.querySelectorAll('button, input, a[href]');
+      var first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      var active = document.activeElement;
+      var typing = active && (/INPUT|TEXTAREA|SELECT/.test(active.tagName) || active.isContentEditable);
+      if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !typing)) { e.preventDefault(); open(); return; }
+    });
+    document.documentElement.classList.add('search-ready');
   }
 })();

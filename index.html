@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>document.documentElement.classList.add('js')</script>
 <title>Prabhu Saravanan — Lead Data Engineer</title>
 <meta name="description" content="Lead Data Engineer building data and AI platforms — Databricks, Snowflake, Kafka, dbt, and Unity Catalog governance.">
 <link rel="canonical" href="https://saravanaprabhu1398-afk.github.io/">
@@ -31,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/site.css?v=2">
+<link rel="stylesheet" href="/site.css?v=4">
 </head>
 <body>
 <!--SHARED:NAV-->
@@ -47,13 +46,15 @@
     </div>
   </div>
 </header>
-<div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Search">
+<dialog class="palette" id="palette" aria-labelledby="searchTitle">
   <div class="palette-box">
-    <input type="text" placeholder="Search projects, case studies, résumés…" aria-label="Search" autocomplete="off">
-    <ul></ul>
+    <div class="palette-heading"><h2 id="searchTitle">Find something</h2><button type="button" class="palette-close" aria-label="Close search">Close <kbd>Esc</kbd></button></div>
+    <input type="search" placeholder="Projects, experience, résumés…" aria-label="Search the site" aria-describedby="searchStatus" autocomplete="off">
+    <p class="search-status" id="searchStatus" role="status"></p>
+    <ul aria-label="Search results"></ul>
     <div class="palette-hint">↑↓ to move · ↵ to open · esc to close</div>
   </div>
-</div>
+</dialog>
 <!--/SHARED:NAV-->
 
 <main id="top">
@@ -62,38 +63,55 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow"><span class="dot"></span>Open to roles · UAE · Europe · India</span>
+        <div class="hero-intro">
+          <p class="hero-role">Lead Data Engineer · Abu Dhabi, UAE</p>
+          <span class="eyebrow"><span class="dot"></span>Open to roles · UAE · Europe · India</span>
+        </div>
         <h1>I build the data platforms other systems learn to <em>trust.</em></h1>
-        <p class="typed-line">Lead Data Engineer. Today: <b id="typed" data-words="lakehouses|streaming pipelines|governed AI platforms|data you can prove">lakehouses</b><span class="cursor" aria-hidden="true"></span></p>
         <p class="hero-sub">8 years across aviation, insurance, telecom, consumer goods, e-commerce and healthcare. Databricks Certified.</p>
         <div class="hero-cta">
           <a class="btn primary" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
           <a class="btn" href="/about/#resumes">Download résumé ↓</a>
-          <a class="btn" href="https://www.linkedin.com/in/prabhu-saravanan-a53317226" target="_blank" rel="noopener">LinkedIn ↗</a>
-          <a class="btn" href="https://github.com/saravanaprabhu1398-afk" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
-        <p class="hero-meta">Abu Dhabi, UAE</p>
+        <div class="hero-socials" aria-label="Social profiles">
+          <a href="https://www.linkedin.com/in/prabhu-saravanan-a53317226" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://github.com/saravanaprabhu1398-afk" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
       </div>
       <figure class="portrait">
         <img src="/assets/prabhu.jpg?v=2" width="800" height="800" alt="Prabhu Saravanan"
              onerror="this.closest('.portrait').remove()">
-        <span class="chip-float" aria-hidden="true">Databricks</span>
-        <span class="chip-float" aria-hidden="true">Kafka</span>
-        <span class="chip-float" aria-hidden="true">dbt</span>
       </figure>
     </div>
 
     <div class="wrap">
       <div class="tiles" data-reveal>
-        <a class="tile coral" href="/about/#experience"><span class="num">8 yrs</span><span class="lab">Building production data platforms</span><span class="arr" aria-hidden="true">→</span></a>
-        <a class="tile amber" href="#case-studies"><span class="num">$2M+</span><span class="lab">Est. annual savings from one risk engine</span><span class="arr" aria-hidden="true">→</span></a>
-        <a class="tile lime" href="#case-studies"><span class="num">&lt;60s</span><span class="lab">CDC latency for 500K+ subscribers</span><span class="arr" aria-hidden="true">→</span></a>
-        <a class="tile sky" href="/about/#certs"><span class="num">5</span><span class="lab">Certifications, Databricks Professional included</span><span class="arr" aria-hidden="true">→</span></a>
-        <a class="tile violet" href="/projects/"><span class="num"><span id="liveCount">10</span></span><span class="lab">Public projects on GitHub (live count)</span><span class="arr" aria-hidden="true">→</span></a>
+        <a class="tile" href="/about/#experience"><span class="num">8 yrs</span><span class="lab">Building production data platforms</span></a>
+        <a class="tile" href="#case-studies"><span class="num">$2M+</span><span class="lab">Est. annual savings from one risk engine</span></a>
+        <a class="tile" href="#case-studies"><span class="num">&lt;60s</span><span class="lab">CDC latency for 500K+ subscribers</span></a>
+        <a class="tile" href="/about/#certs"><span class="num">5</span><span class="lab">Certifications, Databricks Professional included</span></a>
       </div>
       <p class="tiles-note">Career numbers are from my résumé. Project numbers below say whether they're measured or simulated.</p>
     </div>
   </section>
+
+  <!--PROJECTS:SPOTLIGHT:START-->
+  <section id="project-spotlight" aria-labelledby="spotlight-title">
+    <div class="wrap spotlight">
+      <div class="spotlight-copy">
+        <span class="eyebrow">Featured build · local-first lakehouse</span>
+        <h2 id="spotlight-title">FlightPulse</h2>
+        <p>A local-first lakehouse with separate batch analytics and live-position paths.</p>
+        <div class="spotlight-outcome"><strong>611K+</strong><span>Historical flights in the dashboard. Live aircraft positions are served separately from Iceberg.</span></div>
+        <a class="more-link" href="https://github.com/saravanaprabhu1398-afk/FlightPulse#opening-the-dashboard" target="_blank" rel="noopener">Measured · see the evidence ↗</a>
+      </div>
+      <figure class="flow-diagram">
+        <div class="flow-lane"><p class="badge">Historical flights</p><ol class="flow-steps"><li><span>Ingest</span><strong>BTS + reference / weather</strong><small>dlt → MinIO</small></li><li><span>Model</span><strong>dbt / DuckDB</strong><small>Bronze → silver → gold</small></li><li><span>Serve</span><strong>Streamlit</strong><small>Delay analytics</small></li></ol></div><div class="flow-lane"><p class="badge">Live positions</p><ol class="flow-steps"><li><span>Ingest</span><strong>OpenSky</strong><small>Redpanda</small></li><li><span>Stream</span><strong>Spark</strong><small>Iceberg on MinIO</small></li><li><span>Serve</span><strong>Streamlit</strong><small>DuckDB reads Iceberg</small></li></ol></div>
+        <figcaption>Simplified paths from the repository. Quality checks gate batch gold tables; streaming checks are not implemented. <a href="https://github.com/saravanaprabhu1398-afk/FlightPulse#architecture" target="_blank" rel="noopener">Source architecture ↗</a></figcaption>
+      </figure>
+    </div>
+  </section>
+      <!--PROJECTS:SPOTLIGHT:END-->
 
   <!-- ============ FRESH OFF THE PRESS ============ -->
   <section>
@@ -187,8 +205,8 @@
         <div class="project-body">
           <span class="badge">Streaming lakehouse</span>
           <h3>FlightPulse</h3>
-          <p>A local-first flight-delay lakehouse: live positions streamed through Redpanda into Apache Iceberg, batch sources modelled with dbt into a bronze, silver, gold star schema, and a delay-probability model tracked in MLflow, all gated by blocking Great Expectations checks.</p>
-          <div class="metric"><b>611K+</b><span>Real flights processed, with Spark writing the Iceberg table and DuckDB reading it live. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/FlightPulse#readme" target="_blank" rel="noopener"><b>Measured</b> README &#8599;</a></span></div>
+          <p>A local-first flight-delay lakehouse: live positions streamed through Redpanda into Apache Iceberg, batch sources modelled with dbt into a bronze, silver, gold star schema, and a delay-probability model tracked in MLflow. Blocking Great Expectations checks gate the batch gold tables.</p>
+          <div class="metric"><b>611K+</b><span>Historical flights in the dashboard. Live aircraft positions are served separately from Iceberg. <a class="evidence" href="https://github.com/saravanaprabhu1398-afk/FlightPulse#opening-the-dashboard" target="_blank" rel="noopener"><b>Measured</b> README &#8599;</a></span></div>
           <div class="tags"><span>Apache Iceberg</span><span>dbt</span><span>Dagster</span><span>Great Expectations</span><span>MLflow</span></div>
           <div class="links"><a href="https://github.com/saravanaprabhu1398-afk/FlightPulse" target="_blank" rel="noopener">View source &#8599;</a></div>
         </div>
@@ -283,7 +301,7 @@
     <nav aria-label="Footer"><a href="/projects/">Projects</a><a href="/blog/">Writing</a><a href="/about/">About</a><a href="/feed.xml">RSS</a><a href="https://github.com/saravanaprabhu1398-afk" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/prabhu-saravanan-a53317226" rel="noopener">LinkedIn</a></nav>
   </div>
 </footer>
-<script src="/site.js?v=2"></script>
+<script src="/site.js?v=4"></script>
 <!--/SHARED:FOOT-->
 </body>
 </html>

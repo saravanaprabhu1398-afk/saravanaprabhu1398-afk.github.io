@@ -48,7 +48,7 @@ eight months and the build no longer runs."
 > The cost of a dependency is not what it takes to add it. It is what it takes to
 > still have it working the next time you look.
 
-The generated pages reuse `style.css` verbatim, so posts inherit the site's design
+The generated pages reuse `site.css` verbatim, so posts inherit the site's design
 system rather than approximating it. There is no theme abstraction to fight because
 there is no theme.
 

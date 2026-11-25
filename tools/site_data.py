@@ -25,12 +25,12 @@ PROJECTS = [
         slug='flightpulse', featured=True, title='FlightPulse', status='Streaming lakehouse',
         desc='A local-first flight-delay lakehouse: live positions streamed through Redpanda into Apache Iceberg, '
              'batch sources modelled with dbt into a bronze, silver, gold star schema, and a delay-probability model '
-             'tracked in MLflow, all gated by blocking Great Expectations checks.',
+             'tracked in MLflow. Blocking Great Expectations checks gate the batch gold tables.',
         tags=['Apache Iceberg', 'dbt', 'Dagster', 'Great Expectations', 'MLflow'],
         cats=['lakehouse', 'streaming', 'ai'],
         img=('/assets/02_delay_by_airport.png', 'FlightPulse dashboard: delay rate by origin airport, shown as a bubble map'),
-        metric=('611K+', 'Real flights processed, with Spark writing the Iceberg table and DuckDB reading it live.',
-                ('Measured', GH + 'FlightPulse#readme', 'README')),
+        metric=('611K+', 'Historical flights in the dashboard. Live aircraft positions are served separately from Iceberg.',
+                ('Measured', GH + 'FlightPulse#opening-the-dashboard', 'README')),
         links=[('View source', GH + 'FlightPulse')],
     ),
     dict(
@@ -101,6 +101,25 @@ PROJECTS = [
         links=[('View on GitHub', GH + 'ai-agent-company')],
     ),
 ]
+
+SPOTLIGHT = dict(
+    slug='flightpulse',
+    summary='A local-first lakehouse with separate batch analytics and live-position paths.',
+    source=GH + 'FlightPulse#architecture',
+    flows=[
+        ('Historical flights', [
+            ('Ingest', 'BTS + reference / weather', 'dlt → MinIO'),
+            ('Model', 'dbt / DuckDB', 'Bronze → silver → gold'),
+            ('Serve', 'Streamlit', 'Delay analytics'),
+        ]),
+        ('Live positions', [
+            ('Ingest', 'OpenSky', 'Redpanda'),
+            ('Stream', 'Spark', 'Iceberg on MinIO'),
+            ('Serve', 'Streamlit', 'DuckDB reads Iceberg'),
+        ]),
+    ],
+    note='Simplified paths from the repository. Quality checks gate batch gold tables; streaming checks are not implemented.',
+)
 
 FILTERS = [('all', 'All'), ('lakehouse', 'Lakehouse'), ('streaming', 'Streaming'),
            ('warehouse', 'Warehouse'), ('ai', 'AI'), ('governance', 'Governance')]

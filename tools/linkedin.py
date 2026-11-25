@@ -43,7 +43,8 @@ AUTH_URL = "https://www.linkedin.com/oauth/v2/authorization"
 TOKEN_URL = "https://www.linkedin.com/oauth/v2/accessToken"
 USERINFO_URL = "https://api.linkedin.com/v2/userinfo"
 POSTS_URL = "https://api.linkedin.com/rest/posts"
-API_VERSION = "202401"
+# Review before this release sunsets on 2027-11-16 (LinkedIn migration schedule).
+API_VERSION = "202611"
 SCOPES = "openid profile w_member_social"
 
 MAX_CHARS = 3000
