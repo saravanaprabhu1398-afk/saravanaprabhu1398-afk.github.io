@@ -128,15 +128,15 @@ NAV = [('home', '/', 'Home'), ('projects', '/projects/', 'Projects'), ('writing'
        ('about', '/about/', 'About'), ('contact', '/#contact', 'Contact')]
 
 SEARCH_STATIC = [
-    dict(t='Home', d='Personal workspace, project previews and contact', u='/', k='Page'),
-    dict(t='Work together', d='Engineering roles and consulting conversations: lakehouses, streaming and governed AI', u='/#services', k='Page'),
+    dict(t='Home', d='Introduction, project windows and contact', u='/', k='Page'),
+    dict(t='Work together', d='Engineering roles and consulting conversations: lakehouses, streaming and governed AI', u='/#contact', k='Page'),
     dict(t='Projects', d='All ten public projects with filters', u='/projects/', k='Page'),
     dict(t='About & experience', d='Career journey, skills, certifications, résumés', u='/about/', k='Page'),
     dict(t='Writing', d='Field notes on data engineering', u='/blog/', k='Page'),
     dict(t='Contact', d='Email, LinkedIn, GitHub, résumé downloads', u='/#contact', k='Page'),
-    dict(t='Case study: one risk engine instead of six pipelines', d='Wipro insurance risk, +40% accuracy, $2M+ saved', u='/#case-studies', k='Case'),
-    dict(t='Case study: sub-60-second CDC', d='Wipro satellite connectivity, 500K+ subscribers', u='/#case-studies', k='Case'),
-    dict(t='Case study: self-service ingestion', d='Scadea for Citi: new sources with no code', u='/#case-studies', k='Case'),
+    dict(t='Case study: one risk engine instead of six pipelines', d='Wipro insurance risk, +40% accuracy, $2M+ saved', u='/projects/#case-studies', k='Case'),
+    dict(t='Case study: sub-60-second CDC', d='Wipro satellite connectivity, 500K+ subscribers', u='/projects/#case-studies', k='Case'),
+    dict(t='Case study: self-service ingestion', d='Scadea for Citi: new sources with no code', u='/projects/#case-studies', k='Case'),
     dict(t='Résumé: UAE & Gulf', d='PDF', u='/assets/Prabhu_Saravanan_Resume_UAE.pdf', k='Résumé'),
     dict(t='Résumé: Europe', d='PDF', u='/assets/Prabhu_Saravanan_Resume_Europe.pdf', k='Résumé'),
     dict(t='Résumé: India', d='PDF', u='/assets/Prabhu_Saravanan_Resume_India.pdf', k='Résumé'),

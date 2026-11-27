@@ -12,7 +12,35 @@
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }
 
-  // App links remain ordinary project links when modal dialogs are unavailable.
+  // ---- Windows: project previews, the contact window and the Stack folder.
+  // Links with data-preview stay ordinary links when their window is not on the page.
+  var hashWindow = function () {
+    var d = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    return d && d.matches && d.matches('dialog.project-preview') ? d : null;
+  };
+  var openWindow = function (dialog, from) {
+    if (dialog.open) return;
+    document.querySelectorAll('dialog.project-preview[open]').forEach(function (d) { d.close(); });
+    dialog._opener = from || document.activeElement;
+    dialog.showModal();
+    document.body.classList.add('preview-open');
+    dialog.querySelector('[data-close-preview]').focus();
+  };
+  document.querySelectorAll('dialog.project-preview').forEach(function (dialog) {
+    if (typeof dialog.showModal !== 'function') return;
+    dialog.querySelector('[data-close-preview]').addEventListener('click', function () { dialog.close(); });
+    dialog.addEventListener('click', function (event) { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener('keydown', function (event) { containTab(dialog, event); });
+    dialog.addEventListener('close', function () {
+      document.body.classList.remove('preview-open');
+      if (hashWindow() === dialog) history.replaceState(null, '', location.pathname + location.search);
+      var o = dialog._opener;
+      // The browser usually restores focus itself; only step in if focus was left nowhere useful,
+      // so a late close event never pulls focus back from wherever the visitor has moved on to.
+      var here = document.activeElement;
+      if (o && o.isConnected && o !== document.body && (!here || here === document.body || dialog.contains(here))) o.focus();
+    });
+  });
   document.querySelectorAll('[data-preview]').forEach(function (link) {
     var dialog = document.getElementById(link.dataset.preview);
     if (!dialog || typeof dialog.showModal !== 'function') return;
@@ -21,18 +49,72 @@
     link.addEventListener('click', function (event) {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
       event.preventDefault();
-      dialog.showModal();
-      document.body.classList.add('preview-open');
-      dialog.querySelector('[data-close-preview]').focus();
-    });
-    dialog.querySelector('[data-close-preview]').addEventListener('click', function () { dialog.close(); });
-    dialog.addEventListener('click', function (event) { if (event.target === dialog) dialog.close(); });
-    dialog.addEventListener('keydown', function (event) { containTab(dialog, event); });
-    dialog.addEventListener('close', function () {
-      document.body.classList.remove('preview-open');
-      link.focus();
+      openWindow(dialog, link);
     });
   });
+  // /#contact (from any page, the nav or a shared link) opens that window on arrival.
+  var fromHash = function () { var d = hashWindow(); if (d && typeof d.showModal === 'function') openWindow(d, null); };
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+
+  // ---- Home: faint particles drifting behind the hero (static when motion is reduced).
+  var stage = document.querySelector('.desktop');
+  var cv = stage && document.createElement('canvas');
+  if (cv && cv.getContext && window.innerWidth > 640) {
+    cv.className = 'drift'; cv.setAttribute('aria-hidden', 'true');
+    document.body.insertBefore(cv, document.body.firstChild);
+    document.documentElement.classList.add('has-drift');
+    var ctx = cv.getContext('2d'), dots = [], tint = '', W = 0, H = 0;
+    var readTint = function () { tint = getComputedStyle(document.documentElement).getPropertyValue('--soft').trim() || '#8090a8'; };
+    var size = function () {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth; H = window.innerHeight;
+      cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var want = Math.round(W * H / 20000);
+      while (dots.length < want) dots.push({ x: Math.random() * W, y: Math.random() * H, r: 0.7 + Math.random() * 1.3,
+        vx: (Math.random() - 0.5) * 0.24, vy: (Math.random() - 0.5) * 0.24, a: 0.18 + Math.random() * 0.32 });
+      dots.length = want;
+    };
+    var draw = function () {
+      ctx.clearRect(0, 0, W, H); ctx.fillStyle = tint;
+      dots.forEach(function (d) {
+        if (!reduced) {
+          d.x += d.vx; d.y += d.vy;
+          if (d.x < -4) d.x = W + 4; else if (d.x > W + 4) d.x = -4;
+          if (d.y < -4) d.y = H + 4; else if (d.y > H + 4) d.y = -4;
+        }
+        ctx.globalAlpha = d.a; ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 6.2832); ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+      if (!reduced) requestAnimationFrame(draw);
+    };
+    readTint(); size();
+    window.addEventListener('resize', function () { size(); if (reduced) draw(); }, { passive: true });
+    new MutationObserver(function () { readTint(); if (reduced) draw(); })
+      .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    draw();
+  }
+
+  // ---- Home: the "latest post" notification slides in once per visit, clear of the dock.
+  var toast = document.getElementById('toast');
+  var seen = false;
+  try { seen = sessionStorage.getItem('toast-dismissed') === '1'; } catch (err) { /* storage blocked: show it */ }
+  if (toast && !seen && window.matchMedia('(min-width: 1100px)').matches) {
+    setTimeout(function () {
+      toast.hidden = false;
+      var dk = document.querySelector('.dock');
+      if (dk) {
+        var a = toast.getBoundingClientRect(), b = dk.getBoundingClientRect();
+        if (a.left < b.right && a.top < b.bottom) toast.style.bottom = (window.innerHeight - b.top + 12) + 'px';
+      }
+      requestAnimationFrame(function () { requestAnimationFrame(function () { toast.classList.add('in'); }); });
+    }, 2400);
+    toast.querySelector('.toast-close').addEventListener('click', function () {
+      toast.classList.remove('in');
+      setTimeout(function () { toast.hidden = true; }, reduced ? 0 : 600);
+      try { sessionStorage.setItem('toast-dismissed', '1'); } catch (err) { /* nothing to remember */ }
+    });
+  }
 
   // ---- Dock: step aside while reading downwards, return on scroll up and at the page end.
   var dock = document.querySelector('.dock');
@@ -95,6 +177,10 @@
       });
     });
     document.documentElement.classList.add('filters-ready');
+    // Dock stack logos link here as /projects/?filter=<category>.
+    var wanted = new URLSearchParams(location.search).get('filter');
+    var preset = wanted && fbar.querySelector('button[data-filter="' + wanted.replace(/[^a-z]/g, '') + '"]');
+    if (preset) preset.click();
   }
 
   // ---- Live GitHub feed (home). Hidden if the API is unreachable.
