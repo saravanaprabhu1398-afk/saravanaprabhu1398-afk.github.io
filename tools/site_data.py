@@ -128,7 +128,8 @@ NAV = [('home', '/', 'Home'), ('projects', '/projects/', 'Projects'), ('writing'
        ('about', '/about/', 'About'), ('contact', '/#contact', 'Contact')]
 
 SEARCH_STATIC = [
-    dict(t='Home', d='Hero, headline numbers, latest activity', u='/', k='Page'),
+    dict(t='Home', d='Personal workspace, project previews and contact', u='/', k='Page'),
+    dict(t='Work together', d='Engineering roles and consulting conversations: lakehouses, streaming and governed AI', u='/#services', k='Page'),
     dict(t='Projects', d='All ten public projects with filters', u='/projects/', k='Page'),
     dict(t='About & experience', d='Career journey, skills, certifications, résumés', u='/about/', k='Page'),
     dict(t='Writing', d='Field notes on data engineering', u='/blog/', k='Page'),

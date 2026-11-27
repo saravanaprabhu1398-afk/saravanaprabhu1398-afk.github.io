@@ -46,26 +46,110 @@ async function main() {
             els.filter(el => el.getBoundingClientRect().right > innerWidth + 1 || el.getBoundingClientRect().left < -1)
               .map(el => el.className || el.tagName));
           assert.deepEqual(overflowing, []);
+          if (path === '/about/') {
+            const portrait = await page.locator('.portrait img').boundingBox();
+            assert.ok(portrait.height <= portrait.width * 1.3, 'Portrait must not retain its HTML height at a smaller width');
+          }
         });
         if (path === '/') {
-          await check(`Hero hierarchy and early project evidence at ${width}px`, async () => {
+          await check(`Desktop launchers and primary actions at ${width}px`, async () => {
             assert.equal(await page.locator('.hero-cta a').count(), 2);
-            assert.equal(await page.locator('.hero-socials a').count(), 2);
-            assert.equal(await page.locator('.tiles .tile').count(), 4);
+            assert.equal(await page.locator('.app').count(), 4);
+            assert.equal(await page.locator('.dock-stack li').count(), 6);
+            assert.equal(await page.locator('.dock a').count(), 3);
+            assert.equal(await page.locator('.dock a[href^="/"]').count(), 0, 'Dock must not repeat page navigation');
+            assert.equal(await page.locator('.app[data-preview]').count(), 4);
             assert.equal(await page.locator('#liveCount, .chip-float, #typed').count(), 0);
             assert.equal(await page.locator('.hero-cta a').first().getAttribute('href'), '#contact');
             assert.equal(await page.locator('.hero-cta a').nth(1).getAttribute('href'), '/about/#resumes');
-            const rows = await page.locator('.hero-cta a').evaluateAll(els =>
-              els.map(el => Math.round(el.getBoundingClientRect().top)));
-            assert.equal(rows[0], rows[1], 'Primary actions should stay together');
+            assert.equal(await page.locator('main h1 .profile-photo').count(), 1, 'Portrait sits inside the statement');
             assert.equal(await page.locator('main > section').nth(1).getAttribute('id'), 'project-spotlight');
             assert.equal(await page.locator('.flow-lane').count(), 2);
             assert.equal(await page.locator('.flow-steps li').count(), 6);
             if (width <= 390) {
               assert.ok(await page.locator('.hero-cta').evaluate(el => el.getBoundingClientRect().bottom < 580),
                 'Contact and resume must appear within the first 580px on mobile');
-              assert.equal(await page.locator('.hero .portrait').evaluate(el => el.getBoundingClientRect().width), 64);
+              assert.equal(await page.locator('.profile-photo').evaluate(el => el.getBoundingClientRect().width), 60);
             }
+            if (width >= 1024) {
+              assert.ok(await page.locator('.hero-cta').evaluate(el =>
+                el.getBoundingClientRect().bottom < document.querySelector('.dock').getBoundingClientRect().top),
+              'The hero call to action must sit above the fixed dock on the first screen');
+            }
+            await page.goto(base + '/');
+            await check('App previews open by keyboard, contain focus and restore their launcher', async () => {
+              const apps = page.locator('.app[data-preview]');
+              for (let i = 0; i < await apps.count(); i++) {
+                await apps.nth(i).focus();
+                await page.keyboard.press('Enter');
+                const dialog = page.locator('.project-preview[open]');
+                assert.equal(await dialog.evaluate(el => el.matches(':modal')), true);
+                assert.equal(await dialog.locator('.project h3').count(), 1);
+                assert.equal(await dialog.locator('.evidence').count(), 1);
+                await page.keyboard.press('Control+k');
+                assert.equal(await page.locator('#palette').isVisible(), false);
+                for (let j = 0; j < 7; j++) {
+                  await page.keyboard.press('Tab');
+                  assert.equal(await dialog.evaluate(el => el.contains(document.activeElement)), true);
+                }
+                await page.keyboard.press('Escape');
+                assert.equal(await page.locator('.project-preview[open]').count(), 0);
+                assert.equal(await apps.nth(i).evaluate(el => el === document.activeElement), true);
+              }
+            });
+            await check('Project window supports close, backdrop dismissal and full-page navigation', async () => {
+              const app = page.locator('.app[data-preview]').first();
+              await app.click();
+              await page.locator('.project-preview[open] [data-close-preview]').click();
+              assert.equal(await app.evaluate(el => el === document.activeElement), true);
+              await app.click();
+              await page.locator('.project-preview[open]').click({ position: { x: 1, y: 1 } });
+              assert.equal(await app.evaluate(el => el === document.activeElement), true);
+              await app.click();
+              await page.locator('.project-preview[open] .preview-more').click();
+              await page.waitForURL('**/projects/#project-flightpulse');
+              assert.equal(await page.locator('#project-flightpulse').isVisible(), true);
+            });
+            await check('Appearance persists across pages and reload, with correct accessible state', async () => {
+              await page.goto(base + '/');
+              assert.equal(await page.locator('html').getAttribute('data-theme'), 'light');
+              await page.locator('.theme-toggle').click();
+              assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
+              assert.equal(await page.locator('.theme-toggle').getAttribute('aria-pressed'), 'true');
+              const contrast = await page.locator('.btn.primary').first().evaluate(el => {
+                const style = getComputedStyle(el);
+                const luminance = value => {
+                  const rgb = value.match(/\d+/g).slice(0, 3).map(Number).map(v => {
+                    const s = v / 255;
+                    return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+                  });
+                  return rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
+                };
+                const fg = luminance(style.color), bg = luminance(style.backgroundColor);
+                return (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05);
+              });
+              assert.ok(contrast >= 4.5, 'Primary CTA must retain contrast immediately after changing theme');
+              await page.goto(base + '/blog/');
+              await page.reload();
+              assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
+              assert.equal(await page.locator('.theme-toggle').getAttribute('aria-label'), 'Use light appearance');
+              await page.locator('.theme-toggle').click();
+              assert.equal(await page.evaluate(() => localStorage.getItem('portfolio-theme')), 'light');
+            });
+            await check('Appearance remains usable when preference storage is blocked', async () => {
+              const blocked = await context();
+              await blocked.addInitScript(() => {
+                Object.defineProperty(window, 'localStorage', { get() { throw new DOMException('Blocked', 'SecurityError'); } });
+              });
+              const p = await blocked.newPage();
+              const warnings = [];
+              p.on('console', message => { if (message.type() === 'warning') warnings.push(message.text()); });
+              await p.goto(base + '/');
+              await p.locator('.theme-toggle').click();
+              assert.equal(await p.locator('html').getAttribute('data-theme'), 'dark');
+              assert.ok(warnings.some(message => message.includes('could not be saved')));
+              await blocked.close();
+            });
           });
         }
       }
@@ -177,6 +261,12 @@ async function main() {
           assert.equal(await p.locator('[data-open-search]').isVisible(), false);
         }
         assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+        await p.goto(base + '/');
+        assert.equal(await p.locator('.app').count(), 4);
+        if (mode !== 'missing-observer') {
+          await p.locator('.app[data-preview]').first().click();
+          await p.waitForURL('**/projects/#project-flightpulse');
+        }
         await fallback.close();
       });
     }

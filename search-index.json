@@ -1,8 +1,14 @@
 [
  {
   "t": "Home",
-  "d": "Hero, headline numbers, latest activity",
+  "d": "Personal workspace, project previews and contact",
   "u": "/",
+  "k": "Page"
+ },
+ {
+  "t": "Work together",
+  "d": "Engineering roles and consulting conversations: lakehouses, streaming and governed AI",
+  "u": "/#services",
   "k": "Page"
  },
  {
