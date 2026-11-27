@@ -172,14 +172,19 @@
       var b = e.target.closest('button'); if (!b) return;
       fbar.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
       var tag = b.getAttribute('data-filter');
+      var tool = tag.indexOf('tool:') === 0 ? tag.slice(5) : '';
+      // A tool button only shows while it is the active filter.
+      fbar.querySelectorAll('button[data-filter^="tool:"]').forEach(function (x) { x.hidden = x !== b; });
       document.querySelectorAll('.project[data-tags]').forEach(function (p) {
-        p.hidden = !(tag === 'all' || p.getAttribute('data-tags').split(' ').indexOf(tag) > -1);
+        var list = (tool ? p.getAttribute('data-tools') || '' : p.getAttribute('data-tags')).split(' ');
+        p.hidden = !(tag === 'all' || list.indexOf(tool || tag) > -1);
       });
     });
     document.documentElement.classList.add('filters-ready');
-    // Dock stack logos link here as /projects/?filter=<category>.
-    var wanted = new URLSearchParams(location.search).get('filter');
-    var preset = wanted && fbar.querySelector('button[data-filter="' + wanted.replace(/[^a-z]/g, '') + '"]');
+    // Links arrive as /projects/?filter=<category> or, from the Stack folder, ?tool=<tool>.
+    var qs = new URLSearchParams(location.search);
+    var wanted = qs.get('tool') ? 'tool:' + qs.get('tool').replace(/[^a-z]/g, '') : (qs.get('filter') || '').replace(/[^a-z]/g, '');
+    var preset = wanted && fbar.querySelector('button[data-filter="' + wanted + '"]');
     if (preset) preset.click();
   }
 

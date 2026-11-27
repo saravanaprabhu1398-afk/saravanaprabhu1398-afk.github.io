@@ -38,7 +38,7 @@ FEED = ROOT / "feed.xml"
 SITE = "https://saravanaprabhu1398-afk.github.io"
 AUTHOR = "Prabhu Saravanan"
 ROLE = "Lead Data Engineer"
-ASSET_V = "20"
+ASSET_V = "21"
 FONT_PRELOAD = '<link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-wght.woff2" as="font" type="font/woff2" crossorigin>'
 HAND_PRELOAD = '<link rel="preload" href="/assets/fonts/caveat-latin-wght.woff2" as="font" type="font/woff2" crossorigin>'
 # The favicon matches the "ps" brand badge in the navigation.
@@ -435,10 +435,22 @@ LAUNCH = [
     ('clinical-document-intelligence', 'Clinical AI', 'Governed RAG', 'clinical'),
 ]
 STACK = ['databricks', 'snowflake', 'dbt', 'apachekafka', 'terraform', 'python']
-STACK_FILTER = {'databricks': 'lakehouse', 'snowflake': 'warehouse', 'dbt': 'warehouse',
-                'apachekafka': 'streaming', 'terraform': 'governance', 'python': 'ai'}
-FILTER_NAME = {'lakehouse': 'Lakehouse', 'warehouse': 'Warehouse', 'streaming': 'Streaming',
-               'governance': 'Governance', 'ai': 'AI'}
+# Each Stack logo filters Projects by the tool itself. A project counts when one of its
+# tags is that tool or something built on it (Redpanda speaks Kafka; FastAPI is Python).
+TOOL_TAGS = {
+    'databricks': {'Databricks', 'Unity Catalog', 'Mosaic AI'},
+    'snowflake': {'Snowflake'},
+    'dbt': {'dbt'},
+    'apachekafka': {'Kafka', 'Redpanda', 'Debezium'},
+    'terraform': {'Terraform'},
+    'python': {'Python', 'FastAPI', 'Pydantic', 'Dagster', 'MLflow', 'Great Expectations', 'NetworkX'},
+}
+
+
+def project_tools(p):
+    return [slug for slug in STACK if TOOL_TAGS[slug] & set(p['tags'])]
+
+
 ELSEWHERE = [('https://github.com/saravanaprabhu1398-afk', 'github'),
              ('https://www.linkedin.com/in/prabhu-saravanan-a53317226', 'linkedin')]
 
@@ -448,14 +460,19 @@ def brand_tile(slug, cls):
     return f'<span class="{cls}" style="--brand:{colour}">{brand_svg(slug)}</span>'
 
 
+def tool_count(slug):
+    n = sum(1 for p in SD.PROJECTS if slug in project_tools(p))
+    return f'{n} project' + ('' if n == 1 else 's')
+
+
 STACK_WINDOW = (
     '<dialog class="project-preview" id="stack-folder" aria-labelledby="stack-folder-title">'
     '<div class="preview-window folder-window"><div class="window-bar"><span id="stack-folder-title">Core stack</span>'
     '<button type="button" data-close-preview aria-label="Close core stack">Close <kbd>Esc</kbd></button></div>'
     '<p class="folder-note">The tools behind the projects. Pick one to see the work it powers.</p>'
     '<ul class="folder-grid">' + ''.join(
-        f'<li><a href="/projects/?filter={STACK_FILTER[slug]}">{brand_tile(slug, "folder-icon dock-tech")}'
-        f'<strong>{BRANDS[slug][0]}</strong><small>{FILTER_NAME[STACK_FILTER[slug]]} projects</small></a></li>'
+        f'<li><a href="/projects/?tool={slug}">{brand_tile(slug, "folder-icon dock-tech")}'
+        f'<strong>{BRANDS[slug][0]}</strong><small>{tool_count(slug)}</small></a></li>'
         for slug in STACK) + '</ul></div></dialog>')
 
 DOCK = ('<div class="dock" role="region" aria-label="Projects and contact">'
@@ -739,7 +756,7 @@ def project_card(p, preview=False):
     links = ''.join(f'<a href="{e(u)}" target="_blank" rel="noopener">{e(t)} &#8599;</a>' for t, u in p['links'])
     tags = ''.join(f'<span>{e(t)}</span>' for t in p['tags'])
     anchor = '' if preview else f' id="project-{e(p["slug"])}"'
-    rendered = f"""      <article class="card project"{anchor} data-tags="{' '.join(p['cats'])}" data-reveal>
+    rendered = f"""      <article class="card project"{anchor} data-tags="{' '.join(p['cats'])}" data-tools="{' '.join(project_tools(p))}" data-reveal>
         {img}
         <div class="project-body">
           <span class="badge">{e(p['status'])}</span>
@@ -847,6 +864,8 @@ def sync_pages(posts=()):
     everything = '<div class="projects">\n' + '\n'.join(project_card(p) for p in SD.PROJECTS) + '\n      </div>'
     filters = ''.join(f'<button type="button" data-filter="{k}" aria-pressed="{"true" if k == "all" else "false"}">{l}</button>'
                       for k, l in SD.FILTERS)
+    filters += ''.join(f'<button type="button" data-filter="tool:{slug}" aria-pressed="false" hidden>{BRANDS[slug][0]}</button>'
+                       for slug in STACK)
     for rel, current in PAGES:
         path = ROOT / rel
         if not path.exists():
