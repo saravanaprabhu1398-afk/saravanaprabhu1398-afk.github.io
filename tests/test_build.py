@@ -36,6 +36,15 @@ class BuildTests(unittest.TestCase):
         self.assertIn(post()['title'], index.read_text())
         self.assertIn(post()['summary'], index.read_text())
 
+    def test_cta_books_a_call_only_when_a_link_is_set(self):
+        with patch.object(build.SD, 'BOOKING_URL', ''):
+            self.assertIn('data-preview="contact"', build.render_cta())
+            self.assertEqual(build.render_contact_book(), '')
+        with patch.object(build.SD, 'BOOKING_URL', 'https://cal.example/me'):
+            self.assertIn('href="https://cal.example/me"', build.render_cta())
+            self.assertNotIn('data-preview', build.render_cta())
+            self.assertIn('Book a 30-minute call', build.render_contact_book())
+
     def test_project_replacement_preserves_backslashes(self):
         source = '<!--PROJECTS:ALL:START-->old<!--PROJECTS:ALL:END-->'
         block = r'<p>Regex \d+, reference \1, C:\notes</p>'

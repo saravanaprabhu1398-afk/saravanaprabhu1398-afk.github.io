@@ -343,6 +343,7 @@ section { padding: 44px 0; }
 .contact h2 { font-size: clamp(28px, 4vw, 40px); line-height: 1.2; letter-spacing: -0.03em; }
 .contact p { color: var(--muted); max-width: 60ch; margin: 16px 0 24px; font-size: 15px; }
 .contact-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.contact-links .btn svg { width: 18px; height: 18px; flex: none; }
 .contact-links .btn { overflow-wrap: anywhere; max-width: 100%; display: block; text-align: center; }
 
 /* Reading surfaces */

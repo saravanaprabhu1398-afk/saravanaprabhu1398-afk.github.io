@@ -38,7 +38,7 @@ FEED = ROOT / "feed.xml"
 SITE = "https://saravanaprabhu1398-afk.github.io"
 AUTHOR = "Prabhu Saravanan"
 ROLE = "Lead Data Engineer"
-ASSET_V = "19"
+ASSET_V = "20"
 FONT_PRELOAD = '<link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-wght.woff2" as="font" type="font/woff2" crossorigin>'
 HAND_PRELOAD = '<link rel="preload" href="/assets/fonts/caveat-latin-wght.woff2" as="font" type="font/woff2" crossorigin>'
 # The favicon matches the "ps" brand badge in the navigation.
@@ -355,6 +355,7 @@ def icon(name):
         'pipeline': '<rect x="2" y="4" width="6" height="6" rx="1"/><rect x="16" y="14" width="6" height="6" rx="1"/><path d="M5 10v7h11M8 7h11v7"/>',
         'clinical': '<rect x="4" y="3" width="16" height="18" rx="3"/><path d="M9 9h6M12 6v6M8 16h8"/>',
         'briefcase': '<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V4h8v4M3 13h18M10 13v3h4v-3"/>',
+        'calendar': '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
         'sun': '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1 1m12 12 1 1M5 19l1-1M18 6l1-1"/>',
         'search': '<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>',
         'code': '<path d="m8 7-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"/>',
@@ -778,6 +779,20 @@ def render_toast(posts):
             f'</aside>')
 
 
+def render_cta():
+    """The home page's main button: a booking link once BOOKING_URL is set, the contact window until then."""
+    label = f"{icon('calendar')}Let's talk about your platform"
+    if SD.BOOKING_URL:
+        return f'<a class="btn primary pill" href="{e(SD.BOOKING_URL)}" target="_blank" rel="noopener">{label}</a>'
+    return f'<a class="btn primary pill" href="#contact" data-preview="contact">{label}</a>'
+
+
+def render_contact_book():
+    if not SD.BOOKING_URL:
+        return ''
+    return f'<a class="btn primary" href="{e(SD.BOOKING_URL)}" target="_blank" rel="noopener">{icon("calendar")}Book a 30-minute call ↗</a>'
+
+
 def render_spotlight():
     detail = SD.SPOTLIGHT
     project = next(p for p in SD.PROJECTS if p['slug'] == detail['slug'])
@@ -849,6 +864,8 @@ def sync_pages(posts=()):
         src = sub_block(src, 'PROJECTS:WINDOWS', render_windows())
         src = sub_block(src, 'STACK:ORBIT', render_orbit())
         src = sub_block(src, 'HOME:TOAST', render_toast(posts))
+        src = sub_block(src, 'HOME:CTA', render_cta())
+        src = sub_block(src, 'CONTACT:BOOK', render_contact_book())
         src = src.replace('<!--FILTERS-->', filters) if '<!--FILTERS-->' in src else re.sub(
             r'(<div class="filters"[^>]*>).*?(</div>)', lambda m: m.group(1) + filters + m.group(2), src, count=1, flags=re.S)
         path.write_text(src, encoding='utf-8')
@@ -922,6 +939,8 @@ def main():
         + '</urlset>\n', encoding='utf-8')
     print('  + sitemap.xml')
     sync_pages(posts)
+    if not SD.BOOKING_URL:
+        print('  i BOOKING_URL is empty in tools/site_data.py: the main button opens the contact window')
     write_search_index(posts)
 
     if update_home(posts):

@@ -124,8 +124,15 @@ SPOTLIGHT = dict(
 FILTERS = [('all', 'All'), ('lakehouse', 'Lakehouse'), ('streaming', 'Streaming'),
            ('warehouse', 'Warehouse'), ('ai', 'AI'), ('governance', 'Governance')]
 
+# Contact is a window (main button, dock Email) and résumés sit behind the CV button, so the bar
+# keeps only the three pages.
 NAV = [('home', '/', 'Home'), ('projects', '/projects/', 'Projects'), ('writing', '/blog/', 'Writing'),
-       ('about', '/about/', 'About'), ('contact', '/#contact', 'Contact')]
+       ('about', '/about/', 'About')]
+
+# PLACEHOLDER: paste your scheduling link (Cal.com, Calendly, Google Calendar booking page…), e.g.
+# BOOKING_URL = 'https://cal.com/<your-handle>/30min'. While it is empty, the main button opens the
+# contact window instead, so the live site never shows a dead link.
+BOOKING_URL = ''
 
 SEARCH_STATIC = [
     dict(t='Home', d='Introduction, project windows and contact', u='/', k='Page'),
