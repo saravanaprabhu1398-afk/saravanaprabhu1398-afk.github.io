@@ -167,7 +167,12 @@ async function main() {
       assert.equal(await page.locator('#navLinks').isVisible(), false);
       assert.equal(await page.locator('#menuBtn').evaluate(el => el === document.activeElement), true);
     });
-    await check('Contact opens as a window from the CTA, the nav and a shared link', async () => {
+    await check('The menu bar keeps three pages; contact and résumés live in windows', async () => {
+      await page.goto(base + '/about/');
+      assert.deepEqual(await page.locator('#navLinks a').allTextContents(), ['Projects', 'Writing', 'About']);
+      assert.equal(await page.locator('#navLinks a[href*="#contact"]').count(), 0);
+    });
+    await check('Contact opens as a window from the CTA and a shared link', async () => {
       await page.goto(base + '/');
       const cta = page.locator('.hero-cta a').first();
       await cta.click();
