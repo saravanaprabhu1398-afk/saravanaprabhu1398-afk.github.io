@@ -1,14 +1,14 @@
 [
  {
   "t": "Home",
-  "d": "Personal workspace, project previews and contact",
+  "d": "Introduction, project windows and contact",
   "u": "/",
   "k": "Page"
  },
  {
   "t": "Work together",
   "d": "Engineering roles and consulting conversations: lakehouses, streaming and governed AI",
-  "u": "/#services",
+  "u": "/#contact",
   "k": "Page"
  },
  {
@@ -38,19 +38,19 @@
  {
   "t": "Case study: one risk engine instead of six pipelines",
   "d": "Wipro insurance risk, +40% accuracy, $2M+ saved",
-  "u": "/#case-studies",
+  "u": "/projects/#case-studies",
   "k": "Case"
  },
  {
   "t": "Case study: sub-60-second CDC",
   "d": "Wipro satellite connectivity, 500K+ subscribers",
-  "u": "/#case-studies",
+  "u": "/projects/#case-studies",
   "k": "Case"
  },
  {
   "t": "Case study: self-service ingestion",
   "d": "Scadea for Citi: new sources with no code",
-  "u": "/#case-studies",
+  "u": "/projects/#case-studies",
   "k": "Case"
  },
  {

@@ -54,31 +54,31 @@ async function main() {
         if (path === '/') {
           await check(`Desktop launchers and primary actions at ${width}px`, async () => {
             assert.equal(await page.locator('.hero-cta a').count(), 2);
-            assert.equal(await page.locator('.app').count(), 4);
-            assert.equal(await page.locator('.dock-stack li').count(), 6);
-            assert.equal(await page.locator('.dock a').count(), 3);
-            assert.equal(await page.locator('.dock a[href^="/"]').count(), 0, 'Dock must not repeat page navigation');
-            assert.equal(await page.locator('.app[data-preview]').count(), 4);
-            assert.equal(await page.locator('#liveCount, .chip-float, #typed').count(), 0);
+            assert.equal(await page.locator('.dock-app[data-preview^="preview-"]').count(), 4, 'Dock carries the four project apps');
+            assert.equal(await page.locator('.dock-app[data-preview="stack-folder"]').count(), 1);
+            assert.equal(await page.locator('.dock a').count(), 8);
+            assert.equal(await page.locator('#stack-folder .folder-grid a[href^="/projects/?filter="]').count(), 6, 'Every stack logo opens filtered projects');
+            assert.equal(await page.locator('.dock-links a[href^="/"]').count(), 0, 'Dock must not repeat page navigation');
+            assert.equal(await page.locator('#liveCount, .chip-float, #typed, .launcher').count(), 0);
             assert.equal(await page.locator('.hero-cta a').first().getAttribute('href'), '#contact');
+            assert.equal(await page.locator('.hero-cta a').first().getAttribute('data-preview'), 'contact');
             assert.equal(await page.locator('.hero-cta a').nth(1).getAttribute('href'), '/about/#resumes');
             assert.equal(await page.locator('main h1 .profile-photo').count(), 1, 'Portrait sits inside the statement');
-            assert.equal(await page.locator('main > section').nth(1).getAttribute('id'), 'project-spotlight');
-            assert.equal(await page.locator('.flow-lane').count(), 2);
-            assert.equal(await page.locator('.flow-steps li').count(), 6);
+            assert.equal(await page.locator('main > section').count(), 1, 'Home is a single screen');
             if (width <= 390) {
               assert.ok(await page.locator('.hero-cta').evaluate(el => el.getBoundingClientRect().bottom < 580),
                 'Contact and resume must appear within the first 580px on mobile');
               assert.equal(await page.locator('.profile-photo').evaluate(el => el.getBoundingClientRect().width), 60);
             }
             if (width >= 1024) {
+              assert.ok(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 1), 'Home fits one screen on desktop');
               assert.ok(await page.locator('.hero-cta').evaluate(el =>
                 el.getBoundingClientRect().bottom < document.querySelector('.dock').getBoundingClientRect().top),
               'The hero call to action must sit above the fixed dock on the first screen');
             }
             await page.goto(base + '/');
             await check('App previews open by keyboard, contain focus and restore their launcher', async () => {
-              const apps = page.locator('.app[data-preview]');
+              const apps = page.locator('.dock-app[data-preview^="preview-"]');
               for (let i = 0; i < await apps.count(); i++) {
                 await apps.nth(i).focus();
                 await page.keyboard.press('Enter');
@@ -96,18 +96,18 @@ async function main() {
                 assert.equal(await page.locator('.project-preview[open]').count(), 0);
                 await apps.nth(i).evaluate(el => new Promise((ok, fail) => {
                   const t0 = Date.now();
-                  (function poll() { if (el === document.activeElement) ok(); else if (Date.now() - t0 > 2000) fail(new Error('Launcher did not regain focus')); else requestAnimationFrame(poll); })();
+                  (function poll() { if (el === document.activeElement) ok(); else if (Date.now() - t0 > 2000) fail(new Error('Launcher did not regain focus; focus is on ' + (document.activeElement.outerHTML || '').slice(0, 120) + ' open=' + document.querySelectorAll('dialog[open]').length)); else requestAnimationFrame(poll); })();
                 }));
               }
             });
             await check('Project window supports close, backdrop dismissal and full-page navigation', async () => {
-              const app = page.locator('.app[data-preview]').first();
+              const app = page.locator('.dock-app[data-preview^="preview-"]').first();
               await app.click();
               await page.locator('.project-preview[open] [data-close-preview]').click();
-              await app.evaluate(el => new Promise((ok, fail) => { const t0 = Date.now(); (function poll() { if (el === document.activeElement) ok(); else if (Date.now() - t0 > 2000) fail(new Error('Launcher did not regain focus')); else requestAnimationFrame(poll); })(); }));
+              await app.evaluate(el => new Promise((ok, fail) => { const t0 = Date.now(); (function poll() { if (el === document.activeElement) ok(); else if (Date.now() - t0 > 2000) fail(new Error('Launcher did not regain focus; focus is on ' + (document.activeElement.outerHTML || '').slice(0, 120) + ' open=' + document.querySelectorAll('dialog[open]').length)); else requestAnimationFrame(poll); })(); }));
               await app.click();
               await page.locator('.project-preview[open]').click({ position: { x: 1, y: 1 } });
-              await app.evaluate(el => new Promise((ok, fail) => { const t0 = Date.now(); (function poll() { if (el === document.activeElement) ok(); else if (Date.now() - t0 > 2000) fail(new Error('Launcher did not regain focus')); else requestAnimationFrame(poll); })(); }));
+              await app.evaluate(el => new Promise((ok, fail) => { const t0 = Date.now(); (function poll() { if (el === document.activeElement) ok(); else if (Date.now() - t0 > 2000) fail(new Error('Launcher did not regain focus; focus is on ' + (document.activeElement.outerHTML || '').slice(0, 120) + ' open=' + document.querySelectorAll('dialog[open]').length)); else requestAnimationFrame(poll); })(); }));
               await app.click();
               await page.locator('.project-preview[open] .preview-more').click();
               await page.waitForURL('**/projects/#project-flightpulse');
@@ -167,6 +167,53 @@ async function main() {
       assert.equal(await page.locator('#navLinks').isVisible(), false);
       assert.equal(await page.locator('#menuBtn').evaluate(el => el === document.activeElement), true);
     });
+    await check('Contact opens as a window from the CTA, the nav and a shared link', async () => {
+      await page.goto(base + '/');
+      const cta = page.locator('.hero-cta a').first();
+      await cta.click();
+      assert.equal(await page.locator('#contact').evaluate(el => el.matches(':modal')), true);
+      await page.keyboard.press('Escape');
+      await cta.evaluate(el => new Promise((ok, fail) => { const t0 = Date.now(); (function poll() { if (el === document.activeElement) ok(); else if (Date.now() - t0 > 2000) fail(new Error('CTA did not regain focus')); else requestAnimationFrame(poll); })(); }));
+      await page.goto(base + '/about/');
+      await page.goto(base + '/#contact');
+      assert.equal(await page.locator('#contact').evaluate(el => el.open), true, '/#contact opens the window on arrival');
+      await page.locator('#contact [data-close-preview]').click();
+      await page.waitForFunction(() => location.hash === '', null, { timeout: 2000 }); // closing clears the hash so the link works again
+    });
+    await check('CV opens as a window from the nav on every page and from the hero link', async () => {
+      for (const path of ['/', '/projects/', '/blog/publishing-pipeline/']) {
+        await page.goto(base + path);
+        await page.locator('.cv-btn').click();
+        const cv = page.locator('#cv');
+        assert.equal(await cv.evaluate(el => el.matches(':modal')), true);
+        assert.equal(await cv.locator('a[download][href$=".pdf"]').count(), 3);
+        await page.keyboard.press('Escape');
+        assert.equal(await page.locator('#cv[open]').count(), 0);
+      }
+      await page.goto(base + '/');
+      await page.locator('.hero-cta .scribble-link').click();
+      assert.equal(await page.locator('#cv').evaluate(el => el.open), true);
+      await page.keyboard.press('Escape');
+    });
+    await check('Moved home sections live on Projects', async () => {
+      await page.goto(base + '/projects/');
+      assert.equal(await page.locator('#project-spotlight').count(), 1);
+      assert.equal(await page.locator('#case-studies').count(), 1);
+      assert.equal(await page.locator('.flow-lane').count(), 2);
+      assert.equal(await page.locator('.flow-steps li').count(), 6);
+    });
+    await check('The Stack folder opens in place and a logo opens filtered Projects', async () => {
+      await page.goto(base + '/');
+      await page.locator('.dock-app[data-preview="stack-folder"]').click();
+      assert.equal(await page.locator('#stack-folder').evaluate(el => el.matches(':modal')), true);
+      await page.locator('#stack-folder a[href="/projects/?filter=streaming"]').click();
+      await page.waitForURL('**/projects/?filter=streaming');
+      assert.equal(await page.locator('[data-filter="streaming"]').getAttribute('aria-pressed'), 'true');
+      assert.equal(await page.locator('.project:visible').count(), 3);
+      await page.goto(base + '/projects/?filter=nonsense');
+      assert.equal(await page.locator('[data-filter="all"]').getAttribute('aria-pressed'), 'true');
+      assert.equal(await page.locator('.project:visible').count(), 10);
+    });
     await check('Project filtering preserves matching cards and restores all', async () => {
       await page.locator('[data-filter="streaming"]').click();
       assert.equal(await page.locator('.project:visible').count(), 3);
@@ -183,6 +230,8 @@ async function main() {
       await page.locator('#palette li a').nth(1).click();
       await page.waitForURL('**/#contact');
       assert.equal(await page.locator('#palette').isVisible(), false);
+      await page.waitForFunction(() => document.getElementById('contact').open);
+      await page.locator('#contact [data-close-preview]').click();
     });
     await check('Search is modal, loops focus, and restores opener on Escape', async () => {
       await page.locator('[data-open-search]').click();
@@ -265,9 +314,9 @@ async function main() {
         }
         assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
         await p.goto(base + '/');
-        assert.equal(await p.locator('.app').count(), 4);
+        assert.equal(await p.locator('.dock-app[data-preview^="preview-"]').count(), 4);
         if (mode !== 'missing-observer') {
-          await p.locator('.app[data-preview]').first().click();
+          await p.locator('.dock-app[data-preview^="preview-"]').first().click();
           await p.waitForURL('**/projects/#project-flightpulse');
         }
         await fallback.close();

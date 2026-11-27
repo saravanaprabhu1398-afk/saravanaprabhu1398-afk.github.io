@@ -38,7 +38,7 @@ FEED = ROOT / "feed.xml"
 SITE = "https://saravanaprabhu1398-afk.github.io"
 AUTHOR = "Prabhu Saravanan"
 ROLE = "Lead Data Engineer"
-ASSET_V = "15"
+ASSET_V = "19"
 FONT_PRELOAD = '<link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-wght.woff2" as="font" type="font/woff2" crossorigin>'
 HAND_PRELOAD = '<link rel="preload" href="/assets/fonts/caveat-latin-wght.woff2" as="font" type="font/woff2" crossorigin>'
 # The favicon matches the "ps" brand badge in the navigation.
@@ -364,6 +364,9 @@ def icon(name):
             f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{shapes[name]}</svg>')
 
 
+RESUMES = [('UAE', 'UAE &amp; Gulf edition'), ('Europe', 'Europe edition'), ('India', 'India edition')]
+
+
 def nav_html(current):
     links = ''.join(
         f'<a href="{u}"' + (' aria-current="page"' if k == current else '') + f'>{label}</a>'
@@ -375,6 +378,7 @@ def nav_html(current):
     <div class="nav-tools">
       <button class="theme-toggle" type="button" aria-label="Use dark appearance" aria-pressed="false">{icon('sun')}</button>
       <button class="search-btn" data-open-search aria-label="Search the site" aria-keyshortcuts="Meta+K Control+K">{icon('search')}<kbd class="kbd-shortcut" aria-hidden="true"></kbd></button>
+      <a class="cv-btn" href="/about/#resumes" data-preview="cv">{icon('note')}<span>CV</span></a>
     </div>
     <span class="nav-sep" aria-hidden="true"></span>
     <nav class="nav-links" id="navLinks" aria-label="Main">{links}</nav>
@@ -388,6 +392,17 @@ def nav_html(current):
     <p class="search-status" id="searchStatus" role="status"></p>
     <ul aria-label="Search results"></ul>
     <div class="palette-hint">↑↓ to move · ↵ to open · esc to close</div>
+  </div>
+</dialog>
+<dialog class="project-preview" id="cv" aria-labelledby="cv-title">
+  <div class="preview-window cv-window"><div class="window-bar"><span>Curriculum vitae</span>
+    <button type="button" data-close-preview aria-label="Close CV">Close <kbd>Esc</kbd></button></div>
+    <div class="cv-body">
+      <h2 id="cv-title">Prabhu Saravanan</h2>
+      <p>Lead Data Engineer in Abu Dhabi · eight years building lakehouse, streaming and governed AI platforms. Pick the edition for your region.</p>
+      <div class="resumes">{''.join(f'<a class="card" href="/assets/Prabhu_Saravanan_Resume_{key}.pdf" download><span><small>PDF</small><strong>{label}</strong></span><span aria-hidden="true">↓</span></a>' for key, label in RESUMES)}</div>
+      <a class="more-link" href="/about/#experience">Read the full career story ↗</a>
+    </div>
   </div>
 </dialog>'''
 
@@ -410,9 +425,19 @@ def brand_svg(slug):
     return (f'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="{BRANDS[slug][2]}"/></svg>')
 
 
-# The dock carries proof (the stack the projects actually use) and the ways to reach me.
-# Page navigation lives in the menu bar only, so nothing is repeated three times.
+# The dock is the desktop: project apps open their windows in place (plain links where the
+# windows are not on the page), the Stack folder holds the core tools, then ways to reach me.
+LAUNCH = [
+    ('flightpulse', 'FlightPulse', 'Flight analytics', 'plane'),
+    ('guardrail', 'Guardrail', 'Safe rollouts', 'shield'),
+    ('dataplatform', 'Dataplatform', 'Orchestration', 'pipeline'),
+    ('clinical-document-intelligence', 'Clinical AI', 'Governed RAG', 'clinical'),
+]
 STACK = ['databricks', 'snowflake', 'dbt', 'apachekafka', 'terraform', 'python']
+STACK_FILTER = {'databricks': 'lakehouse', 'snowflake': 'warehouse', 'dbt': 'warehouse',
+                'apachekafka': 'streaming', 'terraform': 'governance', 'python': 'ai'}
+FILTER_NAME = {'lakehouse': 'Lakehouse', 'warehouse': 'Warehouse', 'streaming': 'Streaming',
+               'governance': 'Governance', 'ai': 'AI'}
 ELSEWHERE = [('https://github.com/saravanaprabhu1398-afk', 'github'),
              ('https://www.linkedin.com/in/prabhu-saravanan-a53317226', 'linkedin')]
 
@@ -422,15 +447,29 @@ def brand_tile(slug, cls):
     return f'<span class="{cls}" style="--brand:{colour}">{brand_svg(slug)}</span>'
 
 
-DOCK = ('<div class="dock" role="region" aria-label="Stack and contact">'
-        '<ul class="dock-stack" aria-label="Core stack">' + ''.join(
-            f'<li>{brand_tile(slug, "dock-icon dock-tech")}<span>{BRANDS[slug][0]}</span></li>'
-            for slug in STACK) + '</ul><span class="dock-divider" aria-hidden="true"></span>'
+STACK_WINDOW = (
+    '<dialog class="project-preview" id="stack-folder" aria-labelledby="stack-folder-title">'
+    '<div class="preview-window folder-window"><div class="window-bar"><span id="stack-folder-title">Core stack</span>'
+    '<button type="button" data-close-preview aria-label="Close core stack">Close <kbd>Esc</kbd></button></div>'
+    '<p class="folder-note">The tools behind the projects. Pick one to see the work it powers.</p>'
+    '<ul class="folder-grid">' + ''.join(
+        f'<li><a href="/projects/?filter={STACK_FILTER[slug]}">{brand_tile(slug, "folder-icon dock-tech")}'
+        f'<strong>{BRANDS[slug][0]}</strong><small>{FILTER_NAME[STACK_FILTER[slug]]} projects</small></a></li>'
+        for slug in STACK) + '</ul></div></dialog>')
+
+DOCK = ('<div class="dock" role="region" aria-label="Projects and contact">'
+        '<nav class="dock-apps" aria-label="Projects">' + ''.join(
+            f'<a class="dock-app" href="/projects/#project-{slug}" data-preview="preview-{slug}" title="{title}: {subtitle}">'
+            f'<span class="dock-icon app-{glyph}">{icon(glyph)}</span><span>{title}</span></a>'
+            for slug, title, subtitle, glyph in LAUNCH)
+        + '<a class="dock-app" href="/projects/" data-preview="stack-folder" title="Core stack">'
+        '<span class="dock-icon dock-folder">' + ''.join(brand_tile(slug, 'mini') for slug in STACK[:4])
+        + '</span><span>Stack</span></a></nav><span class="dock-divider" aria-hidden="true"></span>'
         '<nav class="dock-links" aria-label="Elsewhere">' + ''.join(
             f'<a href="{url}" rel="noopener">{brand_tile(slug, "dock-icon dock-tech")}<span>{BRANDS[slug][0]}</span></a>'
             for url, slug in ELSEWHERE)
         + f'<a href="mailto:prabhu.saravanan.de@gmail.com"><span class="dock-icon dock-mail">{icon("mail")}</span><span>Email</span></a>'
-        '</nav></div>')
+        '</nav></div>' + STACK_WINDOW)
 
 
 def render_orbit():
@@ -594,8 +633,7 @@ def update_home(posts):
     """Refresh the #blog cards on the homepage between the two markers."""
     src = INDEX.read_text(encoding='utf-8')
     if HOME_START not in src or HOME_END not in src:
-        print('  ! index.html has no POSTS markers — homepage cards not updated')
-        return False
+        return False  # the home page is a single screen; the newest post shows in its notification
 
     if posts:
         cards = []
@@ -722,6 +760,24 @@ def sub_block(src, name, content):
                   lambda m: start + '\n' + content + '\n      ' + end, src, flags=re.S)
 
 
+def render_toast(posts):
+    """A macOS-style notification on the home page that points at the newest post."""
+    live = [p for p in posts if not p['draft']]
+    if not live:
+        return ''
+    post = live[0]
+    summary = post['summary'] if len(post['summary']) <= 110 else post['summary'][:107].rsplit(' ', 1)[0] + '…'
+    return (f'<aside class="toast" id="toast" aria-label="Latest post" hidden>'
+            f'<a class="toast-link" href="/blog/{post["slug"]}/">'
+            f'<span class="toast-head"><span class="toast-app" aria-hidden="true">ps</span>'
+            f'<span class="toast-kicker">Fresh off the press</span>'
+            f'<time datetime="{post["date"].strftime("%Y-%m-%d")}">{post["date"].strftime("%d %b").lstrip("0")}</time></span>'
+            f'<strong>{e(post["title"])}</strong>'
+            f'<span class="toast-sum">{e(summary)}</span></a>'
+            f'<button type="button" class="toast-close" aria-label="Dismiss notification"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>'
+            f'</aside>')
+
+
 def render_spotlight():
     detail = SD.SPOTLIGHT
     project = next(p for p in SD.PROJECTS if p['slug'] == detail['slug'])
@@ -747,26 +803,17 @@ def render_spotlight():
   </section>'''
 
 
-def render_launcher():
+def render_windows():
+    """Project windows on the home page; the dock's project apps open them in place."""
     projects = {p['slug']: p for p in SD.PROJECTS}
-    entries = [
-        ('flightpulse', 'FlightPulse', 'Flight analytics', 'plane'),
-        ('guardrail', 'Guardrail', 'Safe rollouts', 'shield'),
-        ('dataplatform', 'Dataplatform', 'Orchestration', 'pipeline'),
-        ('clinical-document-intelligence', 'Clinical AI', 'Governed RAG', 'clinical'),
-    ]
-    tiles, previews = [], []
-    for slug, title, subtitle, glyph in entries:
-        tiles.append(f'''<a class="app" href="/projects/#project-{slug}" data-preview="preview-{slug}">
-          <span class="app-icon app-{glyph}">{icon(glyph)}</span><strong>{title}</strong><small>{subtitle}</small></a>''')
-        previews.append(f'''<dialog class="project-preview" id="preview-{slug}" aria-label="{e(title)} project preview">
+    out = []
+    for slug, title, subtitle, glyph in LAUNCH:
+        out.append(f'''<dialog class="project-preview" id="preview-{slug}" aria-label="{e(title)} project preview">
           <div class="preview-window"><div class="window-bar"><span>{e(title)}</span>
           <button type="button" data-close-preview aria-label="Close {e(title)} preview">Close <kbd>Esc</kbd></button></div>
           {project_card(projects[slug], preview=True)}
           <a class="preview-more" href="/projects/#project-{slug}">Open in Projects &#8599;</a></div></dialog>''')
-    return ('<div class="launcher"><div class="launcher-heading"><h2>Selected projects</h2>'
-            '<a href="/projects/">All projects &#8599;</a></div><div class="app-grid">'
-            + ''.join(tiles) + '</div></div>' + ''.join(previews))
+    return ''.join(out)
 
 
 def sync_head(src, hand=False):
@@ -780,7 +827,7 @@ def sync_head(src, hand=False):
     return src.replace('</head>', f'{FAVICON}\n{fonts}\n<script src="/theme.js?v={ASSET_V}"></script>\n</head>')
 
 
-def sync_pages():
+def sync_pages(posts=()):
     featured = '<div class="projects">\n' + '\n'.join(project_card(p) for p in SD.PROJECTS if p['featured']) + '\n      </div>'
     everything = '<div class="projects">\n' + '\n'.join(project_card(p) for p in SD.PROJECTS) + '\n      </div>'
     filters = ''.join(f'<button type="button" data-filter="{k}" aria-pressed="{"true" if k == "all" else "false"}">{l}</button>'
@@ -799,8 +846,9 @@ def sync_pages():
         src = sub_block(src, 'PROJECTS:FEATURED', featured)
         src = sub_block(src, 'PROJECTS:ALL', everything)
         src = sub_block(src, 'PROJECTS:SPOTLIGHT', render_spotlight())
-        src = sub_block(src, 'PROJECTS:LAUNCHER', render_launcher())
+        src = sub_block(src, 'PROJECTS:WINDOWS', render_windows())
         src = sub_block(src, 'STACK:ORBIT', render_orbit())
+        src = sub_block(src, 'HOME:TOAST', render_toast(posts))
         src = src.replace('<!--FILTERS-->', filters) if '<!--FILTERS-->' in src else re.sub(
             r'(<div class="filters"[^>]*>).*?(</div>)', lambda m: m.group(1) + filters + m.group(2), src, count=1, flags=re.S)
         path.write_text(src, encoding='utf-8')
@@ -873,7 +921,7 @@ def main():
         + ''.join(f'  <url><loc>{u}</loc>' + (f'<lastmod>{d}</lastmod>' if d else '') + '</url>\n' for u, d in urls)
         + '</urlset>\n', encoding='utf-8')
     print('  + sitemap.xml')
-    sync_pages()
+    sync_pages(posts)
     write_search_index(posts)
 
     if update_home(posts):

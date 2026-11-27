@@ -63,7 +63,7 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(len([x for x in items if x['k'] == 'Project']), len(build.SD.PROJECTS))
 
     def test_spotlight_matches_source_and_preserves_evidence_scope(self):
-        source = (ROOT / 'index.html').read_text()
+        source = (ROOT / 'projects' / 'index.html').read_text()
         rendered = build.render_spotlight()
         self.assertIn(rendered, source)
         self.assertIn('Historical flights in the dashboard', rendered)
@@ -72,6 +72,7 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(rendered.count('<ol class="flow-steps">'), 2)
         self.assertEqual(rendered.count('<li>'), 6)
         self.assertNotIn('id="liveCount"', source)
+        self.assertNotIn('project-spotlight', (ROOT / 'index.html').read_text(), 'Home stays a single screen')
 
 
 if __name__ == '__main__':
