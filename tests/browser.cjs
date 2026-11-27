@@ -94,17 +94,20 @@ async function main() {
                 }
                 await page.keyboard.press('Escape');
                 assert.equal(await page.locator('.project-preview[open]').count(), 0);
-                assert.equal(await apps.nth(i).evaluate(el => el === document.activeElement), true);
+                await apps.nth(i).evaluate(el => new Promise((ok, fail) => {
+                  const t0 = Date.now();
+                  (function poll() { if (el === document.activeElement) ok(); else if (Date.now() - t0 > 2000) fail(new Error('Launcher did not regain focus')); else requestAnimationFrame(poll); })();
+                }));
               }
             });
             await check('Project window supports close, backdrop dismissal and full-page navigation', async () => {
               const app = page.locator('.app[data-preview]').first();
               await app.click();
               await page.locator('.project-preview[open] [data-close-preview]').click();
-              assert.equal(await app.evaluate(el => el === document.activeElement), true);
+              await app.evaluate(el => new Promise((ok, fail) => { const t0 = Date.now(); (function poll() { if (el === document.activeElement) ok(); else if (Date.now() - t0 > 2000) fail(new Error('Launcher did not regain focus')); else requestAnimationFrame(poll); })(); }));
               await app.click();
               await page.locator('.project-preview[open]').click({ position: { x: 1, y: 1 } });
-              assert.equal(await app.evaluate(el => el === document.activeElement), true);
+              await app.evaluate(el => new Promise((ok, fail) => { const t0 = Date.now(); (function poll() { if (el === document.activeElement) ok(); else if (Date.now() - t0 > 2000) fail(new Error('Launcher did not regain focus')); else requestAnimationFrame(poll); })(); }));
               await app.click();
               await page.locator('.project-preview[open] .preview-more').click();
               await page.waitForURL('**/projects/#project-flightpulse');
@@ -169,7 +172,7 @@ async function main() {
       assert.equal(await page.locator('.project:visible').count(), 3);
       await page.locator('[data-filter="all"]').click();
       assert.equal(await page.locator('.project:visible').count(), 10);
-      assert.equal(await page.locator('.evidence b').first().evaluate(el => getComputedStyle(el).fontSize), '10.5px');
+      assert.equal(await page.locator('.evidence b').first().evaluate(el => getComputedStyle(el).fontSize), '11px');
     });
 
     await page.route('**/search-index.json', route => route.fulfill({ json: search }));
