@@ -1,8 +1,55 @@
-/* site.js: nav, reveal, project filters, live GitHub feed, ⌘K search. No dependencies. */
+/* site.js: navigation, project previews/filters, live GitHub feed and search. */
 (function () {
   'use strict';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var USER = 'saravanaprabhu1398-afk';
+
+  function containTab(dialog, event) {
+    if (event.key !== 'Tab') return;
+    var focusable = dialog.querySelectorAll('button, input, a[href]');
+    var first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
+
+  // App links remain ordinary project links when modal dialogs are unavailable.
+  document.querySelectorAll('[data-preview]').forEach(function (link) {
+    var dialog = document.getElementById(link.dataset.preview);
+    if (!dialog || typeof dialog.showModal !== 'function') return;
+    link.setAttribute('aria-haspopup', 'dialog');
+    link.setAttribute('aria-controls', dialog.id);
+    link.addEventListener('click', function (event) {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      event.preventDefault();
+      dialog.showModal();
+      document.body.classList.add('preview-open');
+      dialog.querySelector('[data-close-preview]').focus();
+    });
+    dialog.querySelector('[data-close-preview]').addEventListener('click', function () { dialog.close(); });
+    dialog.addEventListener('click', function (event) { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener('keydown', function (event) { containTab(dialog, event); });
+    dialog.addEventListener('close', function () {
+      document.body.classList.remove('preview-open');
+      link.focus();
+    });
+  });
+
+  // ---- Dock: step aside while reading downwards, return on scroll up and at the page end.
+  var dock = document.querySelector('.dock');
+  if (dock) {
+    var lastY = window.scrollY, ticking = false;
+    var updateDock = function () {
+      var y = window.scrollY;
+      var atEnd = window.innerHeight + y >= document.documentElement.scrollHeight - 40;
+      if (atEnd || y < 160 || y < lastY - 4) dock.classList.remove('dock-away');
+      else if (y > lastY + 4) dock.classList.add('dock-away');
+      lastY = y;
+      ticking = false;
+    };
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(updateDock); }
+    }, { passive: true });
+  }
 
   // ---- Mobile menu
   var menuBtn = document.getElementById('menuBtn');
@@ -169,15 +216,10 @@
       else return;
       select(links);
     });
-    pal.addEventListener('keydown', function (e) {
-      if (e.key !== 'Tab') return;
-      var focusable = pal.querySelectorAll('button, input, a[href]');
-      var first = focusable[0], last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    });
+    pal.addEventListener('keydown', function (e) { containTab(pal, e); });
     document.addEventListener('keydown', function (e) {
       var active = document.activeElement;
+      if (document.querySelector('.project-preview[open]')) return;
       var typing = active && (/INPUT|TEXTAREA|SELECT/.test(active.tagName) || active.isContentEditable);
       if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !typing)) { e.preventDefault(); open(); return; }
     });

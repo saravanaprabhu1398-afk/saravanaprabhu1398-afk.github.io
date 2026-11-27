@@ -12,27 +12,29 @@ Deployed with GitHub Pages from `main` at the repo root.
 |---|---|
 | `index.html`, `projects/`, `about/` | Hand-written pages; nav, footer and project cards are synced by `build.py` |
 | `site.css` | The whole design: tokens, components, responsive rules |
-| `site.js` | Nav, reveal, project filters, live GitHub feed, ⌘K search |
+| `site.js` | Navigation, project previews/filters, live GitHub feed, ⌘K search |
+| `theme.js` | Early light/dark appearance, local preference storage and toggle |
 | `assets/` | Résumé PDF, portrait, project screenshots, architecture diagrams |
 | `content/` | Post sources (Markdown) and the topic backlog |
 | `tools/` | `build.py` (Markdown → pages, project cards, sitemap, search index), `site_data.py` (projects, nav, search entries) and `linkedin.py` |
 | `blog/`, `feed.xml`, `sitemap.xml`, `search-index.json` | **Generated.** Do not hand-edit — `build.py` overwrites them |
 | `tests/` | Standard-library regression tests and an optional Playwright browser check |
 
-Fonts are loaded from Google Fonts (Bricolage Grotesque, Inter and JetBrains Mono),
-with local fallbacks. The build requires Python 3.9+ and its standard library only.
+Headings use Bricolage Grotesque and the hero's handwritten notes use Caveat, both self-hosted from `assets/fonts/` under the SIL Open Font License (`OFL.txt`, `OFL-Caveat.txt`); body text uses the device's system fonts. There are no external font requests.
+Tool and social logos (dock and the hero's orbiting stack) are inlined SVG paths from Simple Icons (CC0, `simple-icons@13.21.0`), defined once in `BRANDS` in `tools/build.py`; the trademarks belong to their owners.
+The build requires Python 3.9+ and its standard library only.
 
 ## Design
 
-A dark canvas (`#0a0a0c`) and layered cards, with coral, amber, lime, sky and violet
-accents. Bricolage Grotesque headlines, Inter body text, and JetBrains Mono labels
-carry the hierarchy. Responsive grids, generous section spacing and a translucent
-navigation bar keep the portfolio readable without replacing its colorful identity.
-The compact hero prioritizes contact and résumé links, with a quiet portrait and
-understated social links. Career evidence uses neutral metric rows rather than
-saturated tiles; repository counts are not presented as impact metrics.
+A personal desktop inspired by the OS-style portfolio at poltui.com, with original
+icons, code, copy and assets. The light canvas (`#f3f4f8`), profile window, work-together
+note, project launchers and floating dock introduce both career and consulting
+conversations. Inner pages use matching document surfaces, with a saved dark
+appearance available from the menu bar. No reference-site assets or claims are used.
+Contact and résumé remain the primary actions, and career claims retain their
+evidence qualifiers.
 
-The FlightPulse spotlight appears immediately after the hero. Its simplified
+The FlightPulse spotlight appears immediately after the desktop. Its simplified
 batch and streaming paths come from the project's README, and the measured
 611K+ flight count refers to historical dashboard data, not the live-position
 stream. The diagram explicitly notes that quality checks cover batch gold tables,
@@ -41,10 +43,15 @@ not streaming. Spotlight facts live in `SPOTLIGHT` in `tools/site_data.py`.
 Interaction is all vanilla JS:
 
 - **Project filters** — category buttons filter the two-column project grid.
+- **App previews** — four native dialogs show source-backed project details;
+  Escape, close and backdrop dismissal restore focus. Launcher links navigate to
+  the full project without JavaScript or when opened in a new tab.
+- **Appearance** — light by default, with a localStorage preference shared across
+  pages. Storage failures are logged; the current page's toggle still works.
 - **Search** — a native modal dialog with keyboard navigation, focus restoration,
   result announcements, and retryable load errors.
-- **Scroll accents** — visible content moves gently into place when observed.
-  No text is hidden while waiting for JavaScript.
+- **Motion** — brief window-opening and icon-hover transitions respect reduced
+  motion. No text is hidden while waiting for JavaScript.
 - **Live activity** — recent repositories come from GitHub, cached for ten minutes.
 - **Mobile navigation** — enhanced only after its event handlers are ready;
   links remain available without JavaScript.
@@ -60,8 +67,10 @@ git add . && git commit -m "Update copy" && git push
 ```
 
 **Bump `ASSET_V` in `tools/build.py` when CSS or JS changes**, then rebuild.
-The builder synchronizes `/site.css?v=…` and `/site.js?v=…` on the hand-written
-and generated pages, including the stylesheet on `404.html`.
+The builder synchronizes `/site.css?v=…`, `/site.js?v=…` and `/theme.js?v=…` on
+the hand-written and generated pages. The 404 page receives shared CSS and theme
+initialization too. Launcher details are generated from `tools/site_data.py`;
+edit `render_launcher()` in `tools/build.py` to change the app selection.
 
 ## Writing
 
